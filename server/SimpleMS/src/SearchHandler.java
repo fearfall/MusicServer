@@ -1,7 +1,10 @@
+import com.google.gson.Gson;
+import com.google.gson.JsonElement;
 import model.Track;
 import org.mortbay.jetty.HttpConnection;
 import org.mortbay.jetty.Request;
 import org.mortbay.jetty.handler.AbstractHandler;
+import org.springframework.util.StringUtils;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -28,12 +31,13 @@ public class SearchHandler extends AbstractHandler
                        HttpServletRequest httpServletRequest,
                        HttpServletResponse httpServletResponse,
                        int i) throws IOException, ServletException {
-        httpServletResponse.setContentType("text/html;charset=utf-8");
+        httpServletResponse.setContentType("text/plain;charset=utf-8");
         httpServletResponse.setStatus(HttpServletResponse.SC_OK);
         String pattern = httpServletRequest.getParameter("pattern");
+        String jsonCallbackParam = httpServletRequest.getParameter("jsoncallback");
         List<Track> tracks = connection.search(pattern);
         StringBuilder html = new StringBuilder();
-        html.append("<body><table>" +
+        /*html.append("<body><table>" +
                 "<th>Artist</th>" +
                 "<th>Album</th>" +
                 "<th>Track</th>" +
@@ -54,9 +58,28 @@ public class SearchHandler extends AbstractHandler
             html.append("</td>");
             html.append("</tr>");
         }
-        html.append("</table></body>");
+        html.append("</table></body>");*/
+
+        JsonElement jsonElement = new Gson().toJsonTree(tracks);
+        if ( jsonCallbackParam != null ) {
+            html.append(jsonCallbackParam);
+            html.append("(");
+            html.append(jsonElement);
+            html.append(");");
+        }
+        else html.append(jsonElement);
+
+        httpServletResponse.setContentLength(html.length());
         httpServletResponse.getWriter().println(html.toString());
         Request baseRequest = (httpServletRequest instanceof Request) ? (Request)httpServletRequest: HttpConnection.getCurrentConnection().getRequest();
         baseRequest.setHandled(true);
+    }
+
+    public static String sanitizeJsonpParam(String s) {
+        if ( s.isEmpty()) return null;
+        if ( !StringUtils.startsWithIgnoreCase(s,"jsonp")) return null;
+        if ( s.length() > 128 ) return null;
+        if ( !s.matches("^jsonp\\d+$")) return null;
+        return s;
     }
 }
