@@ -1,5 +1,7 @@
 package model;
 
+import java.util.UUID;
+
 /**
  * User: Alice Afonina
  * Email:fearfall@gmail.com
@@ -8,15 +10,13 @@ package model;
  */
 public class Track {
     private String name;
-    private String artist;
-    private String album;
     private String url;
+    private String mbid;
 
-    public Track(String name, String artist, String album, String url) {
+    public Track(String name, String url, String mbid) {
         this.name = name;
-        this.artist = artist;
-        this.album = album;
         this.url = url;
+        this.mbid = mbid;
     }
 
     public String getName() {
@@ -27,27 +27,19 @@ public class Track {
         this.name = name;
     }
 
-    public String getArtist() {
-        return artist;
-    }
-
-    public void setArtist(String artist) {
-        this.artist = artist;
-    }
-
-    public String getAlbum() {
-        return album;
-    }
-
-    public void setAlbum(String album) {
-        this.album = album;
-    }
-
     public String getUrl() {
         return url;
     }
 
     public void setUrl(String url) {
         this.url = url;
+    }
+
+    public String getMbid() {
+        return mbid;
+    }
+
+    public void setMbid(String mbid) {
+        this.mbid = mbid;
     }
 }

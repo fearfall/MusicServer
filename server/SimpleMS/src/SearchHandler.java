@@ -1,5 +1,7 @@
 import com.google.gson.Gson;
 import com.google.gson.JsonElement;
+import model.Artist;
+import model.Result;
 import model.Track;
 import org.mortbay.jetty.HttpConnection;
 import org.mortbay.jetty.Request;
@@ -35,32 +37,10 @@ public class SearchHandler extends AbstractHandler
         httpServletResponse.setStatus(HttpServletResponse.SC_OK);
         String pattern = httpServletRequest.getParameter("pattern");
         String jsonCallbackParam = httpServletRequest.getParameter("jsoncallback");
-        List<Track> tracks = connection.search(pattern);
+        Result result = connection.search(pattern);
         StringBuilder html = new StringBuilder();
-        /*html.append("<body><table>" +
-                "<th>Artist</th>" +
-                "<th>Album</th>" +
-                "<th>Track</th>" +
-                "<th>URL</th>");
-        for (Track track : tracks) {
-            html.append("<tr>");
-            html.append("<td>");
-            html.append(track.getArtist());
-            html.append("</td>");
-            html.append("<td>");
-            html.append(track.getAlbum());
-            html.append("</td>");
-            html.append("<td>");
-            html.append(track.getName());
-            html.append("</td>");
-            html.append("<td>");
-            html.append(track.getUrl());
-            html.append("</td>");
-            html.append("</tr>");
-        }
-        html.append("</table></body>");*/
 
-        JsonElement jsonElement = new Gson().toJsonTree(tracks);
+        JsonElement jsonElement = new Gson().toJsonTree(result);
         if ( jsonCallbackParam != null ) {
             html.append(jsonCallbackParam);
             html.append("(");
