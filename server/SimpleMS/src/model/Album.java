@@ -11,8 +11,8 @@ import java.util.UUID;
  * Time: 10:26 AM
  */
 public class Album {
-    private String name;
-    private String mbid;
+    private String name = "";
+    private String mbid = "";
     private List<Track> tracks = new LinkedList<Track>();
 
     public Album(String name, String mbid) {
@@ -20,6 +20,8 @@ public class Album {
         this.mbid = mbid;
 
     }
+
+    public Album() {}
 
     public boolean addTrack(Track track) {
         if(tracks.indexOf(track) < 0) {

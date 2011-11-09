@@ -12,14 +12,22 @@ public class SimpleMusicServer
     public static void main(String[] args) throws Exception
     {
         Server server = new Server(6006);
-
-        ContextHandler context = new ContextHandler();
-        context.setContextPath("/search");
-        context.setResourceBase(".");
-        context.setClassLoader(Thread.currentThread().getContextClassLoader());
-        server.setHandler(context);
         SimpleDBConnection connection = new SimpleDBConnection();
-        context.setHandler(new SearchHandler(connection));
+
+        ContextHandler searchContext = new ContextHandler();
+        searchContext.setContextPath("/search");
+        searchContext.setResourceBase(".");
+        searchContext.setClassLoader(Thread.currentThread().getContextClassLoader());
+        server.addHandler(searchContext);
+        searchContext.setHandler(new SearchHandler(connection));
+
+        ContextHandler getContext = new ContextHandler();
+        getContext.setContextPath("/get");
+        getContext.setResourceBase(".");
+        getContext.setClassLoader(Thread.currentThread().getContextClassLoader());
+        server.addHandler(getContext);
+        getContext.setHandler(new GetHandler(connection));
+
         server.start();
         server.join();
     }

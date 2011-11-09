@@ -11,14 +11,16 @@ import java.util.UUID;
  * Time: 10:25 AM
  */
 public class Artist {
-    private String name;
-    private String mbid;
+    private String name = "";
+    private String mbid = "";
     private List<Album> albums = new LinkedList<Album>();
 
     public Artist(String name, String mbid) {
         this.name = name;
         this.mbid = mbid;
     }
+
+    public Artist() {}
 
     public boolean addAlbum(Album album) {
         int albIndex = 0;

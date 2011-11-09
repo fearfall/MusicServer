@@ -9,9 +9,11 @@ import java.util.UUID;
  * Time: 4:04 PM
  */
 public class Track {
-    private String name;
-    private String url;
-    private String mbid;
+    private String name = "";
+    private String url = "";
+    private String mbid = "";
+
+    public Track() {}
 
     public Track(String name, String url, String mbid) {
         this.name = name;

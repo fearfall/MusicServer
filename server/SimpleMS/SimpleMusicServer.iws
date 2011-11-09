@@ -62,10 +62,22 @@
       <file leaf-file-name="SimpleDBConnection.java" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/SimpleDBConnection.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="78" column="49" selection-start="3133" selection-end="3133" vertical-scroll-proportion="4.0547943">
+            <state line="118" column="72" selection-start="4822" selection-end="4822" vertical-scroll-proportion="0.02366864">
               <folding>
                 <element signature="imports" expanded="true" />
+                <element signature="method#search#0;class#SimpleDBConnection#0" expanded="false" />
+                <element signature="method#findAlbums#0;class#SimpleDBConnection#0" expanded="false" />
+                <element signature="method#findTracks#0;class#SimpleDBConnection#0" expanded="false" />
               </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="Artist.java" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/model/Artist.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="14" column="28" selection-start="267" selection-end="267" vertical-scroll-proportion="0.0">
+              <folding />
             </state>
           </provider>
         </entry>
@@ -88,12 +100,13 @@
         <option value="$PROJECT_DIR$/src/MyHandler.java" />
         <option value="$PROJECT_DIR$/src/SeacrhHandler.java" />
         <option value="$PROJECT_DIR$/src/RequestHandler.java" />
-        <option value="$PROJECT_DIR$/src/SimpleMusicServer.java" />
         <option value="$PROJECT_DIR$/src/model/Result.java" />
         <option value="$PROJECT_DIR$/src/SearchHandler.java" />
+        <option value="$PROJECT_DIR$/src/SimpleMusicServer.java" />
+        <option value="$PROJECT_DIR$/src/GetHandler.java" />
+        <option value="$PROJECT_DIR$/src/model/Track.java" />
         <option value="$PROJECT_DIR$/src/model/Album.java" />
         <option value="$PROJECT_DIR$/src/model/Artist.java" />
-        <option value="$PROJECT_DIR$/src/model/Track.java" />
         <option value="$PROJECT_DIR$/src/SimpleDBConnection.java" />
       </list>
     </option>
@@ -129,8 +142,8 @@
     </navigator>
     <panes>
       <pane id="Scope" />
-      <pane id="PackagesPane" />
       <pane id="Favorites" />
+      <pane id="PackagesPane" />
       <pane id="ProjectPane">
         <subPane>
           <PATH>
@@ -344,16 +357,16 @@
       <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.74208146" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.55429864" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3280543" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32919255" sideWeight="0.14932127" order="1" side_tool="true" content_ui="tabs" />
       <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.3284974" sideWeight="0.25791857" order="0" side_tool="false" content_ui="tabs" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.0" sideWeight="0.44570136" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Dependency Viewer" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.1764706" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.800905" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
@@ -408,47 +421,67 @@
         <state line="24" column="30" selection-start="986" selection-end="986" vertical-scroll-proportion="0.0" />
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/SimpleMusicServer.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="19" column="36" selection-start="571" selection-end="571" vertical-scroll-proportion="0.5652174" />
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/model/Result.java">
       <provider selected="true" editor-type-id="text-editor">
         <state line="17" column="37" selection-start="399" selection-end="399" vertical-scroll-proportion="0.615942" />
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/src/GetHandler.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="50" column="40" selection-start="1659" selection-end="1659" vertical-scroll-proportion="0.0">
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/SimpleMusicServer.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="20" column="18" selection-start="644" selection-end="644" vertical-scroll-proportion="0.0">
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/model/Track.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="17" column="28" selection-start="296" selection-end="296" vertical-scroll-proportion="0.8224852">
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/SearchHandler.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="40" column="49" selection-start="1411" selection-end="1411" vertical-scroll-proportion="0.6749226" />
+        <state line="40" column="49" selection-start="0" selection-end="2329" vertical-scroll-proportion="1.7051282">
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/model/Album.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="56" column="37" selection-start="1063" selection-end="1063" vertical-scroll-proportion="0.95760596">
+        <state line="14" column="28" selection-start="266" selection-end="266" vertical-scroll-proportion="0.17751479">
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/model/Artist.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="82" column="1" selection-start="1727" selection-end="1727" vertical-scroll-proportion="0.66334164">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/model/Track.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="41" column="30" selection-start="712" selection-end="712" vertical-scroll-proportion="0.6376812">
+        <state line="14" column="28" selection-start="267" selection-end="267" vertical-scroll-proportion="0.0">
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/SimpleDBConnection.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="78" column="49" selection-start="3133" selection-end="3133" vertical-scroll-proportion="4.0547943">
+        <state line="118" column="72" selection-start="4822" selection-end="4822" vertical-scroll-proportion="0.02366864">
           <folding>
             <element signature="imports" expanded="true" />
+            <element signature="method#search#0;class#SimpleDBConnection#0" expanded="false" />
+            <element signature="method#findAlbums#0;class#SimpleDBConnection#0" expanded="false" />
+            <element signature="method#findTracks#0;class#SimpleDBConnection#0" expanded="false" />
           </folding>
         </state>
       </provider>
