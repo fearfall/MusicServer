@@ -1,12 +1,13 @@
 package model;
 
+import java.util.UUID;
+
 /**
  * User: Alice Afonina
  * Email:fearfall@gmail.com
  * Date: 10/18/11
  * Time: 4:04 PM
  */
-
 public class Track {
     private String name = "";
     private String url = "";
@@ -33,13 +34,7 @@ public class Track {
     }
 
     public void setUrl(String url) {
-        this.url = getValidUrl(url);
-    }
-
-    private String getValidUrl(String url) {
-        return url;
-        //send HEAD request
-        //if(200) =>
+        this.url = url;
     }
 
     public String getMbid() {
