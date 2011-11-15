@@ -33,13 +33,15 @@ public class SearchHandler extends AbstractHandler
                        HttpServletRequest httpServletRequest,
                        HttpServletResponse httpServletResponse,
                        int i) throws IOException, ServletException {
-        httpServletResponse.setContentType("text/plain;charset=utf-8");
+        //httpServletResponse.setContentType("text/plain;charset=utf-8");
+        httpServletResponse.setContentType("text/javascript; charset=utf-8");
         httpServletResponse.setStatus(HttpServletResponse.SC_OK);
         String pattern = httpServletRequest.getParameter("pattern");
         String jsonCallbackParam = httpServletRequest.getParameter("jsoncallback");
         Result result = connection.search(pattern);
         StringBuilder html = new StringBuilder();
-
+        System.out.println(pattern);
+        //html.append("<html> <head/> <body> ");
         JsonElement jsonElement = new Gson().toJsonTree(result);
         if ( jsonCallbackParam != null ) {
             html.append(jsonCallbackParam);
@@ -48,8 +50,9 @@ public class SearchHandler extends AbstractHandler
             html.append(");");
         }
         else html.append(jsonElement);
-
-        httpServletResponse.setContentLength(html.length());
+        //html.append(" </body> </html>");
+        //httpServletResponse.setContentLength(html.length());
+        //httpServletResponse.setContentEncoding("gzip");
         httpServletResponse.getWriter().println(html.toString());
         Request baseRequest = (httpServletRequest instanceof Request) ? (Request)httpServletRequest: HttpConnection.getCurrentConnection().getRequest();
         baseRequest.setHandled(true);

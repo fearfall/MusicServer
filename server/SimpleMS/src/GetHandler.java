@@ -35,11 +35,12 @@ public class GetHandler extends AbstractHandler
                        HttpServletResponse httpServletResponse,
                        int i) throws IOException, ServletException {
 
-        httpServletResponse.setContentType("text/plain;charset=utf-8");
+        httpServletResponse.setContentType("text/javascript; charset=utf-8");
         httpServletResponse.setStatus(HttpServletResponse.SC_OK);
         String id = httpServletRequest.getParameter("id");
         String jsonCallbackParam = httpServletRequest.getParameter("jsoncallback");
         Object result = null;
+        System.out.println(id);
         StringBuilder html = new StringBuilder();
         if(s.equals("/artist")) {
             result = connection.getArtist(id);
@@ -50,6 +51,7 @@ public class GetHandler extends AbstractHandler
         if(s.equals("/track")) {
             result = connection.getTrack(id);
         }
+        //html.append("<html> <head/> <body>");
         if(result != null) {
             String jsonElement = new Gson().toJson(result);
             if ( jsonCallbackParam != null ) {
@@ -62,8 +64,8 @@ public class GetHandler extends AbstractHandler
         } else {
             html.append("Sorry, this item was not found");
         }
-
-        httpServletResponse.setContentLength(html.length());
+        //html.append(" </body> </html>");
+        //httpServletResponse.setContentLength(html.length());
         httpServletResponse.getWriter().println(html.toString());
         Request baseRequest = (httpServletRequest instanceof Request) ? (Request)httpServletRequest: HttpConnection.getCurrentConnection().getRequest();
         baseRequest.setHandled(true);

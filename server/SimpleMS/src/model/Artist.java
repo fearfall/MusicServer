@@ -22,7 +22,7 @@ public class Artist {
 
     public Artist() {}
 
-    public boolean addAlbum(Album album) {
+    /*public boolean addAlbum(Album album) {
         int albIndex = 0;
         if((albIndex = albums.indexOf(album)) < 0) {
             albums.add(album);
@@ -42,7 +42,7 @@ public class Artist {
                 break;
             }
         }
-    }
+    }*/
 
     public String getName() {
         return name;

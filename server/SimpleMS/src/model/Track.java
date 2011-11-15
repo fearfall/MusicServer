@@ -1,5 +1,10 @@
 package model;
 
+import java.awt.*;
+import java.io.IOException;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.util.Scanner;
 import java.util.UUID;
 
 /**
@@ -34,7 +39,11 @@ public class Track {
     }
 
     public void setUrl(String url) {
-        this.url = url;
+        this.url = getValid(url);
+    }
+
+    private String getValid(String url) {
+        return (exists(url)) ? url : getUrlFromSource();
     }
 
     public String getMbid() {
@@ -43,5 +52,31 @@ public class Track {
 
     public void setMbid(String mbid) {
         this.mbid = mbid;
+    }
+
+    public static boolean exists(String url){
+    try {
+      HttpURLConnection.setFollowRedirects(false);
+      HttpURLConnection connection =
+         (HttpURLConnection) new URL(url).openConnection();
+      connection.setRequestMethod("HEAD");
+      return (connection.getResponseCode() == HttpURLConnection.HTTP_OK);
+    }
+    catch (Exception e) {
+       e.printStackTrace();
+       return false;
+    }
+  }
+
+    public String getUrlFromSource() {
+        ProcessBuilder processBuilder  = new ProcessBuilder("python url_update.py", url);
+        try {
+            Process p = processBuilder.start();
+            Scanner s = new Scanner(p.getInputStream());
+            return s.nextLine();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 }
