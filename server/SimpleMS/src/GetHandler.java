@@ -35,7 +35,7 @@ public class GetHandler extends AbstractHandler
                        HttpServletResponse httpServletResponse,
                        int i) throws IOException, ServletException {
 
-        httpServletResponse.setContentType("text/javascript; charset=utf-8");
+        httpServletResponse.setContentType("application/json");
         httpServletResponse.setStatus(HttpServletResponse.SC_OK);
         String id = httpServletRequest.getParameter("id");
         String jsonCallbackParam = httpServletRequest.getParameter("jsoncallback");

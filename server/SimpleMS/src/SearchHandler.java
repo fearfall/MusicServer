@@ -34,7 +34,8 @@ public class SearchHandler extends AbstractHandler
                        HttpServletResponse httpServletResponse,
                        int i) throws IOException, ServletException {
         //httpServletResponse.setContentType("text/plain;charset=utf-8");
-        httpServletResponse.setContentType("text/javascript; charset=utf-8");
+        //httpServletResponse.setContentType("text/javascript; charset=utf-8");
+        httpServletResponse.setContentType("application/json");
         httpServletResponse.setStatus(HttpServletResponse.SC_OK);
         String pattern = httpServletRequest.getParameter("pattern");
         String jsonCallbackParam = httpServletRequest.getParameter("jsoncallback");
