@@ -1,9 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-      package="ru.musicserver.android.ui"
+      package="ru.musicserver.androidclient.activity"
       android:versionCode="1"
       android:versionName="1.0">
-    <application android:label="@string/app_name" android:icon="@drawable/icon">
+    <uses-permission android:name="android.permission.INTERNET" />
+    <application android:label="@string/app_name"
+                 android:icon="@drawable/icon"
+                 android:theme="@android:style/Theme.Black">
+
         <activity android:name="SimpleActivity"
                   android:label="@string/app_name">
             <intent-filter>
@@ -11,5 +15,6 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <service android:name=".MusicPlayerService"/>
     </application>
 </manifest> 
