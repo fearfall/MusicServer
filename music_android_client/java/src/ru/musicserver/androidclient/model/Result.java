@@ -27,19 +27,6 @@ public class Result {
         return (artists.isEmpty() && albums.isEmpty() && tracks.isEmpty());
     }
 
-    /*public List<Artist> getArtists() {
-        return artists;
-    }
-
-    public List<Album> getAlbums() {
-        return albums;
-    }
-
-
-    public List<Track> getTracks() {
-        return tracks;
-    } */
-
     public Artist[] getArtists() {
        return artists.toArray(new Artist[artists.size()]);
    }

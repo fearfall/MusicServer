@@ -70,14 +70,16 @@ java.lang.String _arg0;
 _arg0 = data.readString();
 java.lang.String _arg1;
 _arg1 = data.readString();
-this.play(_arg0, _arg1);
+java.lang.String _arg2;
+_arg2 = data.readString();
+this.play(_arg0, _arg1, _arg2);
 reply.writeNoException();
 return true;
 }
-case TRANSACTION_getPlayingTrackUrl:
+case TRANSACTION_getPlayingTrackId:
 {
 data.enforceInterface(DESCRIPTOR);
-java.lang.String _result = this.getPlayingTrackUrl();
+java.lang.String _result = this.getPlayingTrackId();
 reply.writeNoException();
 reply.writeString(_result);
 return true;
@@ -128,7 +130,7 @@ _reply.recycle();
 _data.recycle();
 }
 }
-public void play(java.lang.String trackName, java.lang.String trackUrl) throws android.os.RemoteException
+public void play(java.lang.String trackName, java.lang.String trackUrl, java.lang.String trackId) throws android.os.RemoteException
 {
 android.os.Parcel _data = android.os.Parcel.obtain();
 android.os.Parcel _reply = android.os.Parcel.obtain();
@@ -136,6 +138,7 @@ try {
 _data.writeInterfaceToken(DESCRIPTOR);
 _data.writeString(trackName);
 _data.writeString(trackUrl);
+_data.writeString(trackId);
 mRemote.transact(Stub.TRANSACTION_play, _data, _reply, 0);
 _reply.readException();
 }
@@ -144,14 +147,14 @@ _reply.recycle();
 _data.recycle();
 }
 }
-public java.lang.String getPlayingTrackUrl() throws android.os.RemoteException
+public java.lang.String getPlayingTrackId() throws android.os.RemoteException
 {
 android.os.Parcel _data = android.os.Parcel.obtain();
 android.os.Parcel _reply = android.os.Parcel.obtain();
 java.lang.String _result;
 try {
 _data.writeInterfaceToken(DESCRIPTOR);
-mRemote.transact(Stub.TRANSACTION_getPlayingTrackUrl, _data, _reply, 0);
+mRemote.transact(Stub.TRANSACTION_getPlayingTrackId, _data, _reply, 0);
 _reply.readException();
 _result = _reply.readString();
 }
@@ -165,10 +168,10 @@ return _result;
 static final int TRANSACTION_pause = (android.os.IBinder.FIRST_CALL_TRANSACTION + 0);
 static final int TRANSACTION_stop = (android.os.IBinder.FIRST_CALL_TRANSACTION + 1);
 static final int TRANSACTION_play = (android.os.IBinder.FIRST_CALL_TRANSACTION + 2);
-static final int TRANSACTION_getPlayingTrackUrl = (android.os.IBinder.FIRST_CALL_TRANSACTION + 3);
+static final int TRANSACTION_getPlayingTrackId = (android.os.IBinder.FIRST_CALL_TRANSACTION + 3);
 }
 public void pause() throws android.os.RemoteException;
 public void stop() throws android.os.RemoteException;
-public void play(java.lang.String trackName, java.lang.String trackUrl) throws android.os.RemoteException;
-public java.lang.String getPlayingTrackUrl() throws android.os.RemoteException;
+public void play(java.lang.String trackName, java.lang.String trackUrl, java.lang.String trackId) throws android.os.RemoteException;
+public java.lang.String getPlayingTrackId() throws android.os.RemoteException;
 }

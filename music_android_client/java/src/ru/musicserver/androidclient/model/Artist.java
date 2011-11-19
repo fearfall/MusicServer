@@ -11,57 +11,11 @@ import java.util.List;
  */
 public class Artist extends Model {
     //private String name;
-    private String mbid;
+    //private String mbid;
     private List<Album> albums = new LinkedList<Album>();
 
     public Artist(String name, String mbid) {
         this.name = name;
-        this.mbid = mbid;
-    }
-
-    public boolean addAlbum(Album album) {
-        int albIndex = 0;
-        if((albIndex = albums.indexOf(album)) < 0) {
-            albums.add(album);
-            return true;
-        }
-        else {
-            for (Track track : album.getTracks()) {
-                albums.get(albIndex).addTrack(track);
-            }
-            return false;
-        }
-    }
-
-    public void addTrack(Track track) {
-        for (Album album : albums) {
-            if(album.addTrack(track)) {
-                break;
-            }
-        }
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public List<Album> getAlbums() {
-        return albums;
-    }
-
-    public void setAlbums(List<Album> albums) {
-        this.albums = albums;
-    }
-
-    public String getMbid() {
-        return mbid;
-    }
-
-    public void setMbid(String mbid) {
         this.mbid = mbid;
     }
 

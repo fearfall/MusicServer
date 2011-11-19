@@ -4,6 +4,7 @@ import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.Service;
 import android.content.Intent;
+import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.os.DeadObjectException;
 import android.os.IBinder;
@@ -29,6 +30,7 @@ public class MusicPlayerService extends Service {
     public void onCreate() {
 		super.onCreate();
         myPlayer = new MediaPlayer();
+        myPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
 		myNotificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
 	}
 
@@ -39,27 +41,24 @@ public class MusicPlayerService extends Service {
 		myNotificationManager.cancel(NOTIFY_ID);
 	}
 
-	public IBinder getBinder() {
-		return mBinder;
-	}
-
     public IBinder onBind(Intent intent) {
-        return null;
+        return mBinder;
     }
 
     private final MusicPlayerServiceInterface.Stub mBinder = new MusicPlayerServiceInterface.Stub() {
         @Override
-		public void play(String trackName, String trackUrl) throws DeadObjectException {
+		public void play(String trackName, String trackUrl, String trackId) throws DeadObjectException {
 			try {
-                Notification notification = new Notification(R.drawable.playbackstart, trackName, 0);
-			    myNotificationManager.notify(NOTIFY_ID, notification);
+                //Notification notification = new Notification(R.drawable.playbackstart, trackName, 0);
+			    //myNotificationManager.notify(NOTIFY_ID, notification);
 
 			    myPlayer.reset();
 
-			    myPlayer.setDataSource("/home/kate/au/test.mp3");
+			    myPlayer.setDataSource("http://mp3type.ru/download.php?id=31312&ass=britney_spears_-_criminal_(original_radio_edit).mp3");
+                //myPlayer.setDataSource(trackUrl);
 			    myPlayer.prepare();
 			    myPlayer.start();
-                myCurrentTrack = trackUrl;
+                myCurrentTrack = trackId;
 
 			    myPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
                     public void onCompletion(MediaPlayer arg0) {
@@ -86,7 +85,7 @@ public class MusicPlayerService extends Service {
 		}
 
         @Override
-        public String getPlayingTrackUrl () {
+        public String getPlayingTrackId () {
             return myCurrentTrack;
         }
 	};

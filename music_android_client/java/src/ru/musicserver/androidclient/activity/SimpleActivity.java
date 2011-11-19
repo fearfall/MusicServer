@@ -12,7 +12,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.*;
 import ru.musicserver.androidclient.model.*;
-import ru.musicserver.androidclient.network.SearchRequest;
+import ru.musicserver.androidclient.network.Request;
 
 import java.io.IOException;
 
@@ -78,7 +78,18 @@ public class SimpleActivity extends ListActivity {
         Model item = adapter.getItem(position);
         String newShift = item.getShift() + singleTab;
         int childPosition = position + 1;
-        for (Model child: item.getContent()) {
+
+        Model trueItem = item;
+        if (!(item instanceof ModelContainer)) {
+            String type = (item instanceof Artist) ? "artist" : "album";
+            try {
+                trueItem = Request.get(type, item.getMbid());
+            } catch (IOException e) {
+                showMessage(e.getMessage());
+                return;
+            }
+        }
+        for (Model child: trueItem.getContent()) {
             child.setShift(newShift);
             adapter.insert(child, childPosition);
             ++childPosition;
@@ -102,9 +113,10 @@ public class SimpleActivity extends ListActivity {
                 String searchString = searchEdit.getText().toString();
 
                 try {
-                    myResult = SearchRequest.search(searchString);
+                    myResult = Request.search(searchString);
                 } catch (IOException e) {
-                    throw new RuntimeException(e);
+                    showMessage(e.getMessage());
+                    return;
                 }
 
                 ArrayAdapter<Model> adapter = new ArrayAdapter<Model>(v.getContext(), R.layout.unplayable);
@@ -126,12 +138,11 @@ public class SimpleActivity extends ListActivity {
         myResultView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
+                showMessage("test");
                 Model item = (Model)adapterView.getItemAtPosition(position);
                 if (item instanceof Track) {
                     try {
-                        Track track = (Track)item;
-                        myPlayer.play(track.getName(), track.getUrl());
-                        //myPlayer.play(((Track) item).getName(), ((Track) item).getUrl());
+                        myPlayer.play(((Track) item).getName(), ((Track) item).getUrl(), item.getMbid());
 
 
                         /*if (myPlayer.getPlayingTrackUrl()!=null && myPlayer.getPlayingTrackUrl().equals(((Track) item).getUrl())) {
@@ -141,7 +152,7 @@ public class SimpleActivity extends ListActivity {
                         }  */
                     } catch (RemoteException e) {
                         Log.e(getString(R.string.app_name), e.getMessage());
-                        e.printStackTrace();
+                        showMessage(e.getMessage());
                     }
                     return;
                 }
@@ -157,7 +168,10 @@ public class SimpleActivity extends ListActivity {
                 setAdapter(adapter);
             }
         });
+    }
 
+    private void showMessage (String text) {
+        Toast.makeText(getApplicationContext(), text, Toast.LENGTH_LONG).show();
     }
 
 }

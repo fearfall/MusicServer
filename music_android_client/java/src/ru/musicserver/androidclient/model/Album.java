@@ -11,7 +11,7 @@ import java.util.List;
  */
 public class Album extends Model {
     //private String name;
-    private String mbid;
+    //private String mbid;
     private List<Track> tracks = new LinkedList<Track>();
 
     public Album(String name, String mbid) {
@@ -27,28 +27,8 @@ public class Album extends Model {
         return false;
     }
 
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
     public List<Track> getTracks() {
         return tracks;
-    }
-
-    public void setTracks(List<Track> tracks) {
-        this.tracks = tracks;
-    }
-
-    public String getMbid() {
-        return mbid;
-    }
-
-    public void setMbid(String mbid) {
-        this.mbid = mbid;
     }
 
     @Override
