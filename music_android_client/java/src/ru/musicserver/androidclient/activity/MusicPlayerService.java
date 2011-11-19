@@ -1,13 +1,16 @@
 package ru.musicserver.androidclient.activity;
 
+import android.app.AlertDialog;
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.Service;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.os.DeadObjectException;
 import android.os.IBinder;
+import android.os.RemoteException;
 import android.util.Log;
 
 import java.io.IOException;
@@ -47,15 +50,15 @@ public class MusicPlayerService extends Service {
 
     private final MusicPlayerServiceInterface.Stub mBinder = new MusicPlayerServiceInterface.Stub() {
         @Override
-		public void play(String trackName, String trackUrl, String trackId) throws DeadObjectException {
+		public boolean play(String trackName, String trackUrl, String trackId) throws DeadObjectException {
 			try {
                 //Notification notification = new Notification(R.drawable.playbackstart, trackName, 0);
 			    //myNotificationManager.notify(NOTIFY_ID, notification);
 
 			    myPlayer.reset();
 
-			    myPlayer.setDataSource("http://mp3type.ru/download.php?id=31312&ass=britney_spears_-_criminal_(original_radio_edit).mp3");
-                //myPlayer.setDataSource(trackUrl);
+			   // myPlayer.setDataSource("http://mp3type.ru/download.php?id=31312&ass=britney_spears_-_criminal_(original_radio_edit).mp3");
+                myPlayer.setDataSource(trackUrl);
 			    myPlayer.prepare();
 			    myPlayer.start();
                 myCurrentTrack = trackId;
@@ -67,8 +70,9 @@ public class MusicPlayerService extends Service {
                 });
 
             } catch (IOException e) {
-                Log.e(getString(R.string.app_name), e.getMessage());
+                return false;
             }
+            return true;
 		}
 
         @Override
@@ -88,5 +92,10 @@ public class MusicPlayerService extends Service {
         public String getPlayingTrackId () {
             return myCurrentTrack;
         }
-	};
+
+        @Override
+        public boolean isPlaying(String trackMbid) throws RemoteException {
+            return myCurrentTrack != null && myCurrentTrack.equals(trackMbid);
+        }
+    };
 }

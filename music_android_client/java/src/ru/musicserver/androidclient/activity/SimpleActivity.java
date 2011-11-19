@@ -1,11 +1,10 @@
 package ru.musicserver.androidclient.activity;
 
+import android.app.AlertDialog;
 import android.app.ListActivity;
-import android.content.ComponentName;
-import android.content.Context;
-import android.content.Intent;
-import android.content.ServiceConnection;
+import android.content.*;
 import android.os.Bundle;
+import android.os.DeadObjectException;
 import android.os.IBinder;
 import android.os.RemoteException;
 import android.util.Log;
@@ -85,7 +84,7 @@ public class SimpleActivity extends ListActivity {
             try {
                 trueItem = Request.get(type, item.getMbid());
             } catch (IOException e) {
-                showMessage(e.getMessage());
+                showErrorMessage(e.getMessage());
                 return;
             }
         }
@@ -115,7 +114,7 @@ public class SimpleActivity extends ListActivity {
                 try {
                     myResult = Request.search(searchString);
                 } catch (IOException e) {
-                    showMessage(e.getMessage());
+                    showErrorMessage(e.getMessage());
                     return;
                 }
 
@@ -138,21 +137,17 @@ public class SimpleActivity extends ListActivity {
         myResultView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
-                showMessage("test");
                 Model item = (Model)adapterView.getItemAtPosition(position);
                 if (item instanceof Track) {
                     try {
-                        myPlayer.play(((Track) item).getName(), ((Track) item).getUrl(), item.getMbid());
-
-
-                        /*if (myPlayer.getPlayingTrackUrl()!=null && myPlayer.getPlayingTrackUrl().equals(((Track) item).getUrl())) {
+                        if (myPlayer.isPlaying(item.getMbid())) {
                             myPlayer.stop();
                         } else {
-                            myPlayer.play(((Track) item).getName(), ((Track) item).getUrl());
-                        }  */
-                    } catch (RemoteException e) {
-                        Log.e(getString(R.string.app_name), e.getMessage());
-                        showMessage(e.getMessage());
+                            if (!myPlayer.play(((Track) item).getName(), ((Track) item).getUrl(), item.getMbid()))
+                                showErrorMessage("Dead song URL.");
+                        }
+                    } catch (Exception e) {
+                        showErrorMessage(e.getMessage());
                     }
                     return;
                 }
@@ -170,8 +165,20 @@ public class SimpleActivity extends ListActivity {
         });
     }
 
-    private void showMessage (String text) {
-        Toast.makeText(getApplicationContext(), text, Toast.LENGTH_LONG).show();
+    private void showErrorMessage(String text) {
+        Log.e(getString(R.string.app_name), text);
+
+        AlertDialog alertDialog = new AlertDialog.Builder(SimpleActivity.this).create();
+        alertDialog.setTitle("Music player error");
+        alertDialog.setMessage(text);
+        alertDialog.setButton("Ok", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        });
+        alertDialog.setIcon(R.drawable.icon);
+        alertDialog.show();
+        //Toast.makeText(getApplicationContext(), text, Toast.LENGTH_LONG).show();
     }
 
 }

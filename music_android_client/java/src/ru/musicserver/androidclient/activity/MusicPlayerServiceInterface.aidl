@@ -9,6 +9,7 @@ package ru.musicserver.androidclient.activity;
 interface MusicPlayerServiceInterface {
 	void pause();
 	void stop();
-	void play(String trackName, String trackUrl, String trackId);
+	boolean play(String trackName, String trackUrl, String trackId);
 	String getPlayingTrackId ();
+	boolean isPlaying (String trackMbid);
 }
