@@ -14,6 +14,7 @@ import ru.musicserver.androidclient.model.*;
 import ru.musicserver.androidclient.network.Request;
 
 import java.io.IOException;
+import java.nio.charset.Charset;
 
 
 /**
@@ -28,7 +29,7 @@ public class SimpleActivity extends ListActivity {
     private Result myResult = null;
     private ListView myResultView;
 
-    private final String singleTab = "  ";
+    private final String singleTab = "    ";
 
     private ServiceConnection myServiceConnection = new ServiceConnection() {
         @Override
@@ -120,6 +121,7 @@ public class SimpleActivity extends ListActivity {
 
                 ArrayAdapter<Model> adapter = new ArrayAdapter<Model>(v.getContext(), R.layout.unplayable);
 
+
                 if (myResult.isEmpty()) {
                     adapter.add(new EmptyResult());
                 } else {
@@ -144,7 +146,7 @@ public class SimpleActivity extends ListActivity {
                             myPlayer.stop();
                         } else {
                             if (!myPlayer.play(((Track) item).getName(), ((Track) item).getUrl(), item.getMbid()))
-                                showErrorMessage("Dead song URL.");
+                                showErrorMessage("Dead song URL :-(");
                         }
                     } catch (Exception e) {
                         showErrorMessage(e.getMessage());

@@ -12,6 +12,7 @@ import ru.musicserver.androidclient.model.Artist;
 import ru.musicserver.androidclient.model.Model;
 import ru.musicserver.androidclient.model.Result;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.lang.reflect.Type;
@@ -25,11 +26,16 @@ import java.lang.reflect.Type;
  */
 public class Request {
     private static HttpClient myHttpClient = null;
-    private static String myServerAddress = "192.168.1.3";
+    private static String myServerAddress = null;
 
     private static HttpResponse execute (String request) throws IOException {
         if (myHttpClient == null) {
             myHttpClient = new DefaultHttpClient();
+        }
+        if (myServerAddress == null) {
+            File propertiesFile = new File(".");
+            myServerAddress = "192.168.1.3";
+
         }
         return myHttpClient.execute(new HttpGet(request));
     }
