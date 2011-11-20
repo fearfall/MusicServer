@@ -4,10 +4,7 @@
 # generated files
 bin/
 out/
-
-# built application files
-*.apk
-*.ap_
+res/
 
 # files for the dex VM
 *.dex
