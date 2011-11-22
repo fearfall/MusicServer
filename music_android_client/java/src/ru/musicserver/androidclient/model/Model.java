@@ -10,6 +10,7 @@ package ru.musicserver.androidclient.model;
 public abstract class Model {
     protected String name;
     protected String shift = "";
+    protected String mbid;
 
     public abstract Model[] getContent ();
 
@@ -23,5 +24,9 @@ public abstract class Model {
 
     public String getShift () {
         return shift;
+    }
+
+    public String getMbid() {
+        return mbid;
     }
 }

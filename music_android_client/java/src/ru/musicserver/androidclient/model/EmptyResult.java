@@ -9,10 +9,6 @@ package ru.musicserver.androidclient.model;
  */
 public class EmptyResult extends Model {
 
-    public EmptyResult (String caption) {
-        name = caption;
-    }
-
     public EmptyResult () {
         name = "No items were found.";
     }

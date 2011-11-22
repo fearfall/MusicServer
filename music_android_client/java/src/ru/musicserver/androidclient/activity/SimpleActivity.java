@@ -1,20 +1,20 @@
 package ru.musicserver.androidclient.activity;
 
+import android.app.AlertDialog;
 import android.app.ListActivity;
-import android.content.ComponentName;
-import android.content.Context;
-import android.content.Intent;
-import android.content.ServiceConnection;
+import android.content.*;
 import android.os.Bundle;
+import android.os.DeadObjectException;
 import android.os.IBinder;
 import android.os.RemoteException;
 import android.util.Log;
 import android.view.View;
 import android.widget.*;
 import ru.musicserver.androidclient.model.*;
-import ru.musicserver.androidclient.network.SearchRequest;
+import ru.musicserver.androidclient.network.Request;
 
 import java.io.IOException;
+import java.nio.charset.Charset;
 
 
 /**
@@ -29,7 +29,7 @@ public class SimpleActivity extends ListActivity {
     private Result myResult = null;
     private ListView myResultView;
 
-    private final String singleTab = "  ";
+    private final String singleTab = "    ";
 
     private ServiceConnection myServiceConnection = new ServiceConnection() {
         @Override
@@ -78,7 +78,18 @@ public class SimpleActivity extends ListActivity {
         Model item = adapter.getItem(position);
         String newShift = item.getShift() + singleTab;
         int childPosition = position + 1;
-        for (Model child: item.getContent()) {
+
+        Model trueItem = item;
+        if (!(item instanceof ModelContainer)) {
+            String type = (item instanceof Artist) ? "artist" : "album";
+            try {
+                trueItem = Request.get(type, item.getMbid());
+            } catch (IOException e) {
+                showErrorMessage(e.getMessage());
+                return;
+            }
+        }
+        for (Model child: trueItem.getContent()) {
             child.setShift(newShift);
             adapter.insert(child, childPosition);
             ++childPosition;
@@ -102,12 +113,14 @@ public class SimpleActivity extends ListActivity {
                 String searchString = searchEdit.getText().toString();
 
                 try {
-                    myResult = SearchRequest.search(searchString);
+                    myResult = Request.search(searchString);
                 } catch (IOException e) {
-                    throw new RuntimeException(e);
+                    showErrorMessage(e.getMessage());
+                    return;
                 }
 
                 ArrayAdapter<Model> adapter = new ArrayAdapter<Model>(v.getContext(), R.layout.unplayable);
+
 
                 if (myResult.isEmpty()) {
                     adapter.add(new EmptyResult());
@@ -129,19 +142,14 @@ public class SimpleActivity extends ListActivity {
                 Model item = (Model)adapterView.getItemAtPosition(position);
                 if (item instanceof Track) {
                     try {
-                        Track track = (Track)item;
-                        myPlayer.play(track.getName(), track.getUrl());
-                        //myPlayer.play(((Track) item).getName(), ((Track) item).getUrl());
-
-
-                        /*if (myPlayer.getPlayingTrackUrl()!=null && myPlayer.getPlayingTrackUrl().equals(((Track) item).getUrl())) {
+                        if (myPlayer.isPlaying(item.getMbid())) {
                             myPlayer.stop();
                         } else {
-                            myPlayer.play(((Track) item).getName(), ((Track) item).getUrl());
-                        }  */
-                    } catch (RemoteException e) {
-                        Log.e(getString(R.string.app_name), e.getMessage());
-                        e.printStackTrace();
+                            if (!myPlayer.play(((Track) item).getName(), ((Track) item).getUrl(), item.getMbid()))
+                                showErrorMessage("Dead song URL :-(");
+                        }
+                    } catch (Exception e) {
+                        showErrorMessage(e.getMessage());
                     }
                     return;
                 }
@@ -157,7 +165,22 @@ public class SimpleActivity extends ListActivity {
                 setAdapter(adapter);
             }
         });
+    }
 
+    private void showErrorMessage(String text) {
+        Log.e(getString(R.string.app_name), text);
+
+        AlertDialog alertDialog = new AlertDialog.Builder(SimpleActivity.this).create();
+        alertDialog.setTitle("Music player error");
+        alertDialog.setMessage(text);
+        alertDialog.setButton("Ok", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        });
+        alertDialog.setIcon(R.drawable.icon);
+        alertDialog.show();
+        //Toast.makeText(getApplicationContext(), text, Toast.LENGTH_LONG).show();
     }
 
 }

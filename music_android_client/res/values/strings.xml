@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">MyClient</string>
+    <string name="app_name">Music Player</string>
     <string name="search">Search</string>
-    <string name="emptyText">green</string>
+    <string name="emptyText">rammstein</string>
     <string name="emptyText1">Type search string here</string>
 </resources>
