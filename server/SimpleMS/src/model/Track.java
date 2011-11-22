@@ -2,6 +2,8 @@ package model;
 
 import java.awt.*;
 import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.Reader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.Scanner;
@@ -22,7 +24,8 @@ public class Track {
 
     public Track(String name, String url, String mbid) {
         this.name = name;
-        this.url = url;
+        /*this.url = url;*/
+        setUrl(url);
         this.mbid = mbid;
     }
 
@@ -69,13 +72,25 @@ public class Track {
   }
 
     public String getUrlFromSource() {
-        ProcessBuilder processBuilder  = new ProcessBuilder("python url_update.py", url);
+        /*ProcessBuilder processBuilder  = new ProcessBuilder("python url_update.py", url);
         try {
             Process p = processBuilder.start();
             Scanner s = new Scanner(p.getInputStream());
             return s.nextLine();
         } catch (IOException e) {
             e.printStackTrace();
+        }
+        return null;*/
+        try {
+        url = "http://localhost:6007/up/" + mbid;
+        HttpURLConnection.setFollowRedirects(false);
+        HttpURLConnection connection =
+        (HttpURLConnection) new URL(url).openConnection();
+        connection.setRequestMethod("GET");
+        if(connection.getResponseCode() == HttpURLConnection.HTTP_OK)
+            return new Scanner(connection.getInputStream()).nextLine();
+        } catch (Exception e) {
+            return null;
         }
         return null;
     }

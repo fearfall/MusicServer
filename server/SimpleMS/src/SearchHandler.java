@@ -54,6 +54,7 @@ public class SearchHandler extends AbstractHandler
         //html.append(" </body> </html>");
         //httpServletResponse.setContentLength(html.length());
         //httpServletResponse.setContentEncoding("gzip");
+        System.out.println(html.toString());
         httpServletResponse.getWriter().println(html.toString());
         Request baseRequest = (httpServletRequest instanceof Request) ? (Request)httpServletRequest: HttpConnection.getCurrentConnection().getRequest();
         baseRequest.setHandled(true);

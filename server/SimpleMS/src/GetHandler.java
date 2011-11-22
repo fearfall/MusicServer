@@ -54,7 +54,7 @@ public class GetHandler extends AbstractHandler
         //html.append("<html> <head/> <body>");
         if(result != null) {
             String jsonElement = new Gson().toJson(result);
-            if ( jsonCallbackParam != null ) {
+            if (jsonCallbackParam != null) {
                 html.append(jsonCallbackParam);
                 html.append("(");
                 html.append(jsonElement);
@@ -66,6 +66,7 @@ public class GetHandler extends AbstractHandler
         }
         //html.append(" </body> </html>");
         //httpServletResponse.setContentLength(html.length());
+        System.out.println(html.toString());
         httpServletResponse.getWriter().println(html.toString());
         Request baseRequest = (httpServletRequest instanceof Request) ? (Request)httpServletRequest: HttpConnection.getCurrentConnection().getRequest();
         baseRequest.setHandled(true);
