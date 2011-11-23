@@ -24,15 +24,9 @@ public class Track {
 
     public Track(String name, String url, String mbid) {
         this.name = name;
-<<<<<<< HEAD
-        /*this.url = url;*/
-
-=======
         this.url = url;
-        //setUrl(url);
->>>>>>> ac1c7676992acafc5ccb5d245e145495251a0977
         this.mbid = mbid;
-        setUrl(url);
+        //setUrl(url);
     }
 
     public String getName() {
