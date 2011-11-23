@@ -84,4 +84,10 @@ public class Artist {
     public int hashCode() {
         return mbid != null ? mbid.hashCode() : 0;
     }
+
+    public boolean isValid() {
+        return !(name == null || name.isEmpty()
+               || mbid.isEmpty() || mbid == null
+               || albums == null || albums.isEmpty()) ;
+    }
 }
