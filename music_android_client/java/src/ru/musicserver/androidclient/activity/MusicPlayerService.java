@@ -24,7 +24,8 @@ public class MusicPlayerService extends Service {
     private String myCurrentTrack = null;
 
 	private NotificationManager myNotificationManager;
-	private static final int NOTIFY_ID = R.layout.main_search;
+	//private static final int NOTIFY_ID = R.layout.main_search;
+    private static int ourNotifyId;
 
 	@Override
     public void onCreate() {
@@ -32,14 +33,21 @@ public class MusicPlayerService extends Service {
         myPlayer = new MediaPlayer();
         myPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
 		myNotificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+        ourNotifyId = 0;
 	}
 
     @Override
     public void onDestroy() {
 		myPlayer.stop();
 		myPlayer.release();
-		myNotificationManager.cancel(NOTIFY_ID);
+		myNotificationManager.cancel(ourNotifyId);
 	}
+
+    private void notify (String message) {
+
+        Noti
+
+    }
 
     public IBinder onBind(Intent intent) {
         return mBinder;
@@ -49,8 +57,11 @@ public class MusicPlayerService extends Service {
         @Override
 		public boolean play(String trackName, String trackUrl, String trackId) throws DeadObjectException {
 			try {
-                //Notification notification = new Notification(R.drawable.playbackstart, trackName, 0);
-			    //myNotificationManager.notify(NOTIFY_ID, notification);
+
+                Notification notification = new Notification(R.drawable.playbackstart, trackName, 0);
+			    myNotificationManager.notify(NOTIFY_ID, notification);
+                if (trackUrl == null)
+                    throw new IOException();
 
 			    myPlayer.reset();
 
