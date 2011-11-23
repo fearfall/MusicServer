@@ -21,69 +21,82 @@ import java.util.*;
 public class SimpleDBConnection {
     private JdbcTemplate jdbcTemplate;
 
-    public SimpleDBConnection() {
-        DriverManagerDataSource dataSource = new DriverManagerDataSource();
-        dataSource.setDriverClassName("org.postgresql.Driver");//:1521
-        dataSource.setUrl("jdbc:postgresql://localhost/musicbrainz_db");
-        dataSource.setUsername("musicbrainz");
-        dataSource.setPassword("");
-        this.jdbcTemplate = new JdbcTemplate(dataSource);
+    public SimpleDBConnection() throws SQLException {
+            DriverManagerDataSource dataSource = new DriverManagerDataSource();
+            dataSource.setDriverClassName("org.postgresql.Driver");//:1521
+            dataSource.setUrl("jdbc:postgresql://localhost/musicbrainz_db");
+            dataSource.setUsername("musicbrainz");
+            dataSource.setPassword("");
+            this.jdbcTemplate = new JdbcTemplate(dataSource);
+            dataSource.getConnection();
     }
 
     public Result search(String pattern) {
-        return new Result(
-            findArtists(pattern),
-            findAlbums(pattern),
-            findTracks(pattern)
-                );
+        Result result = new Result(
+                findArtists(pattern),
+                findAlbums(pattern),
+                findTracks(pattern)
+        );
+        return result.isValid() ? result : null;
     }
 
     private List<Artist> findArtists(String pattern) {
         final List<Artist> artists = new ArrayList<Artist>();
         String queryArtist = ("select * from simple_artist_info where lower(name) like \'%\' || ? || \'%\'");
+        try {
         jdbcTemplate.query(queryArtist, new RowCallbackHandler() {
             public void processRow(ResultSet resultSet) throws SQLException {
                 Artist artist = new Artist(resultSet.getString("name"), resultSet.getString("mbid"));
                 if(artists.indexOf(artist) < 0) {
-                    artists.add(artist);
+                    if(artist.isValid()) {
+                        artists.add(artist);
+                    }
                 }
             }
         }, pattern.toLowerCase());
+        } catch (Exception e) {}
         return artists;
     }
 
     private List<Album> findAlbums(String pattern) {
         final List<Album> albums = new ArrayList<Album>();
         String queryAlbum = ("select * from simple_album_info where lower(name) like \'%\' || ? || \'%\'");
-        jdbcTemplate.query(queryAlbum, new RowCallbackHandler() {
-            public void processRow(ResultSet resultSet) throws SQLException {
-                Album album = new Album(resultSet.getString("name"),resultSet.getString("mbid"));
-                if(albums.indexOf(album) < 0) {
-                    albums.add(album);
+        try {
+            jdbcTemplate.query(queryAlbum, new RowCallbackHandler() {
+                public void processRow(ResultSet resultSet) throws SQLException {
+                    Album album = new Album(resultSet.getString("name"),resultSet.getString("mbid"));
+                    if(albums.indexOf(album) < 0) {
+                        if(album.isValid()) {
+                            albums.add(album);
+                        }
+                    }
                 }
-            }
-        }, pattern.toLowerCase());
+            }, pattern.toLowerCase());
+        } catch (Exception e) {}
         return albums;
     }
 
     private List<Track> findTracks(String pattern) {
         final List<Track> tracks = new ArrayList<Track>();
         String queryTrack = ("select * from simple_track_info where lower(name) like \'%\' || ? || \'%\'");
-        jdbcTemplate.query(queryTrack, new RowCallbackHandler() {
-            public void processRow(ResultSet resultSet) throws SQLException {
-                Track track = new Track(resultSet.getString("name"),
-                                        resultSet.getString("url"),
-                                        resultSet.getString("mbid"));
-                if(tracks.indexOf(track) < 0) {
-                    tracks.add(track);
+        try {
+            jdbcTemplate.query(queryTrack, new RowCallbackHandler() {
+                public void processRow(ResultSet resultSet) throws SQLException {
+                    Track track = new Track(resultSet.getString("name"),
+                                            resultSet.getString("url"),
+                                            resultSet.getString("mbid"));
+                    if(tracks.indexOf(track) < 0) {
+                        //if(track.isValid()) {
+                            tracks.add(track);
+                        //}
+                    }
                 }
-            }
-        }, pattern.toLowerCase());
+            }, pattern.toLowerCase());
+        } catch (Exception e) {}
         return tracks;
     }
 
     public Artist getArtist(String id) {
-        //String queryArtist = ("select * from simple_artist_info where mbid = ?");
         final List<Album> albums = new LinkedList <Album>();
         String queryArtist = "select * from simple_artist_info sai, (select mbid as a_mbid, name as a_name, artist_id from simple_album_info) as sel where sai.mbid=sel.artist_id and sai.mbid = ? limit 10";
         final Artist artist = new Artist();
@@ -95,11 +108,10 @@ public class SimpleDBConnection {
             }
         }, UUID.fromString(id));
         artist.setAlbums(albums);
-        return artist;
+        return artist.isValid() ? artist : null;
     }
 
     public Album getAlbum(String id) {
-        //String queryAlbum = ("select * from simple_album_info where mbid = ?");
         final List<Track> tracks = new LinkedList <Track>();
         String queryAlbum = "select * from simple_album_info sai, (select url as t_url, name as t_name, mbid as t_mbid, album_id from simple_track_info) as sel where sai.mbid = sel.album_id and sai.mbid = ?";
         final Album album = new Album();
@@ -112,7 +124,7 @@ public class SimpleDBConnection {
             }
           }, UUID.fromString(id));
         album.setTracks(tracks);
-        return album;
+        return album.isValid() ? album : null;
     }
 
     public Track getTrack(String id) {
@@ -125,7 +137,7 @@ public class SimpleDBConnection {
                 track.setUrl(resultSet.getString("url"));
             }
         }, UUID.fromString(id));
-        return track;
+        return track.isValid() ? track : null;
     }
 
 }

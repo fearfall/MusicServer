@@ -36,7 +36,7 @@ public class GetHandler extends AbstractHandler
                        int i) throws IOException, ServletException {
 
         httpServletResponse.setContentType("application/json");
-        httpServletResponse.setStatus(HttpServletResponse.SC_OK);
+
         String id = httpServletRequest.getParameter("id");
         String jsonCallbackParam = httpServletRequest.getParameter("jsoncallback");
         Object result = null;
@@ -53,6 +53,7 @@ public class GetHandler extends AbstractHandler
         }
         //html.append("<html> <head/> <body>");
         if(result != null) {
+            httpServletResponse.setStatus(HttpServletResponse.SC_OK);
             String jsonElement = new Gson().toJson(result);
             if (jsonCallbackParam != null) {
                 html.append(jsonCallbackParam);
@@ -62,7 +63,8 @@ public class GetHandler extends AbstractHandler
             }
             else html.append(jsonElement);
         } else {
-            html.append("Sorry, this item was not found");
+            httpServletResponse.setStatus(HttpServletResponse.SC_NO_CONTENT);
+            html.append("{ERROR}");
         }
         //html.append(" </body> </html>");
         //httpServletResponse.setContentLength(html.length());

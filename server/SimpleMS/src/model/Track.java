@@ -24,8 +24,8 @@ public class Track {
 
     public Track(String name, String url, String mbid) {
         this.name = name;
-        /*this.url = url;*/
-        setUrl(url);
+        this.url = url;
+        //setUrl(url);
         this.mbid = mbid;
     }
 
@@ -93,5 +93,11 @@ public class Track {
             return null;
         }
         return null;
+    }
+
+    public boolean isValid() {
+        return !(name == null || name.isEmpty()
+               || mbid.isEmpty() || mbid == null
+               || url == null || url.isEmpty());
     }
 }

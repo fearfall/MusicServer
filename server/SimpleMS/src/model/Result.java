@@ -18,4 +18,8 @@ public class Result {
         this.albums = albums;
         this.tracks = tracks;
     }
+
+    public boolean isValid() {
+        return !(artists.isEmpty() && albums.isEmpty() && tracks.isEmpty());
+    }
 }

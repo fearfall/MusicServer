@@ -12,22 +12,27 @@ public class SimpleMusicServer
     public static void main(String[] args) throws Exception
     {
         Server server = new Server(6006);
-        SimpleDBConnection connection = new SimpleDBConnection();
+        SimpleDBConnection connection;
+        try {
+            connection = new SimpleDBConnection();
+            ContextHandler searchContext = new ContextHandler();
+            searchContext.setContextPath("/search");
+            searchContext.setResourceBase(".");
+            searchContext.setClassLoader(Thread.currentThread().getContextClassLoader());
+            server.addHandler(searchContext);
+            searchContext.setHandler(new SearchHandler(connection));
 
-        ContextHandler searchContext = new ContextHandler();
-        searchContext.setContextPath("/search");
-        searchContext.setResourceBase(".");
-        searchContext.setClassLoader(Thread.currentThread().getContextClassLoader());
-        server.addHandler(searchContext);
-        searchContext.setHandler(new SearchHandler(connection));
+            ContextHandler getContext = new ContextHandler();
+            getContext.setContextPath("/get");
+            getContext.setResourceBase(".");
+            getContext.setClassLoader(Thread.currentThread().getContextClassLoader());
+            server.addHandler(getContext);
 
-        ContextHandler getContext = new ContextHandler();
-        getContext.setContextPath("/get");
-        getContext.setResourceBase(".");
-        getContext.setClassLoader(Thread.currentThread().getContextClassLoader());
-        server.addHandler(getContext);
-        getContext.setHandler(new GetHandler(connection));
-
+            getContext.setHandler(new GetHandler(connection));
+        } catch (Exception e) {
+            ErrorHandler errorHandler = new ErrorHandler();
+            server.setHandler(errorHandler);
+        }
         server.start();
         server.join();
     }

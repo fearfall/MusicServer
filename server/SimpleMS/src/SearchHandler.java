@@ -36,25 +36,29 @@ public class SearchHandler extends AbstractHandler
         //httpServletResponse.setContentType("text/plain;charset=utf-8");
         //httpServletResponse.setContentType("text/javascript; charset=utf-8");
         httpServletResponse.setContentType("application/json");
-        httpServletResponse.setStatus(HttpServletResponse.SC_OK);
         String pattern = httpServletRequest.getParameter("pattern");
         String jsonCallbackParam = httpServletRequest.getParameter("jsoncallback");
         Result result = connection.search(pattern);
         StringBuilder html = new StringBuilder();
         System.out.println(pattern);
         //html.append("<html> <head/> <body> ");
-        JsonElement jsonElement = new Gson().toJsonTree(result);
-        if ( jsonCallbackParam != null ) {
-            html.append(jsonCallbackParam);
-            html.append("(");
-            html.append(jsonElement);
-            html.append(");");
+        if(result != null) {
+            httpServletResponse.setStatus(HttpServletResponse.SC_OK);
+            JsonElement jsonElement = new Gson().toJsonTree(result);
+            if ( jsonCallbackParam != null ) {
+                html.append(jsonCallbackParam);
+                html.append("(");
+                html.append(jsonElement);
+                html.append(");");
+            }
+            else html.append(jsonElement);
+        } else {
+            //httpServletResponse.setStatus(HttpServletResponse.SC_NO_CONTENT);
+            html.append("{ERROR}");
         }
-        else html.append(jsonElement);
         //html.append(" </body> </html>");
         //httpServletResponse.setContentLength(html.length());
         //httpServletResponse.setContentEncoding("gzip");
-        System.out.println(html.toString());
         httpServletResponse.getWriter().println(html.toString());
         Request baseRequest = (httpServletRequest instanceof Request) ? (Request)httpServletRequest: HttpConnection.getCurrentConnection().getRequest();
         baseRequest.setHandled(true);
