@@ -2,7 +2,10 @@ package ru.musicserver.androidclient.activity;
 
 import android.app.Notification;
 import android.app.NotificationManager;
+//import android.app.Notification.Builder;
+import android.app.PendingIntent;
 import android.app.Service;
+import android.content.Context;
 import android.content.Intent;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
@@ -24,33 +27,76 @@ public class MusicPlayerService extends Service {
     private String myCurrentTrack = null;
 
 	private NotificationManager myNotificationManager;
-	private static final int NOTIFY_ID = R.layout.main_search;
+	//private static final int NOTIFY_ID = R.layout.main_search;
+    private static int ourNotifyId;
+    private enum Mode {PLAY, PAUSE, STOP};
 
 	@Override
     public void onCreate() {
 		super.onCreate();
         myPlayer = new MediaPlayer();
         myPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
-		myNotificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+		myNotificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+
+        //private Notification.Builder myNotificationBuilder;
+        ourNotifyId = R.layout.main_search;
 	}
 
     @Override
     public void onDestroy() {
 		myPlayer.stop();
 		myPlayer.release();
-		myNotificationManager.cancel(NOTIFY_ID);
+		myNotificationManager.cancel(ourNotifyId);
 	}
 
     public IBinder onBind(Intent intent) {
         return mBinder;
     }
 
+    public void notifyActivity (Mode mode, String message) {
+        int icon;
+        String tickerText;
+        switch (mode) {
+            case PLAY:
+                icon = R.drawable.playbackstart;
+                tickerText = "Playing ";
+                break;
+            case PAUSE:
+                icon = R.drawable.playbackpause;
+                tickerText = "Paused ";
+                break;
+            case STOP:
+                icon = R.drawable.playbackpause;
+                tickerText = "Stopped.";
+                break;
+            default:
+                throw new RuntimeException("Wrong player mode!");
+        }
+
+        tickerText += message;
+        long when = System.currentTimeMillis();
+        Notification notification = new Notification(icon, tickerText, when);
+
+        Context context = getApplicationContext();
+        CharSequence contentTitle = "Music Player";
+        Intent notificationIntent = new Intent (this, MusicPlayerService.class);
+        PendingIntent contentIntent = PendingIntent.getActivity(this, 0, notificationIntent, 0);
+
+        notification.setLatestEventInfo(context, contentTitle, tickerText, contentIntent);
+
+        myNotificationManager.notify(ourNotifyId, notification);
+    }
+
     private final MusicPlayerServiceInterface.Stub mBinder = new MusicPlayerServiceInterface.Stub() {
+
+
+
         @Override
 		public boolean play(String trackName, String trackUrl, String trackId) throws DeadObjectException {
 			try {
-                //Notification notification = new Notification(R.drawable.playbackstart, trackName, 0);
-			    //myNotificationManager.notify(NOTIFY_ID, notification);
+                notifyActivity(Mode.PLAY, trackName);
+                if (trackUrl == null)
+                    throw new IOException();
 
 			    myPlayer.reset();
 
@@ -67,6 +113,7 @@ public class MusicPlayerService extends Service {
                 });
 
             } catch (IOException e) {
+                notifyActivity(Mode.STOP, "");
                 return false;
             }
             return true;
@@ -74,14 +121,13 @@ public class MusicPlayerService extends Service {
 
         @Override
         public void pause() throws DeadObjectException {
-			//Notification notification = new Notification(R.drawable.playbackpause, "pause", 0);
-			//myNotificationManager.notify(NOTIFY_ID, notification);
+            notifyActivity(Mode.PAUSE, "");
 			myPlayer.pause();
 		}
 
         @Override
 		public void stop() throws DeadObjectException {
-			//myNotificationManager.cancel(NOTIFY_ID);
+			myNotificationManager.cancel(ourNotifyId);
 			myPlayer.stop();
 		}
 

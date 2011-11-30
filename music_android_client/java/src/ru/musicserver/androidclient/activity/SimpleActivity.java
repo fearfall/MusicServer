@@ -2,6 +2,7 @@ package ru.musicserver.androidclient.activity;
 
 import android.app.AlertDialog;
 import android.app.ListActivity;
+import android.app.Notification;
 import android.content.*;
 import android.os.Bundle;
 import android.os.DeadObjectException;
@@ -28,7 +29,6 @@ public class SimpleActivity extends ListActivity {
     private MusicPlayerServiceInterface myPlayer;
     private Result myResult = null;
     private ListView myResultView;
-
     private final String singleTab = "    ";
 
     private ServiceConnection myServiceConnection = new ServiceConnection() {
@@ -145,7 +145,15 @@ public class SimpleActivity extends ListActivity {
                         if (myPlayer.isPlaying(item.getMbid())) {
                             myPlayer.stop();
                         } else {
-                            if (!myPlayer.play(((Track) item).getName(), ((Track) item).getUrl(), item.getMbid()))
+                            Track track;
+                            try {
+                                track = (Track) Request.get("track", item.getMbid());
+                            } catch (IOException e) {
+                                showErrorMessage(e.getMessage());
+                                return;
+                            }
+
+                            if (!myPlayer.play(track.getName(), track.getUrl(), track.getMbid()))
                                 showErrorMessage("Dead song URL :-(");
                         }
                     } catch (Exception e) {
