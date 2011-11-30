@@ -1,3 +1,7 @@
+import handlers.ErrorHandler;
+import handlers.GetHandler;
+import handlers.SearchHandler;
+import handlers.SimpleDBConnection;
 import org.mortbay.jetty.Server;
 import org.mortbay.jetty.handler.ContextHandler;
 
