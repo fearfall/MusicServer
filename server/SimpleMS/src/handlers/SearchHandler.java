@@ -33,8 +33,17 @@ public class SearchHandler extends AbstractHandler
         httpServletResponse.setContentType("application/json");
         String pattern = httpServletRequest.getParameter("pattern");
         String jsonCallbackParam = httpServletRequest.getParameter("jsoncallback");
-        int offset = Integer.valueOf(httpServletRequest.getParameter("offset"));
-        int limit = Integer.valueOf(httpServletRequest.getParameter("limit"));
+
+        int offset = 0;
+        String offsetParam = httpServletRequest.getParameter("offset");
+        if(offsetParam != null) {
+            offset = Integer.valueOf(offsetParam);
+        }
+        int limit = 10;
+        String limitParam = httpServletRequest.getParameter("limit");
+        if(offsetParam != null) {
+            limit = Integer.valueOf(limitParam);
+        }
         //todo check everything (limit > 0 && limit is not very big and the same
         //todo for offset)
         Result result = connection.search(pattern, offset, limit);
