@@ -23,17 +23,13 @@ import java.lang.reflect.Type;
  */
 public class Request {
     private static HttpClient myHttpClient = null;
-    private static String myServerAddress = "192.168.211.119";
+    //private static String myServerAddress = "192.168.211.119";
+    private static String myServerAddress = "192.168.1.2";
 
     private static HttpResponse execute (String request) throws IOException {
         if (myHttpClient == null) {
             myHttpClient = new DefaultHttpClient();
         }
-        /*if (myServerAddress == null) {
-            File propertiesFile = new File(".");
-            myServerAddress = "192.168.1.3";//"192.168.211.119";
-
-        }*/
         return myHttpClient.execute(new HttpGet(request));
     }
 

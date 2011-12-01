@@ -2,12 +2,9 @@ package ru.musicserver.androidclient.activity;
 
 import android.app.AlertDialog;
 import android.app.ListActivity;
-import android.app.Notification;
 import android.content.*;
 import android.os.Bundle;
-import android.os.DeadObjectException;
 import android.os.IBinder;
-import android.os.RemoteException;
 import android.util.Log;
 import android.view.View;
 import android.widget.*;
@@ -15,7 +12,6 @@ import ru.musicserver.androidclient.model.*;
 import ru.musicserver.androidclient.network.Request;
 
 import java.io.IOException;
-import java.nio.charset.Charset;
 
 
 /**
@@ -25,22 +21,10 @@ import java.nio.charset.Charset;
  * Time: 11:20 AM
  * To change this template use File | Settings | File Templates.
  */
-public class SimpleActivity extends ListActivity {
-    private MusicPlayerServiceInterface myPlayer;
+public class SearchActivity extends ListActivity {
     private Result myResult = null;
     private ListView myResultView;
     private final String singleTab = "    ";
-
-    private ServiceConnection myServiceConnection = new ServiceConnection() {
-        @Override
-		public void onServiceDisconnected(ComponentName className) {
-			myPlayer = null;
-		}
-        @Override
-        public void onServiceConnected(ComponentName componentName, IBinder iBinder) {
-            myPlayer = MusicPlayerServiceInterface.Stub.asInterface(iBinder);
-        }
-    };
 
     private void setAdapter (ArrayAdapter<Model> adapter) {
         myResultView.setAdapter(adapter);
@@ -100,9 +84,8 @@ public class SimpleActivity extends ListActivity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.main_search);
+        setContentView(R.layout.search);
         myResultView = getListView();
-        this.bindService(new Intent(SimpleActivity.this, MusicPlayerService.class), myServiceConnection, Context.BIND_AUTO_CREATE);
 
         final Button button = (Button)findViewById(R.id.searchButton);
 
@@ -142,8 +125,8 @@ public class SimpleActivity extends ListActivity {
                 Model item = (Model)adapterView.getItemAtPosition(position);
                 if (item instanceof Track) {
                     try {
-                        if (myPlayer.isPlaying(item.getMbid())) {
-                            myPlayer.stop();
+                        if (MainActivity.ourPlayer.isPlaying(item.getMbid())) {
+                            MainActivity.ourPlayer.stop();
                         } else {
                             Track track;
                             try {
@@ -153,9 +136,9 @@ public class SimpleActivity extends ListActivity {
                                 return;
                             }
 
-                            if (!myPlayer.play(track.getName(), track.getUrl(), track.getMbid()))
+                            if (!MainActivity.ourPlayer.play(track.getName(), track.getUrl(), track.getMbid()))
                                 showErrorMessage("Dead song URL :-(");
-                        }
+                       }
                     } catch (Exception e) {
                         showErrorMessage(e.getMessage());
                     }
@@ -177,8 +160,7 @@ public class SimpleActivity extends ListActivity {
 
     private void showErrorMessage(String text) {
         Log.e(getString(R.string.app_name), text);
-
-        AlertDialog alertDialog = new AlertDialog.Builder(SimpleActivity.this).create();
+        AlertDialog alertDialog = new AlertDialog.Builder(SearchActivity.this).create();
         alertDialog.setTitle("Music player error");
         alertDialog.setMessage(text);
         alertDialog.setButton("Ok", new DialogInterface.OnClickListener() {

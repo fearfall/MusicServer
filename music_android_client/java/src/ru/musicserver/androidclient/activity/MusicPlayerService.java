@@ -1,10 +1,6 @@
 package ru.musicserver.androidclient.activity;
 
-import android.app.Notification;
-import android.app.NotificationManager;
-//import android.app.Notification.Builder;
-import android.app.PendingIntent;
-import android.app.Service;
+import android.app.*;
 import android.content.Context;
 import android.content.Intent;
 import android.media.AudioManager;
@@ -25,11 +21,13 @@ import java.io.IOException;
 public class MusicPlayerService extends Service {
     private MediaPlayer myPlayer;
     private String myCurrentTrack = null;
+    //private
 
 	private NotificationManager myNotificationManager;
-	//private static final int NOTIFY_ID = R.layout.main_search;
-    private static int ourNotifyId;
-    private enum Mode {PLAY, PAUSE, STOP};
+	//private static final int NOTIFY_ID = R.layout.search;
+    private static final int ourNotifyId = R.layout.main;
+
+    private enum Mode {PLAY, PAUSE, STOP}
 
 	@Override
     public void onCreate() {
@@ -37,9 +35,6 @@ public class MusicPlayerService extends Service {
         myPlayer = new MediaPlayer();
         myPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
 		myNotificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-
-        //private Notification.Builder myNotificationBuilder;
-        ourNotifyId = R.layout.main_search;
 	}
 
     @Override
@@ -76,6 +71,7 @@ public class MusicPlayerService extends Service {
         tickerText += message;
         long when = System.currentTimeMillis();
         Notification notification = new Notification(icon, tickerText, when);
+        notification.flags |= Notification.FLAG_AUTO_CANCEL;
 
         Context context = getApplicationContext();
         CharSequence contentTitle = "Music Player";
@@ -88,9 +84,6 @@ public class MusicPlayerService extends Service {
     }
 
     private final MusicPlayerServiceInterface.Stub mBinder = new MusicPlayerServiceInterface.Stub() {
-
-
-
         @Override
 		public boolean play(String trackName, String trackUrl, String trackId) throws DeadObjectException {
 			try {
@@ -100,7 +93,7 @@ public class MusicPlayerService extends Service {
 
 			    myPlayer.reset();
 
-			    //myPlayer.setDataSource("http://mp3type.ru/download.php?id=31312&ass=britney_spears_-_criminal_(original_radio_edit).mp3");
+			    //ourPlayer.setDataSource("http://mp3type.ru/download.php?id=31312&ass=britney_spears_-_criminal_(original_radio_edit).mp3");
                 myPlayer.setDataSource(trackUrl);
 			    myPlayer.prepare();
 			    myPlayer.start();
