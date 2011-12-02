@@ -1,6 +1,5 @@
 package ru.musicserver.androidclient.activity;
 
-import android.app.Activity;
 import android.app.ListActivity;
 import android.os.Bundle;
 import android.widget.TextView;
@@ -15,8 +14,9 @@ import android.widget.TextView;
 public class PlayingActivity extends ListActivity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        TextView textview = new TextView(this);
+        setContentView(R.layout.playing);
+        /*TextView textview = new TextView(this);
                 textview.setText("This is the Playing tab");
-                setContentView(textview);
+                setContentView(textview); */
     }
 }

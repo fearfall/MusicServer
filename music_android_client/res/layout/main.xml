@@ -6,20 +6,42 @@
     <LinearLayout
         android:orientation="vertical"
         android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        android:padding="5dp">
+        android:layout_height="wrap_content"
+        android:padding="5px">
 
-        <TextView
-            android:id="@+id/text123"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Here will be player controls"/>
+        <TextView  	android:id="@+id/playing_track_name"
+                       android:layout_width="fill_parent"
+                       android:layout_height="wrap_content"
+                       android:textStyle="bold"
+                       android:text="@string/NoTrackName"/>
+
+        <LinearLayout 	xmlns:android="http://schemas.android.com/apk/res/android"
+                          android:orientation="horizontal"
+                          android:layout_width="fill_parent"
+                          android:layout_height="wrap_content"
+                          android:padding="10px">
+
+            <ImageButton	android:id="@+id/button_play"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="5px"
+                            style="?android:attr/buttonStyleSmall"
+                            android:src="@drawable/button_pause"/>
+
+            <ProgressBar android:id="@+id/progress_bar"
+                         android:layout_width="fill_parent"
+                         android:layout_height="wrap_content"
+                         android:layout_alignParentLeft="true"
+                         style="?android:attr/progressBarStyleHorizontal"/>
+
+        </LinearLayout>
+
 
 
         <TabWidget
             android:id="@android:id/tabs"
             android:layout_width="fill_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="fill_parent" />
         <FrameLayout
             android:id="@android:id/tabcontent"
             android:layout_width="fill_parent"

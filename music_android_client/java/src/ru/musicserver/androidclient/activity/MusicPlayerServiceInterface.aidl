@@ -1,4 +1,5 @@
 package ru.musicserver.androidclient.activity;
+
 /**
  * Created by IntelliJ IDEA.
  * User: kate
@@ -9,7 +10,9 @@ package ru.musicserver.androidclient.activity;
 interface MusicPlayerServiceInterface {
 	void pause();
 	void stop();
+	void resume(String trackName);
 	boolean play(String trackName, String trackUrl, String trackId);
-	String getPlayingTrackId ();
-	boolean isPlaying (String trackMbid);
+	String getPlayingTrackId();
+	boolean isPlaying(String trackMbid);
+	boolean isPlayingMode();
 }

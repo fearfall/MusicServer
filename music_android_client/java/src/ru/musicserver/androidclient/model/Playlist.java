@@ -1,10 +1,7 @@
 package ru.musicserver.androidclient.model;
 
-import java.sql.Array;
 import java.util.ArrayDeque;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
+import java.util.LinkedList;
 
 /**
  * Created by IntelliJ IDEA.
@@ -13,15 +10,17 @@ import java.util.List;
  * Time: 3:58 PM
  * To change this template use File | Settings | File Templates.
  */
-public class Playlist {
-    private ArrayDeque<Track> myData;
+public class Playlist implements Comparable<Playlist> {
+    private String myName;
+    private LinkedList<Track> myData;
     private int myMaxCapacity;
     private int nowPlaying;
 
-    public Playlist (int maxCapacity) {
+    public Playlist (String name, int maxCapacity) {
         myMaxCapacity = maxCapacity;
-        myData = new ArrayDeque<Track>();
+        myData = new LinkedList<Track>();
         nowPlaying = -1;
+        myName = name;
     }
 
     public void add (Track track) {
@@ -31,8 +30,39 @@ public class Playlist {
         myData.push(track);
     }
 
-    public ArrayDeque<Track> getData() {
-        return myData;
+    public void addAndPlay (Track track) {
+        add(track);
+        nowPlaying = myData.size()-1;
     }
 
+    public Model[] getData() {
+        return myData.isEmpty() ?
+                new Model[] {new EmptyResult("Empty playlist.")}
+                : myData.toArray(new Track[myData.size()]);
+    }
+
+    public ModelContainer toModelContainer() {
+        return new ModelContainer(myName, getData());
+    }
+
+    public void setPlaying (String mbid) {
+        for (int i=0; i<myData.size(); ++i) {
+            if (myData.get(i).getMbid().equals(mbid)) {
+                nowPlaying = i;
+                return;
+            }
+        }
+        throw new RuntimeException("Track " + mbid + " is not in " + myName + " playlist!");
+    }
+
+    public Track getPlayingTrack() {
+        if (nowPlaying == -1)
+            return null;
+        return myData.get(nowPlaying);
+    }
+
+    @Override
+    public int compareTo(Playlist playlist) {
+        return myName.compareTo(playlist.myName);
+    }
 }

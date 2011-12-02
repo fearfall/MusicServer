@@ -1,11 +1,7 @@
 package ru.musicserver.androidclient.activity;
 
-import android.app.AlertDialog;
 import android.app.ListActivity;
-import android.content.*;
 import android.os.Bundle;
-import android.os.IBinder;
-import android.util.Log;
 import android.view.View;
 import android.widget.*;
 import ru.musicserver.androidclient.model.*;
@@ -21,71 +17,15 @@ import java.io.IOException;
  * Time: 11:20 AM
  * To change this template use File | Settings | File Templates.
  */
-public class SearchActivity extends ListActivity {
+public class SearchActivity extends OpenableListActivity {
     private Result myResult = null;
-    private ListView myResultView;
-    private final String singleTab = "    ";
-
-    private void setAdapter (ArrayAdapter<Model> adapter) {
-        myResultView.setAdapter(adapter);
-    }
-
-    private void addToAdapter (ArrayAdapter<Model> adapter, Model[] models, String parentShift) {
-        for (Model model: models) {
-            model.setShift(parentShift + singleTab);
-            adapter.add(model);
-        }
-    }
-
-    private boolean isOpened (ArrayAdapter<Model> adapter, int position) {
-        Model item = adapter.getItem(position);
-        boolean opened = false;
-        if (position != adapter.getCount()-1) {
-            Model nextItem = adapter.getItem(position+1);
-            if (nextItem.getShift().length() > item.getShift().length())
-                opened = true;
-        }
-        return opened;
-    }
-
-    private void close (ArrayAdapter<Model> adapter, int position) {
-        boolean hasChild = true;
-        int childPosition = position + 1;
-        while (hasChild) {
-            adapter.remove(adapter.getItem(childPosition));
-            if (!isOpened(adapter, position))
-                hasChild = false;
-        }
-    }
-
-    private void open (ArrayAdapter<Model> adapter, int position) {
-        Model item = adapter.getItem(position);
-        String newShift = item.getShift() + singleTab;
-        int childPosition = position + 1;
-
-        Model trueItem = item;
-        if (!(item instanceof ModelContainer)) {
-            String type = (item instanceof Artist) ? "artist" : "album";
-            try {
-                trueItem = Request.get(type, item.getMbid());
-            } catch (IOException e) {
-                showErrorMessage(e.getMessage());
-                return;
-            }
-        }
-        for (Model child: trueItem.getContent()) {
-            child.setShift(newShift);
-            adapter.insert(child, childPosition);
-            ++childPosition;
-        }
-    }
 
      /** Called when the activity is first created. */
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.search);
-        myResultView = getListView();
+        myListView = getListView();
 
         final Button button = (Button)findViewById(R.id.searchButton);
 
@@ -106,71 +46,20 @@ public class SearchActivity extends ListActivity {
 
 
                 if (myResult.isEmpty()) {
-                    adapter.add(new EmptyResult());
+                    adapter.add(new EmptyResult("No items were found."));
                 } else {
                     adapter.add(new ModelContainer("Artist", myResult.getArtists()));
-                    addToAdapter(adapter, myResult.getArtists(), "");
+                    AdapterHelper.addToAdapter(adapter, myResult.getArtists(), "");
                     adapter.add(new ModelContainer("Album", myResult.getAlbums()));
-                    addToAdapter(adapter, myResult.getAlbums(), "");
+                    AdapterHelper.addToAdapter(adapter, myResult.getAlbums(), "");
                     adapter.add(new ModelContainer("Track", myResult.getTracks()));
-                    addToAdapter(adapter, myResult.getTracks(), "");
+                    AdapterHelper.addToAdapter(adapter, myResult.getTracks(), "");
                 }
                 setAdapter(adapter);
             }
         });
 
-        myResultView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
-                Model item = (Model)adapterView.getItemAtPosition(position);
-                if (item instanceof Track) {
-                    try {
-                        if (MainActivity.ourPlayer.isPlaying(item.getMbid())) {
-                            MainActivity.ourPlayer.stop();
-                        } else {
-                            Track track;
-                            try {
-                                track = (Track) Request.get("track", item.getMbid());
-                            } catch (IOException e) {
-                                showErrorMessage(e.getMessage());
-                                return;
-                            }
-
-                            if (!MainActivity.ourPlayer.play(track.getName(), track.getUrl(), track.getMbid()))
-                                showErrorMessage("Dead song URL :-(");
-                       }
-                    } catch (Exception e) {
-                        showErrorMessage(e.getMessage());
-                    }
-                    return;
-                }
-                if (item instanceof EmptyResult)
-                    return;
-
-                ArrayAdapter<Model> adapter = (ArrayAdapter<Model>) adapterView.getAdapter();
-                if (isOpened(adapter, position)) {
-                    close(adapter, position);
-                } else {
-                    open(adapter, position);
-                }
-                setAdapter(adapter);
-            }
-        });
-    }
-
-    private void showErrorMessage(String text) {
-        Log.e(getString(R.string.app_name), text);
-        AlertDialog alertDialog = new AlertDialog.Builder(SearchActivity.this).create();
-        alertDialog.setTitle("Music player error");
-        alertDialog.setMessage(text);
-        alertDialog.setButton("Ok", new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int which) {
-                dialog.dismiss();
-            }
-        });
-        alertDialog.setIcon(R.drawable.icon);
-        alertDialog.show();
-        //Toast.makeText(getApplicationContext(), text, Toast.LENGTH_LONG).show();
+        setOnItemClickListener();
     }
 
 }

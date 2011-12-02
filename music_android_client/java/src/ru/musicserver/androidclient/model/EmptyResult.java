@@ -9,8 +9,8 @@ package ru.musicserver.androidclient.model;
  */
 public class EmptyResult extends Model {
 
-    public EmptyResult () {
-        name = "No items were found.";
+    public EmptyResult (String message) {
+        name = message;
     }
 
     @Override

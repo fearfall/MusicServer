@@ -1,13 +1,13 @@
 package ru.musicserver.androidclient.activity;
 
-import android.app.*;
-import android.content.Context;
+import android.app.Service;
 import android.content.Intent;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.os.DeadObjectException;
 import android.os.IBinder;
 import android.os.RemoteException;
+import android.widget.TextView;
 
 import java.io.IOException;
 
@@ -19,29 +19,36 @@ import java.io.IOException;
  * To change this template use File | Settings | File Templates.
  */
 public class MusicPlayerService extends Service {
-    private MediaPlayer myPlayer;
-    private String myCurrentTrack = null;
-    //private
 
-	private NotificationManager myNotificationManager;
-	//private static final int NOTIFY_ID = R.layout.search;
-    private static final int ourNotifyId = R.layout.main;
+    private MediaPlayer mediaPlayer;
+    private String myCurrentTrack = null;
+	//private NotificationManager myNotificationManager;
+    //private static final int ourNotifyId = R.layout.main;
+    private Mode myMode;
+
+    private TextView myInfo;
 
     private enum Mode {PLAY, PAUSE, STOP}
+
+    /*public MusicPlayerService (TextView info) {
+        myInfo = info;
+    }          */
 
 	@Override
     public void onCreate() {
 		super.onCreate();
-        myPlayer = new MediaPlayer();
-        myPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
-		myNotificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+        mediaPlayer = new MediaPlayer();
+        mediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
+        myMode = Mode.STOP;
+		//myNotificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
 	}
 
     @Override
     public void onDestroy() {
-		myPlayer.stop();
-		myPlayer.release();
-		myNotificationManager.cancel(ourNotifyId);
+		mediaPlayer.stop();
+        myMode = Mode.STOP;
+		mediaPlayer.release();
+		//myNotificationManager.cancel(ourNotifyId);
 	}
 
     public IBinder onBind(Intent intent) {
@@ -51,17 +58,18 @@ public class MusicPlayerService extends Service {
     public void notifyActivity (Mode mode, String message) {
         int icon;
         String tickerText;
+        myMode = mode;
         switch (mode) {
             case PLAY:
-                icon = R.drawable.playbackstart;
+                icon = R.drawable.button_pause;
                 tickerText = "Playing ";
                 break;
             case PAUSE:
-                icon = R.drawable.playbackpause;
+                icon = R.drawable.button_play;
                 tickerText = "Paused ";
                 break;
             case STOP:
-                icon = R.drawable.playbackpause;
+                icon = R.drawable.button_pause;
                 tickerText = "Stopped.";
                 break;
             default:
@@ -69,7 +77,11 @@ public class MusicPlayerService extends Service {
         }
 
         tickerText += message;
-        long when = System.currentTimeMillis();
+        MainActivity.playingTrack.setText(tickerText);
+        MainActivity.playButton.setImageResource(icon);
+        //myInfo.setText(tickerText);
+
+        /*long when = System.currentTimeMillis();
         Notification notification = new Notification(icon, tickerText, when);
         notification.flags |= Notification.FLAG_AUTO_CANCEL;
 
@@ -80,28 +92,31 @@ public class MusicPlayerService extends Service {
 
         notification.setLatestEventInfo(context, contentTitle, tickerText, contentIntent);
 
-        myNotificationManager.notify(ourNotifyId, notification);
+        myNotificationManager.notify(ourNotifyId, notification); */
+
     }
 
     private final MusicPlayerServiceInterface.Stub mBinder = new MusicPlayerServiceInterface.Stub() {
         @Override
 		public boolean play(String trackName, String trackUrl, String trackId) throws DeadObjectException {
 			try {
-                notifyActivity(Mode.PLAY, trackName);
                 if (trackUrl == null)
                     throw new IOException();
 
-			    myPlayer.reset();
+                notifyActivity(Mode.PLAY, trackName);
+
+			    mediaPlayer.reset();
 
 			    //ourPlayer.setDataSource("http://mp3type.ru/download.php?id=31312&ass=britney_spears_-_criminal_(original_radio_edit).mp3");
-                myPlayer.setDataSource(trackUrl);
-			    myPlayer.prepare();
-			    myPlayer.start();
+                mediaPlayer.setDataSource(trackUrl);
+			    mediaPlayer.prepare();
+			    mediaPlayer.start();
+                MainActivity.playButton.setEnabled(true);
                 myCurrentTrack = trackId;
 
-			    myPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+			    mediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
                     public void onCompletion(MediaPlayer arg0) {
-                        myPlayer.stop();
+                        mediaPlayer.stop();
                     }
                 });
 
@@ -115,13 +130,15 @@ public class MusicPlayerService extends Service {
         @Override
         public void pause() throws DeadObjectException {
             notifyActivity(Mode.PAUSE, "");
-			myPlayer.pause();
+			mediaPlayer.pause();
 		}
 
         @Override
 		public void stop() throws DeadObjectException {
-			myNotificationManager.cancel(ourNotifyId);
-			myPlayer.stop();
+			//myNotificationManager.cancel(ourNotifyId);
+            notifyActivity(Mode.STOP, "");
+            MainActivity.playButton.setEnabled(false);
+			mediaPlayer.stop();
 		}
 
         @Override
@@ -131,7 +148,18 @@ public class MusicPlayerService extends Service {
 
         @Override
         public boolean isPlaying(String trackMbid) throws RemoteException {
-            return myCurrentTrack != null && myCurrentTrack.equals(trackMbid);
+            return myMode==Mode.PLAY && myCurrentTrack != null && myCurrentTrack.equals(trackMbid);
+        }
+
+        @Override
+        public boolean isPlayingMode() {
+            return myMode == Mode.PLAY;
+        }
+
+        @Override
+        public void resume (String trackName) {
+            notifyActivity(Mode.PLAY, trackName);
+            mediaPlayer.start();
         }
     };
 }

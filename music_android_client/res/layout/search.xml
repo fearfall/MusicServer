@@ -8,23 +8,24 @@
     <LinearLayout
           android:orientation="horizontal"
           android:layout_width="fill_parent"
-          android:layout_height="wrap_content"
-          android:layout_weight="1">
-
-
+          android:layout_height="100px"
+          android:layout_weight="1"
+          android:padding="10px">
         <EditText android:id="@+id/searchEditText"
                   android:text="@string/emptyText"
-                  android:layout_height="wrap_content"
+                  android:layout_height="fill_parent"
                   android:layout_width="fill_parent"
                   android:layout_weight="1"
-                  android:gravity="left" />
+                  android:gravity="left"
+                android:padding="10px"/>
 
         <Button   android:id="@+id/searchButton"
                   android:text="@string/search"
-                  android:layout_height="wrap_content"
+                  android:layout_height="fill_parent"
                   android:layout_width="fill_parent"
                   android:layout_weight="1"
-                  android:gravity="right" />
+                  android:gravity="right"
+                android:padding="10px"/>
     </LinearLayout>
 
     <ListView android:id="@android:id/list"
