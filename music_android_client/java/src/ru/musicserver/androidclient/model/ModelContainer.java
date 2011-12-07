@@ -11,7 +11,7 @@ public class ModelContainer extends Model {
     private Model[] models;
 
     public ModelContainer(String caption, Model[] models) {
-        name = caption;
+        name = caption + " (" + models.length + ')';
         this.models = models;
     }
 

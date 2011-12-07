@@ -23,7 +23,7 @@ import java.lang.reflect.Type;
 public class Request {
     private static HttpClient myHttpClient = null;
     //private static String myServerAddress = "192.168.211.119";
-    private static String myServerAddress = "192.168.1.2";
+    private static String myServerAddress = "192.168.1.5";
 
     private static HttpResponse execute (String request) throws IOException {
         if (myHttpClient == null) {
@@ -47,7 +47,7 @@ public class Request {
                 return new Gson().fromJson(r, (Type)Model.class);
 
             } else {
-                response.getEntity().getContent().close();
+                //response.getEntity().getContent().close();
                 throw new IOException(statusLine.getReasonPhrase());
             }
         } catch (Exception e) {
@@ -55,9 +55,10 @@ public class Request {
         }
     }
 
-    public static Result search (String pattern) throws IOException {
+    public static Result search (String pattern, int limit, int offset) throws IOException {
         try {
-            HttpResponse response = execute("http://" + myServerAddress + ":6006/search/?pattern=" + pattern);
+            String w = "test"+5;
+            HttpResponse response = execute("http://" + myServerAddress + ":6006/search/?pattern=" + pattern + "&limit=" + limit + "&offset=" + offset);
             StatusLine statusLine = response.getStatusLine();
             if (statusLine.getStatusCode() == HttpStatus.SC_OK){
                 InputStreamReader r = new InputStreamReader(response.getEntity().getContent());
@@ -68,6 +69,9 @@ public class Request {
                 throw new IOException(statusLine.getReasonPhrase());
             }
         } catch (Exception e) {
+            String msg = e.getMessage();
+            if (msg.contains("Connection to ") && msg.contains(myServerAddress) && msg.contains("refused"))
+                throw new IOException("Failed to connect to Music Server.\nCheck your internet connection.");
             throw new IOException("Connection ERROR: " + e.getMessage());
         }
     }
