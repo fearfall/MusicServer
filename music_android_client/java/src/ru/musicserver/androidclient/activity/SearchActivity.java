@@ -1,10 +1,14 @@
 package ru.musicserver.androidclient.activity;
 
-import android.app.ListActivity;
 import android.os.Bundle;
+import android.view.KeyEvent;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.*;
-import ru.musicserver.androidclient.model.*;
+import ru.musicserver.androidclient.model.EmptyResult;
+import ru.musicserver.androidclient.model.Model;
+import ru.musicserver.androidclient.model.ModelContainer;
+import ru.musicserver.androidclient.model.Result;
 import ru.musicserver.androidclient.network.Request;
 
 import java.io.IOException;
@@ -18,7 +22,6 @@ import java.io.IOException;
  * To change this template use File | Settings | File Templates.
  */
 public class SearchActivity extends OpenableListActivity {
-    private Result myResult = null;
     private int offset;
     private ImageButton searchFwd;
     private ImageButton searchBack;
@@ -40,13 +43,15 @@ public class SearchActivity extends OpenableListActivity {
             @Override
             public void onClick(View view) {
                 offset = 0;
-                searchBack.setEnabled(false);
-                searchFwd.setEnabled(true);
                 ArrayAdapter<Model> adapter = onSearchClick(view);
+                if (adapter == null)
+                    return;
+                searchBack.setEnabled(false);
+                if (adapter.getCount() > 1)
+                    searchFwd.setEnabled(true);
                 setAdapter(adapter);
             }
         });
-
 
         searchFwd.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -56,7 +61,7 @@ public class SearchActivity extends OpenableListActivity {
                 if (adapter == null)
                     return;
                 if (adapter.getCount() == 1) {
-                    Toast.makeText(getApplicationContext(), "You have reached the end of search result", Toast.LENGTH_LONG).show();
+                    MainActivity.showToast("You have reached the end of search result", getApplicationContext());
                     searchFwd.setEnabled(false);
                     return;
                 }
@@ -74,32 +79,43 @@ public class SearchActivity extends OpenableListActivity {
                     offset = 0;
                     return;
                 }
-                if (offset < offsetStep)
-                    offset = offsetStep;
                 ArrayAdapter<Model> adapter = onSearchClick(view);
                 if (adapter == null)
                     return;
                 setAdapter(adapter);
             }
         });
-
         setOnItemClickListener();
+
+        final EditText searchEdit = (EditText) findViewById(R.id.searchEditText);
+        searchEdit.setOnKeyListener(new View.OnKeyListener() {
+            @Override
+            public boolean onKey(View view, int keyCode, KeyEvent keyEvent) {
+                if (view.getId() != R.id.searchEditText)
+                    return false;
+                if (keyCode != 66) // = Enter
+                    return false;
+                if (keyEvent.getAction() != 0)
+                    return false;
+                InputMethodManager imm = (InputMethodManager)getSystemService(SearchActivity.INPUT_METHOD_SERVICE);
+                imm.hideSoftInputFromWindow(view.getWindowToken(), 1);
+                searchButton.performClick();
+                return true;
+            }
+        });
     }
 
     private ArrayAdapter<Model> onSearchClick(View v) {
         EditText searchEdit = (EditText) findViewById(R.id.searchEditText);
         String searchString = searchEdit.getText().toString();
-
+        Result myResult;
         try {
             myResult = Request.search(searchString, offsetStep, offset);
         } catch (IOException e) {
-            showErrorMessage(e.getMessage());
+            showErrorMessage("Search", e.getMessage());
             return null;
         }
-
         ArrayAdapter<Model> adapter = new ArrayAdapter<Model>(v.getContext(), R.layout.unplayable);
-
-
         if (myResult.isEmpty()) {
             adapter.add(new EmptyResult("No items were found."));
         } else {
@@ -112,4 +128,6 @@ public class SearchActivity extends OpenableListActivity {
         }
         return adapter;
     }
+
+
 }

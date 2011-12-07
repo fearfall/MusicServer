@@ -2,14 +2,54 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="5dd8586d-4ba0-4408-a18a-e4676484e9dc" name="Default" comment="">
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/java/src/ru/musicserver/androidclient/activity/MyPlayer.java" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/res/drawable-hdpi/playbackpause.png" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/res/drawable-hdpi/playbackstart.png" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/res/drawable-ldpi/playbackpause.png" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/res/drawable-ldpi/playbackstart.png" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/res/drawable-mdpi/playbackpause.png" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/res/drawable-mdpi/playbackstart.png" afterPath="" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/drawable-hdpi/ic_playing_dark.png" afterPath="$PROJECT_DIR$/res/drawable-hdpi/ic_playing_dark.png" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/drawable-hdpi/ic_playing_light.png" afterPath="$PROJECT_DIR$/res/drawable-hdpi/ic_playing_light.png" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/drawable-hdpi/ic_playlists_dark.png" afterPath="$PROJECT_DIR$/res/drawable-hdpi/ic_playlists_dark.png" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/drawable-hdpi/ic_playlists_light.png" afterPath="$PROJECT_DIR$/res/drawable-hdpi/ic_playlists_light.png" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/drawable-hdpi/ic_search_dark.png" afterPath="$PROJECT_DIR$/res/drawable-hdpi/ic_search_dark.png" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/drawable-hdpi/ic_search_light.png" afterPath="$PROJECT_DIR$/res/drawable-hdpi/ic_search_light.png" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/drawable-hdpi/icon.png" afterPath="$PROJECT_DIR$/res/drawable-hdpi/icon.png" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/drawable-ldpi/ic_playing_dark.png" afterPath="$PROJECT_DIR$/res/drawable-ldpi/ic_playing_dark.png" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/drawable-ldpi/ic_playing_light.png" afterPath="$PROJECT_DIR$/res/drawable-ldpi/ic_playing_light.png" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/drawable-ldpi/ic_playlists_dark.png" afterPath="$PROJECT_DIR$/res/drawable-ldpi/ic_playlists_dark.png" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/drawable-ldpi/ic_playlists_light.png" afterPath="$PROJECT_DIR$/res/drawable-ldpi/ic_playlists_light.png" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/drawable-ldpi/ic_search_dark.png" afterPath="$PROJECT_DIR$/res/drawable-ldpi/ic_search_dark.png" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/drawable-ldpi/ic_search_light.png" afterPath="$PROJECT_DIR$/res/drawable-ldpi/ic_search_light.png" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/drawable-ldpi/icon.png" afterPath="$PROJECT_DIR$/res/drawable-ldpi/icon.png" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/drawable-mdpi/ic_playing_dark.png" afterPath="$PROJECT_DIR$/res/drawable-mdpi/ic_playing_dark.png" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/drawable-mdpi/ic_playing_light.png" afterPath="$PROJECT_DIR$/res/drawable-mdpi/ic_playing_light.png" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/drawable-mdpi/ic_playlists_dark.png" afterPath="$PROJECT_DIR$/res/drawable-mdpi/ic_playlists_dark.png" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/drawable-mdpi/ic_playlists_light.png" afterPath="$PROJECT_DIR$/res/drawable-mdpi/ic_playlists_light.png" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/drawable-mdpi/ic_search_dark.png" afterPath="$PROJECT_DIR$/res/drawable-mdpi/ic_search_dark.png" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/drawable-mdpi/ic_search_light.png" afterPath="$PROJECT_DIR$/res/drawable-mdpi/ic_search_light.png" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/drawable-mdpi/icon.png" afterPath="$PROJECT_DIR$/res/drawable-mdpi/icon.png" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/drawable/button_pause.png" afterPath="$PROJECT_DIR$/res/drawable/button_pause.png" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/drawable/button_play.png" afterPath="$PROJECT_DIR$/res/drawable/button_play.png" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/drawable/search_backward.png" afterPath="$PROJECT_DIR$/res/drawable/search_backward.png" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/drawable/search_forward.png" afterPath="$PROJECT_DIR$/res/drawable/search_forward.png" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/java/src/ru/musicserver/androidclient/activity/AdapterHelper.java" afterPath="$PROJECT_DIR$/java/src/ru/musicserver/androidclient/activity/AdapterHelper.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/java/src/ru/musicserver/androidclient/activity/MainActivity.java" afterPath="$PROJECT_DIR$/java/src/ru/musicserver/androidclient/activity/MainActivity.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/java/src/ru/musicserver/androidclient/activity/MusicPlayerService.java" afterPath="$PROJECT_DIR$/java/src/ru/musicserver/androidclient/activity/MusicPlayerService.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/java/src/ru/musicserver/androidclient/activity/MusicPlayerServiceInterface.aidl" afterPath="$PROJECT_DIR$/java/src/ru/musicserver/androidclient/activity/MusicPlayerServiceInterface.aidl" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/java/src/ru/musicserver/androidclient/activity/OpenableListActivity.java" afterPath="$PROJECT_DIR$/java/src/ru/musicserver/androidclient/activity/OpenableListActivity.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/java/src/ru/musicserver/androidclient/activity/PlayingActivity.java" afterPath="$PROJECT_DIR$/java/src/ru/musicserver/androidclient/activity/PlayingActivity.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/java/src/ru/musicserver/androidclient/activity/PlaylistActivity.java" afterPath="$PROJECT_DIR$/java/src/ru/musicserver/androidclient/activity/PlaylistActivity.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/java/src/ru/musicserver/androidclient/activity/SearchActivity.java" afterPath="$PROJECT_DIR$/java/src/ru/musicserver/androidclient/activity/SearchActivity.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/java/src/ru/musicserver/androidclient/activity/StreamingMediaPlayer.java" afterPath="$PROJECT_DIR$/java/src/ru/musicserver/androidclient/activity/StreamingMediaPlayer.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/java/src/ru/musicserver/androidclient/model/ModelContainer.java" afterPath="$PROJECT_DIR$/java/src/ru/musicserver/androidclient/model/ModelContainer.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/java/src/ru/musicserver/androidclient/model/Playlist.java" afterPath="$PROJECT_DIR$/java/src/ru/musicserver/androidclient/model/Playlist.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/java/src/ru/musicserver/androidclient/model/Result.java" afterPath="$PROJECT_DIR$/java/src/ru/musicserver/androidclient/model/Result.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/java/src/ru/musicserver/androidclient/network/Request.java" afterPath="$PROJECT_DIR$/java/src/ru/musicserver/androidclient/network/Request.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/layout/main.xml" afterPath="$PROJECT_DIR$/res/layout/main.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/layout/search.xml" afterPath="$PROJECT_DIR$/res/layout/search.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/values/strings.xml" afterPath="$PROJECT_DIR$/res/values/strings.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../server/SimpleMS/SimpleMusicServer.ipr" afterPath="$PROJECT_DIR$/../server/SimpleMS/SimpleMusicServer.ipr" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../server/SimpleMS/src/GetHandler.java" afterPath="$PROJECT_DIR$/../server/SimpleMS/src/GetHandler.java" />
     </list>
     <ignored path="music_android_client.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -68,7 +108,7 @@
         <option name="CONDITION" value="" />
         <option name="LOG_MESSAGE" value="" />
       </breakpoint>
-      <breakpoint url="file://$PROJECT_DIR$/java/src/ru/musicserver/androidclient/activity/StreamingMediaPlayer.java" line="171" class="ru.musicserver.androidclient.activity.StreamingMediaPlayer" package="ru.musicserver.androidclient.activity">
+      <breakpoint url="file://$PROJECT_DIR$/java/src/ru/musicserver/androidclient/activity/SearchActivity.java" line="58" class="ru.musicserver.androidclient.activity.SearchActivity$2" package="ru.musicserver.androidclient.activity">
         <option name="ENABLED" value="true" />
         <option name="LOG_ENABLED" value="false" />
         <option name="LOG_EXPRESSION_ENABLED" value="false" />
@@ -81,7 +121,7 @@
         <option name="CONDITION" value="" />
         <option name="LOG_MESSAGE" value="" />
       </breakpoint>
-      <breakpoint url="file://$PROJECT_DIR$/java/src/ru/musicserver/androidclient/network/Request.java" line="37" class="ru.musicserver.androidclient.network.Request" package="ru.musicserver.androidclient.network">
+      <breakpoint url="file://$PROJECT_DIR$/java/src/ru/musicserver/androidclient/activity/SearchActivity.java" line="75" class="ru.musicserver.androidclient.activity.SearchActivity$3" package="ru.musicserver.androidclient.activity">
         <option name="ENABLED" value="true" />
         <option name="LOG_ENABLED" value="false" />
         <option name="LOG_EXPRESSION_ENABLED" value="false" />
@@ -94,7 +134,7 @@
         <option name="CONDITION" value="" />
         <option name="LOG_MESSAGE" value="" />
       </breakpoint>
-      <breakpoint url="file://$PROJECT_DIR$/java/src/ru/musicserver/androidclient/network/Request.java" line="38" class="ru.musicserver.androidclient.network.Request" package="ru.musicserver.androidclient.network">
+      <breakpoint url="file://$PROJECT_DIR$/java/src/ru/musicserver/androidclient/network/Request.java" line="57" class="ru.musicserver.androidclient.network.Request" package="ru.musicserver.androidclient.network">
         <option name="ENABLED" value="true" />
         <option name="LOG_ENABLED" value="false" />
         <option name="LOG_EXPRESSION_ENABLED" value="false" />
@@ -107,7 +147,7 @@
         <option name="CONDITION" value="" />
         <option name="LOG_MESSAGE" value="" />
       </breakpoint>
-      <breakpoint url="file://$PROJECT_DIR$/java/src/ru/musicserver/androidclient/network/Request.java" line="36" class="ru.musicserver.androidclient.network.Request" package="ru.musicserver.androidclient.network">
+      <breakpoint url="file://$PROJECT_DIR$/java/src/ru/musicserver/androidclient/network/Request.java" line="85" class="ru.musicserver.androidclient.network.Request" package="ru.musicserver.androidclient.network">
         <option name="ENABLED" value="true" />
         <option name="LOG_ENABLED" value="false" />
         <option name="LOG_EXPRESSION_ENABLED" value="false" />
@@ -120,7 +160,7 @@
         <option name="CONDITION" value="" />
         <option name="LOG_MESSAGE" value="" />
       </breakpoint>
-      <breakpoint url="file://$PROJECT_DIR$/java/src/ru/musicserver/androidclient/network/Request.java" line="60" class="ru.musicserver.androidclient.network.Request" package="ru.musicserver.androidclient.network">
+      <breakpoint url="file://$PROJECT_DIR$/java/src/ru/musicserver/androidclient/model/Playlist.java" line="73" class="ru.musicserver.androidclient.model.Playlist" package="ru.musicserver.androidclient.model">
         <option name="ENABLED" value="true" />
         <option name="LOG_ENABLED" value="false" />
         <option name="LOG_EXPRESSION_ENABLED" value="false" />
@@ -133,7 +173,7 @@
         <option name="CONDITION" value="" />
         <option name="LOG_MESSAGE" value="" />
       </breakpoint>
-      <breakpoint url="file://$PROJECT_DIR$/java/src/ru/musicserver/androidclient/network/Request.java" line="61" class="ru.musicserver.androidclient.network.Request" package="ru.musicserver.androidclient.network">
+      <breakpoint url="file://$PROJECT_DIR$/java/src/ru/musicserver/androidclient/model/Playlist.java" line="79" class="ru.musicserver.androidclient.model.Playlist" package="ru.musicserver.androidclient.model">
         <option name="ENABLED" value="true" />
         <option name="LOG_ENABLED" value="false" />
         <option name="LOG_EXPRESSION_ENABLED" value="false" />
@@ -146,7 +186,7 @@
         <option name="CONDITION" value="" />
         <option name="LOG_MESSAGE" value="" />
       </breakpoint>
-      <breakpoint url="file://$PROJECT_DIR$/java/src/ru/musicserver/androidclient/activity/SearchActivity.java" line="42" class="ru.musicserver.androidclient.activity.SearchActivity$1" package="ru.musicserver.androidclient.activity">
+      <breakpoint url="file://$PROJECT_DIR$/java/src/ru/musicserver/androidclient/activity/SearchActivity.java" line="114" class="ru.musicserver.androidclient.activity.SearchActivity" package="ru.musicserver.androidclient.activity">
         <option name="ENABLED" value="true" />
         <option name="LOG_ENABLED" value="false" />
         <option name="LOG_EXPRESSION_ENABLED" value="false" />
@@ -159,7 +199,7 @@
         <option name="CONDITION" value="" />
         <option name="LOG_MESSAGE" value="" />
       </breakpoint>
-      <breakpoint url="file://$PROJECT_DIR$/java/src/ru/musicserver/androidclient/activity/SearchActivity.java" line="53" class="ru.musicserver.androidclient.activity.SearchActivity$2" package="ru.musicserver.androidclient.activity">
+      <breakpoint url="file://$PROJECT_DIR$/java/src/ru/musicserver/androidclient/activity/MainActivity.java" line="156" class="ru.musicserver.androidclient.activity.MainActivity$4" package="ru.musicserver.androidclient.activity">
         <option name="ENABLED" value="true" />
         <option name="LOG_ENABLED" value="false" />
         <option name="LOG_EXPRESSION_ENABLED" value="false" />
@@ -172,7 +212,7 @@
         <option name="CONDITION" value="" />
         <option name="LOG_MESSAGE" value="" />
       </breakpoint>
-      <breakpoint url="file://$PROJECT_DIR$/java/src/ru/musicserver/androidclient/activity/SearchActivity.java" line="70" class="ru.musicserver.androidclient.activity.SearchActivity$3" package="ru.musicserver.androidclient.activity">
+      <breakpoint url="file://$PROJECT_DIR$/java/src/ru/musicserver/androidclient/activity/MusicPlayerService.java" line="163" class="ru.musicserver.androidclient.activity.MusicPlayerService$3" package="ru.musicserver.androidclient.activity">
         <option name="ENABLED" value="true" />
         <option name="LOG_ENABLED" value="false" />
         <option name="LOG_EXPRESSION_ENABLED" value="false" />
@@ -185,7 +225,7 @@
         <option name="CONDITION" value="" />
         <option name="LOG_MESSAGE" value="" />
       </breakpoint>
-      <breakpoint url="file://$PROJECT_DIR$/java/src/ru/musicserver/androidclient/network/Request.java" line="53" class="ru.musicserver.androidclient.network.Request" package="ru.musicserver.androidclient.network">
+      <breakpoint url="file://$PROJECT_DIR$/java/src/ru/musicserver/androidclient/activity/MainActivity.java" line="194" class="ru.musicserver.androidclient.activity.MainActivity$6" package="ru.musicserver.androidclient.activity">
         <option name="ENABLED" value="true" />
         <option name="LOG_ENABLED" value="false" />
         <option name="LOG_EXPRESSION_ENABLED" value="false" />
@@ -198,7 +238,46 @@
         <option name="CONDITION" value="" />
         <option name="LOG_MESSAGE" value="" />
       </breakpoint>
-      <breakpoint url="file://$PROJECT_DIR$/java/src/ru/musicserver/androidclient/network/Request.java" line="50" class="ru.musicserver.androidclient.network.Request" package="ru.musicserver.androidclient.network">
+      <breakpoint url="file://$PROJECT_DIR$/java/src/ru/musicserver/androidclient/model/Playlist.java" line="72" class="ru.musicserver.androidclient.model.Playlist" package="ru.musicserver.androidclient.model">
+        <option name="ENABLED" value="true" />
+        <option name="LOG_ENABLED" value="false" />
+        <option name="LOG_EXPRESSION_ENABLED" value="false" />
+        <option name="SUSPEND_POLICY" value="SuspendAll" />
+        <option name="COUNT_FILTER_ENABLED" value="false" />
+        <option name="COUNT_FILTER" value="0" />
+        <option name="CONDITION_ENABLED" value="false" />
+        <option name="CLASS_FILTERS_ENABLED" value="false" />
+        <option name="INSTANCE_FILTERS_ENABLED" value="false" />
+        <option name="CONDITION" value="" />
+        <option name="LOG_MESSAGE" value="" />
+      </breakpoint>
+      <breakpoint url="file://$PROJECT_DIR$/java/src/ru/musicserver/androidclient/model/Playlist.java" line="77" class="ru.musicserver.androidclient.model.Playlist" package="ru.musicserver.androidclient.model">
+        <option name="ENABLED" value="true" />
+        <option name="LOG_ENABLED" value="false" />
+        <option name="LOG_EXPRESSION_ENABLED" value="false" />
+        <option name="SUSPEND_POLICY" value="SuspendAll" />
+        <option name="COUNT_FILTER_ENABLED" value="false" />
+        <option name="COUNT_FILTER" value="0" />
+        <option name="CONDITION_ENABLED" value="false" />
+        <option name="CLASS_FILTERS_ENABLED" value="false" />
+        <option name="INSTANCE_FILTERS_ENABLED" value="false" />
+        <option name="CONDITION" value="" />
+        <option name="LOG_MESSAGE" value="" />
+      </breakpoint>
+      <breakpoint url="file://$PROJECT_DIR$/java/src/ru/musicserver/androidclient/model/Playlist.java" line="70" class="ru.musicserver.androidclient.model.Playlist" package="ru.musicserver.androidclient.model">
+        <option name="ENABLED" value="true" />
+        <option name="LOG_ENABLED" value="false" />
+        <option name="LOG_EXPRESSION_ENABLED" value="false" />
+        <option name="SUSPEND_POLICY" value="SuspendAll" />
+        <option name="COUNT_FILTER_ENABLED" value="false" />
+        <option name="COUNT_FILTER" value="0" />
+        <option name="CONDITION_ENABLED" value="false" />
+        <option name="CLASS_FILTERS_ENABLED" value="false" />
+        <option name="INSTANCE_FILTERS_ENABLED" value="false" />
+        <option name="CONDITION" value="" />
+        <option name="LOG_MESSAGE" value="" />
+      </breakpoint>
+      <breakpoint url="file://$PROJECT_DIR$/java/src/ru/musicserver/androidclient/model/Playlist.java" line="26" class="ru.musicserver.androidclient.model.Playlist" package="ru.musicserver.androidclient.model">
         <option name="ENABLED" value="true" />
         <option name="LOG_ENABLED" value="false" />
         <option name="LOG_EXPRESSION_ENABLED" value="false" />
@@ -252,19 +331,28 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="main.xml" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/res/layout/main.xml">
+      <file leaf-file-name="MainActivity.java" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/java/src/ru/musicserver/androidclient/activity/MainActivity.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="28" column="67" selection-start="1013" selection-end="1377" vertical-scroll-proportion="0.0">
+            <state line="194" column="0" selection-start="7623" selection-end="7623" vertical-scroll-proportion="-3.44">
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="Request.java" pinned="false" current="true" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/java/src/ru/musicserver/androidclient/network/Request.java">
+      <file leaf-file-name="Playlist.java" pinned="false" current="true" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/java/src/ru/musicserver/androidclient/model/Playlist.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="60" column="85" selection-start="2361" selection-end="2466" vertical-scroll-proportion="0.045801528">
+            <state line="73" column="0" selection-start="1939" selection-end="1939" vertical-scroll-proportion="0.33215547">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="main.xml" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/res/layout/main.xml">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="85" column="101" selection-start="4320" selection-end="4320" vertical-scroll-proportion="0.0">
               <folding />
             </state>
           </provider>
@@ -273,34 +361,34 @@
       <file leaf-file-name="SearchActivity.java" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/java/src/ru/musicserver/androidclient/activity/SearchActivity.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="54" column="0" selection-start="1773" selection-end="1773" vertical-scroll-proportion="0.0">
+            <state line="58" column="0" selection-start="2027" selection-end="2027" vertical-scroll-proportion="0.0">
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="MainActivity.java" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/java/src/ru/musicserver/androidclient/activity/MainActivity.java">
+      <file leaf-file-name="MusicPlayerService.java" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/java/src/ru/musicserver/androidclient/activity/MusicPlayerService.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="133" column="83" selection-start="4988" selection-end="5060" vertical-scroll-proportion="0.0">
+            <state line="116" column="10" selection-start="3472" selection-end="3472" vertical-scroll-proportion="0.0">
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="Playlist.java" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/java/src/ru/musicserver/androidclient/model/Playlist.java">
+      <file leaf-file-name="Request.java" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/java/src/ru/musicserver/androidclient/network/Request.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="43" column="46" selection-start="1134" selection-end="1134" vertical-scroll-proportion="0.0">
+            <state line="85" column="0" selection-start="3769" selection-end="3769" vertical-scroll-proportion="0.0">
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="ModelContainer.java" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/java/src/ru/musicserver/androidclient/model/ModelContainer.java">
+      <file leaf-file-name="search.xml" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/res/layout/search.xml">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="13" column="50" selection-start="378" selection-end="378" vertical-scroll-proportion="0.0">
+            <state line="25" column="47" selection-start="1126" selection-end="1126" vertical-scroll-proportion="0.0">
               <folding />
             </state>
           </provider>
@@ -325,22 +413,22 @@
   <component name="IdeDocumentHistory">
     <option name="changedFiles">
       <list>
-        <option value="$PROJECT_DIR$/res/layout/playlists.xml" />
-        <option value="$PROJECT_DIR$/res/layout/playing.xml" />
-        <option value="$PROJECT_DIR$/java/src/ru/musicserver/androidclient/activity/StreamingMediaPlayer.java" />
-        <option value="$PROJECT_DIR$/java/src/ru/musicserver/androidclient/activity/MusicPlayerService.java" />
-        <option value="$PROJECT_DIR$/java/src/ru/musicserver/androidclient/activity/MusicPlayerServiceInterface.aidl" />
-        <option value="$PROJECT_DIR$/java/src/ru/musicserver/androidclient/model/EmptyResult.java" />
-        <option value="$PROJECT_DIR$/java/src/ru/musicserver/androidclient/model/Playlist.java" />
-        <option value="$PROJECT_DIR$/java/src/ru/musicserver/androidclient/activity/MainActivity.java" />
-        <option value="$PROJECT_DIR$/java/src/ru/musicserver/androidclient/activity/BaseOnItemClickListener.java" />
-        <option value="$PROJECT_DIR$/java/src/ru/musicserver/androidclient/activity/OpenableListActivity.java" />
-        <option value="$PROJECT_DIR$/java/src/ru/musicserver/androidclient/activity/AdapterHelper.java" />
         <option value="$PROJECT_DIR$/java/src/ru/musicserver/androidclient/activity/PlaylistActivity.java" />
         <option value="$PROJECT_DIR$/java/src/ru/musicserver/androidclient/model/ModelContainer.java" />
+        <option value="$PROJECT_DIR$/java/src/ru/musicserver/androidclient/model/Result.java" />
+        <option value="$PROJECT_DIR$/java/src/ru/musicserver/androidclient/activity/OpenableListActivity.java" />
+        <option value="$PROJECT_DIR$/res/layout/unplayable.xml" />
+        <option value="$PROJECT_DIR$/res/values/strings.xml" />
+        <option value="$PROJECT_DIR$/res/layout/main.xml" />
         <option value="$PROJECT_DIR$/res/layout/search.xml" />
-        <option value="$PROJECT_DIR$/java/src/ru/musicserver/androidclient/activity/SearchActivity.java" />
+        <option value="$PROJECT_DIR$/java/src/ru/musicserver/androidclient/model/MyPlayer.java" />
+        <option value="$PROJECT_DIR$/java/src/ru/musicserver/androidclient/activity/MusicPlayerServiceInterface.aidl" />
         <option value="$PROJECT_DIR$/java/src/ru/musicserver/androidclient/network/Request.java" />
+        <option value="$PROJECT_DIR$/java/src/ru/musicserver/androidclient/activity/MyPlayer.java" />
+        <option value="$PROJECT_DIR$/java/src/ru/musicserver/androidclient/activity/MusicPlayerService.java" />
+        <option value="$PROJECT_DIR$/java/src/ru/musicserver/androidclient/activity/SearchActivity.java" />
+        <option value="$PROJECT_DIR$/java/src/ru/musicserver/androidclient/model/Playlist.java" />
+        <option value="$PROJECT_DIR$/java/src/ru/musicserver/androidclient/activity/MainActivity.java" />
       </list>
     </option>
   </component>
@@ -385,9 +473,8 @@
       <sortByType />
     </navigator>
     <panes>
-      <pane id="Scope" />
-      <pane id="PackagesPane" />
       <pane id="Favorites" />
+      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <PATH>
@@ -466,6 +553,24 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
+              <option name="myItemId" value="res" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="drawable-ldpi" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="MusicPlayer" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="music_android_client" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
               <option name="myItemId" value="java" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
@@ -501,6 +606,10 @@
             </PATH_ELEMENT>
             <PATH_ELEMENT>
               <option name="myItemId" value="androidclient" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="model" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -550,6 +659,7 @@
           </PATH>
         </subPane>
       </pane>
+      <pane id="PackagesPane" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -565,6 +675,11 @@
     <property name="GoToClass.includeLibraries" value="false" />
     <property name="project.structure.side.proportion" value="0.2" />
     <property name="MemberChooser.copyJavadoc" value="false" />
+  </component>
+  <component name="RecentsManager">
+    <key name="MoveClassesOrPackagesDialog.RECENTS_KEY">
+      <recent name="ru.musicserver.androidclient.activity" />
+    </key>
   </component>
   <component name="RunManager" selected="Android Application.music_android_client">
     <configuration default="true" type="AndroidTestRunConfigurationType" factoryName="Android Tests">
@@ -738,26 +853,26 @@
     <servers />
   </component>
   <component name="ToolWindowManager">
-    <frame x="0" y="24" width="1382" height="702" extended-state="1" />
-    <editor active="true" />
+    <frame x="-8" y="24" width="1382" height="702" extended-state="6" />
+    <editor active="false" />
     <layout>
       <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.2859745" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
-      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.44808742" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3989071" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32240438" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
-      <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.30955994" sideWeight="0.3169399" order="1" side_tool="true" content_ui="tabs" />
+      <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.24279211" sideWeight="0.19672132" order="1" side_tool="true" content_ui="tabs" />
       <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32928678" sideWeight="0.6010929" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.20409712" sideWeight="0.55191255" order="0" side_tool="false" content_ui="tabs" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.24279211" sideWeight="0.6010929" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Dependency Viewer" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.30783242" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Android Logcat" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32846716" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
-      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.2859745" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Android Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.20521739" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="3" side_tool="false" content_ui="combo" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
@@ -814,84 +929,112 @@
   <component name="editorHistoryManager">
     <entry file="file://$PROJECT_DIR$/gen/ru/musicserver/androidclient/activity/MusicPlayerServiceInterface.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="32" column="22" selection-start="1246" selection-end="1246" vertical-scroll-proportion="0.33333334" />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/java/src/ru/musicserver/androidclient/activity/StreamingMediaPlayer.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="220" column="11" selection-start="7564" selection-end="7564" vertical-scroll-proportion="0.0" />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/java/src/ru/musicserver/androidclient/activity/MusicPlayerService.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="159" column="44" selection-start="4941" selection-end="4957" vertical-scroll-proportion="0.60240966" />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/java/src/ru/musicserver/androidclient/activity/MusicPlayerServiceInterface.aidl">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="12" column="32" selection-start="296" selection-end="296" vertical-scroll-proportion="0.0" />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/java/src/ru/musicserver/androidclient/model/Model.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="9" column="22" selection-start="218" selection-end="218" vertical-scroll-proportion="0.072463766" />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/java/src/ru/musicserver/androidclient/model/EmptyResult.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="12" column="22" selection-start="302" selection-end="302" vertical-scroll-proportion="0.43956044" />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/java/src/ru/musicserver/androidclient/activity/OpenableListActivity.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="20" column="42" selection-start="565" selection-end="585" vertical-scroll-proportion="0.3478261" />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/java/src/ru/musicserver/androidclient/activity/AdapterHelper.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="63" column="5" selection-start="2160" selection-end="2160" vertical-scroll-proportion="0.6703297" />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/java/src/ru/musicserver/androidclient/activity/PlaylistActivity.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="42" column="26" selection-start="1354" selection-end="1354" vertical-scroll-proportion="0.0" />
+        <state line="310" column="15" selection-start="8886" selection-end="8886" vertical-scroll-proportion="0.601227">
+          <folding />
+        </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/res/layout/search.xml">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="40" column="51" selection-start="1810" selection-end="1810" vertical-scroll-proportion="0.715942" />
+        <state line="25" column="47" selection-start="1126" selection-end="1126" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/res/layout/main.xml">
+    <entry file="jar:///opt/android-sdk-linux/platforms/android-9/android.jar!/android/app/Activity.class">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="28" column="67" selection-start="1013" selection-end="1377" vertical-scroll-proportion="0.0" />
+        <state line="128" column="19" selection-start="5686" selection-end="5686" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/java/src/ru/musicserver/androidclient/activity/MainActivity.java">
+    <entry file="jar:///opt/android-sdk-linux/platforms/android-9/android.jar!/android/view/KeyEvent.class">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="133" column="83" selection-start="4988" selection-end="5060" vertical-scroll-proportion="0.0" />
+        <state line="5" column="13" selection-start="150" selection-end="150" vertical-scroll-proportion="0.22304833">
+          <folding />
+        </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/java/src/ru/musicserver/androidclient/model/Playlist.java">
+    <entry file="jar:///opt/android-sdk-linux/platforms/android-9/android.jar!/android/view/View.class">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="43" column="46" selection-start="1134" selection-end="1134" vertical-scroll-proportion="0.0" />
+        <state line="246" column="19" selection-start="11685" selection-end="11685" vertical-scroll-proportion="0.330855">
+          <folding />
+        </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/java/src/ru/musicserver/androidclient/model/ModelContainer.java">
+    <entry file="jar:///opt/android-sdk-linux/platforms/android-9/android.jar!/android/view/ViewGroup.class">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="13" column="50" selection-start="378" selection-end="378" vertical-scroll-proportion="0.0" />
+        <state line="73" column="19" selection-start="3581" selection-end="3581" vertical-scroll-proportion="0.330855">
+          <folding />
+        </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/java/src/ru/musicserver/androidclient/activity/SearchActivity.java">
+    <entry file="jar:///opt/android-sdk-linux/platforms/android-9/android.jar!/android/widget/TabHost.class">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="54" column="0" selection-start="1773" selection-end="1773" vertical-scroll-proportion="0.0">
+        <state line="41" column="19" selection-start="1659" selection-end="1659" vertical-scroll-proportion="0.3090278">
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/java/src/ru/musicserver/androidclient/network/Request.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="60" column="85" selection-start="2361" selection-end="2466" vertical-scroll-proportion="0.045801528">
+        <state line="85" column="0" selection-start="3769" selection-end="3769" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/res/layout/main.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="85" column="101" selection-start="4320" selection-end="4320" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/java/src/ru/musicserver/androidclient/activity/MyPlayer.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="74" column="37" selection-start="2292" selection-end="2292" vertical-scroll-proportion="0.5744681">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/java/src/ru/musicserver/androidclient/activity/MusicPlayerServiceInterface.aidl">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="0" column="15" selection-start="15" selection-end="15" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar:///opt/android-sdk-linux/platforms/android-9/android.jar!/android/media/MediaPlayer.class">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="55" column="23" selection-start="2931" selection-end="2931" vertical-scroll-proportion="0.330855">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/java/src/ru/musicserver/androidclient/activity/MusicPlayerService.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="116" column="10" selection-start="3472" selection-end="3472" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/java/src/ru/musicserver/androidclient/activity/SearchActivity.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="58" column="0" selection-start="2027" selection-end="2027" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/java/src/ru/musicserver/androidclient/activity/MainActivity.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="194" column="0" selection-start="7623" selection-end="7623" vertical-scroll-proportion="-3.44">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/java/src/ru/musicserver/androidclient/model/Playlist.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="73" column="0" selection-start="1939" selection-end="1939" vertical-scroll-proportion="0.33215547">
           <folding />
         </state>
       </provider>

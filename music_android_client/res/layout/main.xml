@@ -9,34 +9,90 @@
         android:layout_height="wrap_content"
         android:padding="5px">
 
-        <TextView  	android:id="@+id/playing_track_name"
-                       android:layout_width="fill_parent"
-                       android:layout_height="wrap_content"
-                       android:textStyle="bold"
-                       android:text="@string/NoTrackName"/>
+        <LinearLayout 	xmlns:android="http://schemas.android.com/apk/res/android"
+                          android:orientation="horizontal"
+                          android:layout_width="fill_parent"
+                          android:layout_height="wrap_content"
+                          android:padding="5px">
+
+            <TextView  	android:id="@+id/playing_track_name"
+                           android:layout_width="wrap_content"
+                           android:layout_height="wrap_content"
+                           android:textStyle="bold"
+                           android:gravity="left"
+                           android:text="@string/noTrackName"/>
+
+            <TextView  	android:id="@+id/currentPlaylist"
+                           android:layout_width="wrap_content"
+                           android:layout_height="wrap_content"
+                           android:textStyle="bold"
+                           android:gravity="right"
+                           android:text="@string/defaultPlaylist"/>
+
+            <ImageButton android:id="@+id/button_minimize"
+                         android:layout_width="wrap_content"
+                         android:layout_height="wrap_content"
+                         android:layout_marginTop="5px"
+                         android:gravity="right"
+                         android:background="@drawable/thumb_transparent"
+                         android:src="@drawable/minimize"/>
+
+            <ImageButton android:id="@+id/button_close"
+                         android:layout_width="wrap_content"
+                         android:layout_height="wrap_content"
+                         android:layout_marginTop="5px"
+                         android:gravity="right"
+                         android:background="@drawable/thumb_transparent"
+                         android:src="@drawable/close"/>
+        </LinearLayout>
 
         <LinearLayout 	xmlns:android="http://schemas.android.com/apk/res/android"
                           android:orientation="horizontal"
                           android:layout_width="fill_parent"
                           android:layout_height="wrap_content"
-                          android:padding="10px">
+                          android:padding="5px">
+
+            <TextView android:id="@+id/timing"
+                      android:layout_width="wrap_content"
+                      android:layout_height="wrap_content"
+                      android:text="@string/nullTiming"
+                      android:textStyle="bold"
+                      android:paddingBottom="5px"
+                      android:paddingTop="5px"/>
+
+            <ImageButton	android:id="@+id/button_stop"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="5px"
+                            android:background="@drawable/thumb_transparent"
+                            android:src="@drawable/button_stop"/>
+
+            <ImageButton	android:id="@+id/button_back"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="5px"
+                            android:background="@drawable/thumb_transparent"
+                            android:src="@drawable/button_skipback"/>
 
             <ImageButton	android:id="@+id/button_play"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="5px"
-                            style="?android:attr/buttonStyleSmall"
+                            android:background="@drawable/thumb_transparent"
                             android:src="@drawable/button_pause"/>
 
-            <ProgressBar android:id="@+id/progress_bar"
-                         android:layout_width="fill_parent"
-                         android:layout_height="wrap_content"
-                         android:layout_alignParentLeft="true"
-                         style="?android:attr/progressBarStyleHorizontal"/>
+            <ImageButton	android:id="@+id/button_fwd"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="5px"
+                            android:background="@drawable/thumb_transparent"
+                            android:src="@drawable/button_skipfwd"/>
 
+            <SeekBar android:id="@+id/seekBarTestPlay"
+                     android:layout_height="wrap_content"
+                     android:layout_width="fill_parent"
+                     style="?android:attr/progressBarStyleHorizontal"/>
         </LinearLayout>
-
-
 
         <TabWidget
             android:id="@android:id/tabs"

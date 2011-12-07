@@ -1,5 +1,6 @@
 package ru.musicserver.androidclient.model;
 
+import java.util.LinkedList;
 import java.util.List;
 
 /**
@@ -14,7 +15,9 @@ public class Result {
     private List<Track> tracks;
 
     public Result () {
-
+        artists = new LinkedList<Artist>();
+        albums = new LinkedList<Album>();
+        tracks = new LinkedList<Track>();
     }
 
     public Result(List<Artist> artists, List<Album> albums, List<Track> tracks) {

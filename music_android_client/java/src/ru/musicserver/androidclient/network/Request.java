@@ -1,11 +1,13 @@
 package ru.musicserver.androidclient.network;
 
 import com.google.gson.Gson;
+import com.google.gson.JsonSyntaxException;
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
 import org.apache.http.StatusLine;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
+import org.apache.http.conn.HttpHostConnectException;
 import org.apache.http.impl.client.DefaultHttpClient;
 import ru.musicserver.androidclient.model.*;
 
@@ -36,19 +38,21 @@ public class Request {
         try {
             HttpResponse response = execute("http://" + myServerAddress + ":6006/get/" + type + "?id=" + mbid);
             StatusLine statusLine = response.getStatusLine();
-            if (statusLine.getStatusCode() == HttpStatus.SC_OK){
-                InputStreamReader r = new InputStreamReader(response.getEntity().getContent());
-                if (type.equals("artist"))
-                    return new Gson().fromJson(r, (Type)Artist.class);
-                if (type.equals("album"))
-                    return new Gson().fromJson(r, (Type)Album.class);
-                if (type.equals("track"))
-                    return new Gson().fromJson(r, (Type)Track.class);
-                return new Gson().fromJson(r, (Type)Model.class);
-
-            } else {
-                //response.getEntity().getContent().close();
-                throw new IOException(statusLine.getReasonPhrase());
+            switch (statusLine.getStatusCode()) {
+                case HttpStatus.SC_OK:
+                    InputStreamReader r = new InputStreamReader(response.getEntity().getContent());
+                    if (type.equals("artist"))
+                        return new Gson().fromJson(r, (Type)Artist.class);
+                    if (type.equals("album"))
+                        return new Gson().fromJson(r, (Type)Album.class);
+                    if (type.equals("track"))
+                        return new Gson().fromJson(r, (Type)Track.class);
+                    return new Gson().fromJson(r, (Type)Model.class);
+                case HttpStatus.SC_NO_CONTENT:
+                    return null;
+                default:
+                    //response.getEntity().getContent().close();
+                    throw new IOException(statusLine.getReasonPhrase());
             }
         } catch (Exception e) {
             throw new IOException("Connection ERROR: " + e.getMessage());
@@ -57,7 +61,6 @@ public class Request {
 
     public static Result search (String pattern, int limit, int offset) throws IOException {
         try {
-            String w = "test"+5;
             HttpResponse response = execute("http://" + myServerAddress + ":6006/search/?pattern=" + pattern + "&limit=" + limit + "&offset=" + offset);
             StatusLine statusLine = response.getStatusLine();
             if (statusLine.getStatusCode() == HttpStatus.SC_OK){
@@ -68,10 +71,18 @@ public class Request {
                 response.getEntity().getContent().close();
                 throw new IOException(statusLine.getReasonPhrase());
             }
+        } catch (JsonSyntaxException e1) {
+            if (e1.getMessage().contains("{ERROR}")) {
+                return new Result();
+            }
+            throw e1;
+        } catch (HttpHostConnectException e2) {
+            String msg = e2.getMessage();
+            if (msg.contains("Connection to ") && msg.contains(myServerAddress) && msg.contains("refused")) {
+                throw new IOException("Failed to connect to Music Server.\nCheck your internet connection.\nOr it may be Music Server Internal error ;)");
+            }
+            throw e2;
         } catch (Exception e) {
-            String msg = e.getMessage();
-            if (msg.contains("Connection to ") && msg.contains(myServerAddress) && msg.contains("refused"))
-                throw new IOException("Failed to connect to Music Server.\nCheck your internet connection.");
             throw new IOException("Connection ERROR: " + e.getMessage());
         }
     }

@@ -21,8 +21,8 @@ import java.io.IOException;
 public abstract class OpenableListActivity extends ListActivity {
     protected ListView myListView;
 
-    protected void showErrorMessage (String message) {
-        MainActivity.showErrorMessage(message, this);
+    protected void showErrorMessage (String title, String message) {
+        MainActivity.showErrorMessage(title, message, this);
     }
 
     protected void setAdapter (ArrayAdapter<Model> adapter) {
@@ -48,7 +48,7 @@ public abstract class OpenableListActivity extends ListActivity {
                     try {
                         AdapterHelper.open(adapter, position);
                     } catch (IOException e) {
-                        showErrorMessage(e.getMessage());
+                        showErrorMessage("Open list item", e.getMessage());
                         return;
                     }
                 }

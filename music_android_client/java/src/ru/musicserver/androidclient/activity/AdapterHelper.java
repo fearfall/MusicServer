@@ -1,9 +1,9 @@
 package ru.musicserver.androidclient.activity;
 
-import android.view.View;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import ru.musicserver.androidclient.model.*;
+import ru.musicserver.androidclient.model.Artist;
+import ru.musicserver.androidclient.model.Model;
+import ru.musicserver.androidclient.model.ModelContainer;
 import ru.musicserver.androidclient.network.Request;
 
 import java.io.IOException;

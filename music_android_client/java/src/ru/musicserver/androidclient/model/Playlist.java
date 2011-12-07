@@ -1,6 +1,5 @@
 package ru.musicserver.androidclient.model;
 
-import java.util.ArrayDeque;
 import java.util.LinkedList;
 
 /**
@@ -24,6 +23,8 @@ public class Playlist implements Comparable<Playlist> {
     }
 
     public void add (Track track) {
+        if (myData.contains(track))
+            return;
         if (myData.size() == myMaxCapacity) {
             myData.removeLast();
         }
@@ -64,5 +65,19 @@ public class Playlist implements Comparable<Playlist> {
     @Override
     public int compareTo(Playlist playlist) {
         return myName.compareTo(playlist.myName);
+    }
+
+    public Track next() {
+        if (nowPlaying == -1 || nowPlaying == myData.size()-1)
+            return null;
+        nowPlaying++;
+        return myData.get(nowPlaying);
+    }
+
+    public Track back() {
+        if (nowPlaying == -1 || nowPlaying == 0)
+            return null;
+        nowPlaying--;
+        return myData.get(nowPlaying);
     }
 }

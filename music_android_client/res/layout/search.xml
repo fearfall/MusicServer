@@ -23,8 +23,9 @@
                      android:layout_width="wrap_content"
                      android:layout_height="wrap_content"
                      android:layout_marginTop="5px"
-                     style="?android:attr/buttonStyleSmall"
                      android:tag="Back"
+                     android:background="@drawable/thumb_transparent"
+                     style="?android:attr/buttonStyleSmall"
                      android:src="@drawable/search_backward"/>
 
         <Button   android:id="@+id/searchButton"
@@ -40,12 +41,13 @@
                      android:layout_height="wrap_content"
                      android:layout_marginTop="5px"
                      android:tag="Next"
+                     android:background="@drawable/thumb_transparent"
                      android:src="@drawable/search_forward"/>
     </LinearLayout>
 
     <ListView android:id="@android:id/list"
               android:layout_width="fill_parent" 
-              android:layout_height="wrap_content"
+              android:layout_height="fill_parent"
               android:layout_weight="1"
               android:drawSelectorOnTop="false"/>
 

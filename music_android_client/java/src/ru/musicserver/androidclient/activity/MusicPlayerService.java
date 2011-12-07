@@ -1,13 +1,15 @@
 package ru.musicserver.androidclient.activity;
 
+import android.app.NotificationManager;
 import android.app.Service;
+import android.content.Context;
 import android.content.Intent;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.os.DeadObjectException;
+import android.os.Handler;
 import android.os.IBinder;
 import android.os.RemoteException;
-import android.widget.TextView;
 
 import java.io.IOException;
 
@@ -21,107 +23,157 @@ import java.io.IOException;
 public class MusicPlayerService extends Service {
 
     private MediaPlayer mediaPlayer;
-    private String myCurrentTrack = null;
-	//private NotificationManager myNotificationManager;
-    //private static final int ourNotifyId = R.layout.main;
-    private Mode myMode;
 
-    private TextView myInfo;
+    private MyPlayer myPlayer;
 
-    private enum Mode {PLAY, PAUSE, STOP}
+    /*private String myCurrentTrack = null;
+    private String myCurrentTrackUrl = null;
+    private int myCurrentPosition = 0;
+    private int mediaFileLengthInMilliseconds;
+    private Mode myMode;*/
 
-    /*public MusicPlayerService (TextView info) {
-        myInfo = info;
-    }          */
+    //private TextView myInfo;
+
+  //  private enum Mode {PLAY, PAUSE, STOP}
+
 
 	@Override
     public void onCreate() {
 		super.onCreate();
+        myPlayer = new MyPlayer();
+
         mediaPlayer = new MediaPlayer();
-        mediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
-        myMode = Mode.STOP;
-		//myNotificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+        initMediaPlayer(mediaPlayer);
+
+        /*mediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
+
+        mediaPlayer.setOnBufferingUpdateListener(new MediaPlayer.OnBufferingUpdateListener() {
+            @Override
+            public void onBufferingUpdate(MediaPlayer mp, int i) {
+                MainActivity.onBufferingUpdate(i);
+            }
+        });
+        mediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+            @Override
+            public void onCompletion(MediaPlayer arg0) {
+                mediaPlayer.stop();
+            }
+        });   */
 	}
+
+    private void initMediaPlayer (MediaPlayer player) {
+        player.setAudioStreamType(AudioManager.STREAM_MUSIC);
+        player.setOnBufferingUpdateListener(new MediaPlayer.OnBufferingUpdateListener() {
+            @Override
+            public void onBufferingUpdate(MediaPlayer mp, int i) {
+                MainActivity.onBufferingUpdate(i);
+            }
+        });
+        player.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+            @Override
+            public void onCompletion(MediaPlayer arg0) {
+                arg0.stop();
+            }
+        });
+    }
 
     @Override
     public void onDestroy() {
 		mediaPlayer.stop();
-        myMode = Mode.STOP;
+       // myMode = Mode.STOP;
 		mediaPlayer.release();
-		//myNotificationManager.cancel(ourNotifyId);
+		((NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE)).cancel(R.layout.main);
 	}
 
     public IBinder onBind(Intent intent) {
         return mBinder;
     }
 
-    public void notifyActivity (Mode mode, String message) {
+    public void notifyActivity (MyPlayer.Mode mode, String message) {
         int icon;
         String tickerText;
-        myMode = mode;
+        myPlayer.setMode(mode);
         switch (mode) {
             case PLAY:
                 icon = R.drawable.button_pause;
                 tickerText = "Playing ";
+                MainActivity.setPlayerStatus(message);
                 break;
             case PAUSE:
                 icon = R.drawable.button_play;
                 tickerText = "Paused ";
                 break;
             case STOP:
-                icon = R.drawable.button_pause;
+                icon = R.drawable.button_play;
                 tickerText = "Stopped.";
+                MainActivity.setPlayerStatus(tickerText);
                 break;
             default:
                 throw new RuntimeException("Wrong player mode!");
         }
 
         tickerText += message;
-        MainActivity.playingTrack.setText(tickerText);
         MainActivity.playButton.setImageResource(icon);
-        //myInfo.setText(tickerText);
-
-        /*long when = System.currentTimeMillis();
-        Notification notification = new Notification(icon, tickerText, when);
-        notification.flags |= Notification.FLAG_AUTO_CANCEL;
-
-        Context context = getApplicationContext();
-        CharSequence contentTitle = "Music Player";
-        Intent notificationIntent = new Intent (this, MusicPlayerService.class);
-        PendingIntent contentIntent = PendingIntent.getActivity(this, 0, notificationIntent, 0);
-
-        notification.setLatestEventInfo(context, contentTitle, tickerText, contentIntent);
-
-        myNotificationManager.notify(ourNotifyId, notification); */
-
+        //MainActivity.notifyUser(tickerText, getApplicationContext());
     }
 
     private final MusicPlayerServiceInterface.Stub mBinder = new MusicPlayerServiceInterface.Stub() {
+        private final Handler handler = new Handler();
+        /** Method which updates the SeekBar primary progress by current song playing position*/
+        private void primarySeekBarProgressUpdater() {
+            MainActivity.setProgress((float)mediaPlayer.getCurrentPosition(), myPlayer.getMediaFileLengthInMilliseconds());
+            if (mediaPlayer.isPlaying()) {
+                Runnable notification = new Runnable() {
+                    public void run() {
+                        MainActivity.setTiming(mediaPlayer.getCurrentPosition());
+                        primarySeekBarProgressUpdater();
+                    }
+                };
+                handler.postDelayed(notification, 500);
+            }
+        }
+
         @Override
 		public boolean play(String trackName, String trackUrl, String trackId) throws DeadObjectException {
+            //MyPlayer old = new MyPlayer(myPlayer);
+            int oldPosition = -1;
 			try {
                 if (trackUrl == null)
-                    throw new IOException();
+                    throw new IOException("Null track(" + trackName + ") Url.");
 
-                notifyActivity(Mode.PLAY, trackName);
 
-			    mediaPlayer.reset();
+                if (mediaPlayer.isPlaying())
+                    oldPosition = mediaPlayer.getCurrentPosition();
 
-			    //ourPlayer.setDataSource("http://mp3type.ru/download.php?id=31312&ass=britney_spears_-_criminal_(original_radio_edit).mp3");
+                //MediaPlayer mp = new MediaPlayer();
+                mediaPlayer.reset();
                 mediaPlayer.setDataSource(trackUrl);
 			    mediaPlayer.prepare();
 			    mediaPlayer.start();
+
+                notifyActivity(MyPlayer.Mode.PLAY, trackName);
+                myPlayer.setMediaFileLengthInMilliseconds(mediaPlayer.getDuration());
+                primarySeekBarProgressUpdater();
                 MainActivity.playButton.setEnabled(true);
-                myCurrentTrack = trackId;
-
-			    mediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
-                    public void onCompletion(MediaPlayer arg0) {
-                        mediaPlayer.stop();
-                    }
-                });
-
+                myPlayer.setCurrentTrack(trackId);
+                myPlayer.setCurrentTrackUrl(trackUrl);
             } catch (IOException e) {
-                notifyActivity(Mode.STOP, "");
+                //myPlayer.restoreFrom(old);
+                if (oldPosition != -1) {
+                    try {
+                        mediaPlayer.reset();
+                        mediaPlayer.setDataSource(myPlayer.getCurrentTrackUrl());
+                        mediaPlayer.prepare();
+                        mediaPlayer.seekTo(oldPosition);
+                        mediaPlayer.start();
+                        primarySeekBarProgressUpdater();
+                    } catch (IOException e2) {
+                        MainActivity.showErrorMessage("Play -> Back to played resource", "Play:\n" + e.getMessage()
+                                + "\nBack to played resource: \n" + e2.getMessage(), getApplicationContext());
+                        return false;
+                    }
+                }
+                MainActivity.showErrorMessage("Play", e.getMessage(), getApplicationContext());
                 return false;
             }
             return true;
@@ -129,37 +181,48 @@ public class MusicPlayerService extends Service {
 
         @Override
         public void pause() throws DeadObjectException {
-            notifyActivity(Mode.PAUSE, "");
+            notifyActivity(MyPlayer.Mode.PAUSE, "");
 			mediaPlayer.pause();
 		}
 
         @Override
 		public void stop() throws DeadObjectException {
 			//myNotificationManager.cancel(ourNotifyId);
-            notifyActivity(Mode.STOP, "");
+            notifyActivity(MyPlayer.Mode.STOP, "");
             MainActivity.playButton.setEnabled(false);
 			mediaPlayer.stop();
 		}
 
         @Override
         public String getPlayingTrackId () {
-            return myCurrentTrack;
+            return myPlayer.getCurrentTrack();
         }
 
         @Override
         public boolean isPlaying(String trackMbid) throws RemoteException {
-            return myMode==Mode.PLAY && myCurrentTrack != null && myCurrentTrack.equals(trackMbid);
+            return mediaPlayer.isPlaying() && myPlayer.plays(trackMbid);
         }
 
         @Override
         public boolean isPlayingMode() {
-            return myMode == Mode.PLAY;
+            return mediaPlayer.isPlaying();
+        }
+
+        @Override
+        public void seekTo(int playPositionInMilliseconds) throws RemoteException {
+            mediaPlayer.seekTo(playPositionInMilliseconds);
+        }
+
+        @Override
+        public int getCurrentPlayPosition() throws RemoteException {
+            return mediaPlayer.getCurrentPosition();
         }
 
         @Override
         public void resume (String trackName) {
-            notifyActivity(Mode.PLAY, trackName);
+            notifyActivity(MyPlayer.Mode.PLAY, trackName);
             mediaPlayer.start();
+            primarySeekBarProgressUpdater();
         }
     };
 }

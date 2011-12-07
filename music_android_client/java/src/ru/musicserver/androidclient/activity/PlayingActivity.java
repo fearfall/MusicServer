@@ -2,7 +2,6 @@ package ru.musicserver.androidclient.activity;
 
 import android.app.ListActivity;
 import android.os.Bundle;
-import android.widget.TextView;
 
 /**
  * Created by IntelliJ IDEA.

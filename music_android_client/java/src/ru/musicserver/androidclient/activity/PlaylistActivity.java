@@ -1,16 +1,10 @@
 package ru.musicserver.androidclient.activity;
 
-import android.app.ListActivity;
 import android.os.Bundle;
-import android.view.View;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.ListView;
-import android.widget.TextView;
-import ru.musicserver.androidclient.model.*;
-import ru.musicserver.androidclient.network.Request;
+import ru.musicserver.androidclient.model.Model;
+import ru.musicserver.androidclient.model.Playlist;
 
-import java.io.IOException;
 import java.util.LinkedList;
 
 /**

@@ -15,4 +15,8 @@ interface MusicPlayerServiceInterface {
 	String getPlayingTrackId();
 	boolean isPlaying(String trackMbid);
 	boolean isPlayingMode();
-}
+	void seekTo(int playPositionInMilliseconds);
+	int getCurrentPlayPosition();
+
+
+	}

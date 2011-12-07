@@ -4,5 +4,10 @@
     <string name="search">Search</string>
     <string name="emptyText">vision</string>
     <string name="emptyText1">Type search string here</string>
-    <string name="NoTrackName">Select track to play...</string>
+    <string name="noTrackName">Select track to play...</string>
+    <string name="noUrl">URL could not be retrieved: </string>
+    <string name="deadUrl">Dead track URL: </string>
+    <string name="retrievingUrl">Retrieving URL: </string>
+    <string name="nullTiming">00:00</string>
+    <string name="defaultPlaylist">Play History</string>
 </resources>
