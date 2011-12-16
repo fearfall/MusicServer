@@ -287,13 +287,12 @@ public class StreamingMediaPlayer {
 				throw new IOException("IOException when transferring " + oldLocation.getPath() + " to " + newLocation.getPath());
             } finally {
                 try {
-                    if ( reader != null ){
-                    	writer.close();
-                        reader.close();
-                    }
+                    writer.close();
+                    reader.close();
+
                 } catch( IOException ex ){
-				    Log.e(getClass().getName(),"Error closing files when transferring " + oldLocation.getPath() + " to " + newLocation.getPath() );
-				}
+                    Log.e(getClass().getName(),"Error closing files when transferring " + oldLocation.getPath() + " to " + newLocation.getPath() );
+                }
             }
         } else {
 			throw new IOException("Old location does not exist when transferring " + oldLocation.getPath() + " to " + newLocation.getPath() );

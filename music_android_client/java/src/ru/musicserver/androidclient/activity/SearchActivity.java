@@ -42,6 +42,8 @@ public class SearchActivity extends OpenableListActivity {
         searchButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                InputMethodManager imm = (InputMethodManager)getSystemService(SearchActivity.INPUT_METHOD_SERVICE);
+                imm.hideSoftInputFromWindow(view.getWindowToken(), 1);
                 offset = 0;
                 ArrayAdapter<Model> adapter = onSearchClick(view);
                 if (adapter == null)

@@ -24,8 +24,8 @@ import java.lang.reflect.Type;
  */
 public class Request {
     private static HttpClient myHttpClient = null;
-    //private static String myServerAddress = "192.168.211.119";
-    private static String myServerAddress = "192.168.1.5";
+    private static String myServerAddress = "192.168.211.119";
+    //private static String myServerAddress = "192.168.1.5";
 
     private static HttpResponse execute (String request) throws IOException {
         if (myHttpClient == null) {

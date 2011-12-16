@@ -22,18 +22,21 @@ public class Playlist implements Comparable<Playlist> {
         myName = name;
     }
 
-    public void add (Track track) {
+    public boolean add (Track track) {
         if (myData.contains(track))
-            return;
+            return false;
         if (myData.size() == myMaxCapacity) {
             myData.removeLast();
         }
         myData.push(track);
+        return true;
     }
 
     public void addAndPlay (Track track) {
-        add(track);
-        nowPlaying = myData.size()-1;
+        if (add(track))
+            nowPlaying = myData.size()-1;
+        else
+            nowPlaying = myData.indexOf(track);
     }
 
     public Model[] getData() {
