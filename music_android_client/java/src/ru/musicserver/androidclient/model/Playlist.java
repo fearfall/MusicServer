@@ -9,6 +9,7 @@ import java.util.LinkedList;
  * Time: 3:58 PM
  * To change this template use File | Settings | File Templates.
  */
+ //TODO: Плохо смешивать логику итерирования с логикой модели. Лучше отдельный итератор 
 public class Playlist implements Comparable<Playlist> {
     private String myName;
     private LinkedList<Track> myData;
