@@ -27,7 +27,7 @@ public class DbConnectUtility {
         DriverManagerDataSource driverManagerDataSource = new DriverManagerDataSource(
                 "jdbc:mysql://localhost/ms_authorization",
                 "root",
-                "");
+                "Ghbrjk!2");
         driverManagerDataSource.setDriverClassName("org.gjt.mm.mysql.Driver");
         this.jdbcTemplate = new JdbcTemplate(driverManagerDataSource);
         driverManagerDataSource.getConnection();

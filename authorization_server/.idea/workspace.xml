@@ -26,7 +26,6 @@
   <component name="ChangesViewManager" flattened_view="true" show_ignored="false" />
   <component name="CreatePatchCommitExecutor">
     <option name="PATCH_PATH" value="" />
-    <option name="REVERSE_PATCH" value="false" />
   </component>
   <component name="DaemonCodeAnalyzer">
     <disable_hints />
@@ -87,19 +86,19 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="PlaylistHandler.java" pinned="false" current="true" current-in-tab="true">
+      <file leaf-file-name="PlaylistHandler.java" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/handlers/PlaylistHandler.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="22" column="13" selection-start="586" selection-end="586" vertical-scroll-proportion="-0.50353354">
+            <state line="26" column="0" selection-start="719" selection-end="719" vertical-scroll-proportion="0.0">
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="RegisterHandler.java" pinned="false" current="false" current-in-tab="false">
+      <file leaf-file-name="RegisterHandler.java" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/handlers/RegisterHandler.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="37" column="32" selection-start="1328" selection-end="1328" vertical-scroll-proportion="0.0">
+            <state line="24" column="20" selection-start="606" selection-end="606" vertical-scroll-proportion="0.28125">
               <folding />
             </state>
           </provider>
@@ -117,7 +116,7 @@
       <file leaf-file-name="Playlist.java" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/model/Playlist.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="20" column="21" selection-start="418" selection-end="418" vertical-scroll-proportion="0.0">
+            <state line="65" column="0" selection-start="1231" selection-end="1231" vertical-scroll-proportion="0.0">
               <folding />
             </state>
           </provider>
@@ -126,7 +125,7 @@
       <file leaf-file-name="DbConnectUtility.java" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/utilities/DbConnectUtility.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="149" column="110" selection-start="5987" selection-end="5987" vertical-scroll-proportion="0.0">
+            <state line="31" column="25" selection-start="1055" selection-end="1055" vertical-scroll-proportion="0.0">
               <folding />
             </state>
           </provider>
@@ -141,19 +140,10 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="ContextHandler.class" pinned="false" current="false" current-in-tab="false">
-        <entry file="jar://$PROJECT_DIR$/lib/jetty/jetty-6.1.22.jar!/org/mortbay/jetty/handler/ContextHandler.class">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="106" column="16" selection-start="4611" selection-end="4611" vertical-scroll-proportion="0.0">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
       <file leaf-file-name="Starter.java" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/Starter.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="21" column="13" selection-start="651" selection-end="651" vertical-scroll-proportion="0.0">
+            <state line="50" column="46" selection-start="2063" selection-end="2063" vertical-scroll-proportion="0.0">
               <folding />
             </state>
           </provider>
@@ -166,6 +156,11 @@
       <setting name="OPEN_NEW_TAB" value="false" />
     </FindUsagesManager>
   </component>
+  <component name="Git.Settings">
+    <option name="CHECKOUT_INCLUDE_TAGS" value="false" />
+    <option name="UPDATE_CHANGES_POLICY" value="STASH" />
+    <option name="LINE_SEPARATORS_CONVERSION" value="ASK" />
+  </component>
   <component name="IdeDocumentHistory">
     <option name="changedFiles">
       <list>
@@ -176,8 +171,8 @@
         <option value="$PROJECT_DIR$/src/model/Playlist.java" />
         <option value="$PROJECT_DIR$/script/playlist.schema.sql" />
         <option value="$PROJECT_DIR$/src/handlers/PlaylistHandler.java" />
-        <option value="$PROJECT_DIR$/src/utilities/DbConnectUtility.java" />
         <option value="$PROJECT_DIR$/src/handlers/RegisterHandler.java" />
+        <option value="$PROJECT_DIR$/src/utilities/DbConnectUtility.java" />
       </list>
     </option>
   </component>
@@ -190,6 +185,12 @@
   <component name="ModuleEditorState">
     <option name="LAST_EDITED_MODULE_NAME" />
     <option name="LAST_EDITED_TAB_NAME" />
+  </component>
+  <component name="ProjectFrameBounds">
+    <option name="x" value="-8" />
+    <option name="y" value="24" />
+    <option name="width" value="1382" />
+    <option name="height" value="702" />
   </component>
   <component name="ProjectLevelVcsManager" settingsEditedManually="false">
     <OptionsSetting value="true" id="Add" />
@@ -219,9 +220,6 @@
       <sortByType />
     </navigator>
     <panes>
-      <pane id="Scope" />
-      <pane id="PackagesPane" />
-      <pane id="Favorites" />
       <pane id="ProjectPane">
         <subPane>
           <PATH>
@@ -338,6 +336,9 @@
           </PATH>
         </subPane>
       </pane>
+      <pane id="PackagesPane" />
+      <pane id="Scope" />
+      <pane id="Favorites" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -388,15 +389,6 @@
       <method>
         <option name="AntTarget" enabled="false" />
         <option name="BuildArtifacts" enabled="false" />
-        <option name="Maven.BeforeRunTask" enabled="false" />
-        <option name="PhingTarget" enabled="false" />
-      </method>
-    </configuration>
-    <configuration default="true" type="FlexUnitRunConfigurationType" factoryName="FlexUnit" adl_options="" air_descriptor_path="" air_program_params="" air_publisher_id="" air_root_dir_path="" air_run_mode="AppDescriptor" browser_family="FIREFOX" class_name="" debugger_sdk="Module SDK" html_or_swf_file_path="" launcher_type="OSDefault" main_class_name="" method_name="" module_name="" output_log_level="" package_name="" player_path="/usr/bin/flashplayer" port="0" run_mode="HtmlOrSwfFile" run_trusted="false" scope="Class" socket_policy_port="0" url_to_launch="http://">
-      <method>
-        <option name="AntTarget" enabled="false" />
-        <option name="BuildArtifacts" enabled="false" />
-        <option name="Make" enabled="true" />
         <option name="Maven.BeforeRunTask" enabled="false" />
         <option name="PhingTarget" enabled="false" />
       </method>
@@ -504,33 +496,38 @@
     <servers />
   </component>
   <component name="ToolWindowManager">
-    <frame x="-8" y="-5" width="1382" height="781" extended-state="6" />
+    <frame x="-8" y="24" width="1382" height="702" extended-state="6" />
     <editor active="false" />
     <layout>
       <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Phing Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.32906765" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.38178915" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="IDEtalk Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="IDEtalk" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="-1" side_tool="true" content_ui="tabs" />
+      <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="-1" side_tool="true" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3290735" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="true" content_ui="tabs" />
+      <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32953683" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.32953683" sideWeight="0.0" order="0" side_tool="false" content_ui="tabs" />
-      <window_info id="Dependency Viewer" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.2172524" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.32928678" sideWeight="0.67093235" order="0" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.29067641" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Archetypes" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32953683" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
+      <window_info id="Phing Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
-      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3290735" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3290735" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="IDEtalk Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="IDEtalk" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="ConsoleMavenPlugin" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32953683" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Dependency Viewer" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
     </layout>
+  </component>
+  <component name="VcsContentAnnotationSettings">
+    <option name="myLimit" value="2678400000" />
   </component>
   <component name="VcsManagerConfiguration">
     <option name="OFFER_MOVE_TO_ANOTHER_CHANGELIST_ON_PARTIAL_COMMIT" value="true" />
@@ -556,6 +553,12 @@
     <option name="SHOW_ONLY_CHANGED_IN_SELECTION_DIFF" value="true" />
     <option name="CHECK_COMMIT_MESSAGE_SPELLING" value="true" />
     <option name="DEFAULT_PATCH_EXTENSION" value="patch" />
+    <option name="SHORT_DIFF_HORISONTALLY" value="true" />
+    <option name="SHORT_DIFF_EXTRA_LINES" value="2" />
+    <option name="SOFT_WRAPS_IN_SHORT_DIFF" value="true" />
+    <option name="INCLUDE_TEXT_INTO_PATCH" value="false" />
+    <option name="INCLUDE_TEXT_INTO_SHELF" value="false" />
+    <option name="CREATE_PATCH_EXPAND_DETAILS_DEFAULT" value="true" />
     <option name="FORCE_NON_EMPTY_COMMENT" value="false" />
     <option name="LAST_COMMIT_MESSAGE" />
     <option name="MAKE_NEW_CHANGELIST_ACTIVE" value="true" />
@@ -624,45 +627,47 @@
         <state line="18" column="13" selection-start="548" selection-end="548" vertical-scroll-proportion="0.0" />
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/model/Playlist.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="20" column="21" selection-start="418" selection-end="418" vertical-scroll-proportion="0.0" />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/utilities/DbConnectUtility.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="149" column="110" selection-start="5987" selection-end="5987" vertical-scroll-proportion="0.0" />
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/config/realm.properties">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="11" column="43" selection-start="317" selection-end="317" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
+        <state line="11" column="43" selection-start="317" selection-end="317" vertical-scroll-proportion="0.0" />
       </provider>
     </entry>
     <entry file="jar://$PROJECT_DIR$/lib/jetty/jetty-6.1.22.jar!/org/mortbay/jetty/handler/ContextHandler.class">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="106" column="16" selection-start="4611" selection-end="4611" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
+        <state line="106" column="16" selection-start="4611" selection-end="4611" vertical-scroll-proportion="0.0" />
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/handlers/RegisterHandler.java">
+    <entry file="file://$PROJECT_DIR$/src/model/Playlist.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="37" column="32" selection-start="1328" selection-end="1328" vertical-scroll-proportion="0.0" />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/Starter.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="21" column="13" selection-start="651" selection-end="651" vertical-scroll-proportion="0.0">
+        <state line="65" column="0" selection-start="1231" selection-end="1231" vertical-scroll-proportion="0.0">
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/handlers/PlaylistHandler.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="22" column="13" selection-start="586" selection-end="586" vertical-scroll-proportion="-0.50353354">
+        <state line="26" column="0" selection-start="719" selection-end="719" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/utilities/DbConnectUtility.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="31" column="25" selection-start="1055" selection-end="1055" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/Starter.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="50" column="46" selection-start="2063" selection-end="2063" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/handlers/RegisterHandler.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="24" column="20" selection-start="606" selection-end="606" vertical-scroll-proportion="0.28125">
           <folding />
         </state>
       </provider>
