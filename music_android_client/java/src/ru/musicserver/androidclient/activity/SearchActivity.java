@@ -1,17 +1,24 @@
 package ru.musicserver.androidclient.activity;
 
+import android.app.Activity;
+import android.app.ActivityGroup;
+import android.app.LocalActivityManager;
+import android.app.TabActivity;
+import android.content.Context;
+import android.content.Intent;
+import android.content.res.Configuration;
+import android.content.res.Resources;
 import android.os.Bundle;
 import android.view.KeyEvent;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.*;
-import ru.musicserver.androidclient.model.EmptyResult;
-import ru.musicserver.androidclient.model.Model;
-import ru.musicserver.androidclient.model.ModelContainer;
-import ru.musicserver.androidclient.model.Result;
+import ru.musicserver.androidclient.model.*;
 import ru.musicserver.androidclient.network.Request;
 
 import java.io.IOException;
+import java.util.List;
 
 
 /**
@@ -21,76 +28,76 @@ import java.io.IOException;
  * Time: 11:20 AM
  * To change this template use File | Settings | File Templates.
  */
-public class SearchActivity extends OpenableListActivity {
-    private int offset;
-    private ImageButton searchFwd;
-    private ImageButton searchBack;
-    private final int offsetStep = 10;
+public class SearchActivity extends Activity {
+    private final int offsetStep = 8;
+    private UploadOnScrollListView myArtists;
+    private UploadOnScrollListView myAlbums;
+    private UploadOnScrollListView myTracks;
+    private TabHost myTabHost;
+    private EditText mySearchEdit;
 
+    private View createTabView(final Context context, final String text) {
+        View view = LayoutInflater.from(context).inflate(R.layout.tabs_bg, null);
+        TextView tv = (TextView) view.findViewById(R.id.tabsText);
+        tv.setText(text);
+        return view;
+    }
+    
+    private void setTabCaption (int k, final String caption) {
+        TextView tv = (TextView)myTabHost.getTabWidget().getChildTabViewAt(k).findViewById(R.id.tabsText);
+        tv.setText(caption);
+    }
+    
+
+    private void setupTab(final View view, final String tag) {
+        View tabView = createTabView(myTabHost.getContext(), tag);
+        TabHost.TabSpec setContent = myTabHost.newTabSpec(tag).setIndicator(tabView).setContent(new TabHost.TabContentFactory() {
+            public View createTabContent(String tag) {
+                return view;
+            }
+        });
+        myTabHost.addTab(setContent);
+    }
+
+    private void initByList (int resourceId, UploadOnScrollListView uploadOnScrollListView, String tag) {
+        ListView listView = (ListView)findViewById(resourceId);
+        uploadOnScrollListView .setListView(listView);
+        setupTab(listView, tag);
+    }
+    
      /** Called when the activity is first created. */
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.search);
-        myListView = getListView();
-        searchFwd = (ImageButton) findViewById(R.id.searchForwardButton);
-        searchBack = (ImageButton) findViewById(R.id.searchBackwardButton);
-        searchBack.setEnabled(false);
-        searchFwd.setEnabled(false);
 
+        myTabHost = (TabHost) findViewById(android.R.id.tabhost);
+        myTabHost.setup();
+
+        myArtists = new UploadOnScrollListView(MusicApplication.ARTISTS, offsetStep);
+        myAlbums = new UploadOnScrollListView(MusicApplication.ALBUMS, offsetStep);
+        myTracks = new UploadOnScrollListView(MusicApplication.TRACKS, offsetStep);
+        //myTabHost.getTabWidget().setDividerDrawable(R.drawable.tab_divider);
+        initByList(R.id.list1, myArtists, "Artists");
+        initByList(R.id.list2, myAlbums, "Albums");
+        initByList(R.id.list3, myTracks, "Tracks");
+        myTabHost.setCurrentTab(0);
+
+        final InputMethodManager imm = (InputMethodManager)getSystemService(SearchActivity.INPUT_METHOD_SERVICE);
+        
         final Button searchButton = (Button)findViewById(R.id.searchButton);
         searchButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                InputMethodManager imm = (InputMethodManager)getSystemService(SearchActivity.INPUT_METHOD_SERVICE);
-                imm.hideSoftInputFromWindow(view.getWindowToken(), 1);
-                offset = 0;
-                ArrayAdapter<Model> adapter = onSearchClick(view);
-                if (adapter == null)
-                    return;
-                searchBack.setEnabled(false);
-                if (adapter.getCount() > 1)
-                    searchFwd.setEnabled(true);
-                setAdapter(adapter);
+                //InputMethodManager imm = (InputMethodManager)getSystemService(SearchActivity.INPUT_METHOD_SERVICE);
+                imm.hideSoftInputFromWindow(view.getWindowToken(), 2);
+                getResultCount();
+                onSearchClick();
             }
         });
 
-        searchFwd.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                offset += offsetStep;
-                ArrayAdapter<Model> adapter = onSearchClick(view);
-                if (adapter == null)
-                    return;
-                if (adapter.getCount() == 1) {
-                    MainActivity.showToast("You have reached the end of search result", getApplicationContext());
-                    searchFwd.setEnabled(false);
-                    return;
-                }
-                setAdapter(adapter);
-                searchBack.setEnabled(true);
-            }
-        });
-
-        searchBack.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                offset -= offsetStep;
-                if (offset < 0) {
-                    searchBack.setEnabled(false);
-                    offset = 0;
-                    return;
-                }
-                ArrayAdapter<Model> adapter = onSearchClick(view);
-                if (adapter == null)
-                    return;
-                setAdapter(adapter);
-            }
-        });
-        setOnItemClickListener();
-
-        final EditText searchEdit = (EditText) findViewById(R.id.searchEditText);
-        searchEdit.setOnKeyListener(new View.OnKeyListener() {
+        mySearchEdit = (EditText) findViewById(R.id.searchEditText);
+        mySearchEdit.setOnKeyListener(new View.OnKeyListener() {
             @Override
             public boolean onKey(View view, int keyCode, KeyEvent keyEvent) {
                 if (view.getId() != R.id.searchEditText)
@@ -99,37 +106,51 @@ public class SearchActivity extends OpenableListActivity {
                     return false;
                 if (keyEvent.getAction() != 0)
                     return false;
-                InputMethodManager imm = (InputMethodManager)getSystemService(SearchActivity.INPUT_METHOD_SERVICE);
-                imm.hideSoftInputFromWindow(view.getWindowToken(), 1);
+                //InputMethodManager imm = (InputMethodManager)getSystemService(SearchActivity.INPUT_METHOD_SERVICE);
+                //imm.hideSoftInputFromWindow(view.getWindowToken(), 2);
                 searchButton.performClick();
                 return true;
             }
         });
     }
 
-    private ArrayAdapter<Model> onSearchClick(View v) {
-        EditText searchEdit = (EditText) findViewById(R.id.searchEditText);
-        String searchString = searchEdit.getText().toString();
-        Result myResult;
+    private void getResultCount () {
+        ResultCount result;
         try {
-            myResult = Request.search(searchString, offsetStep, offset);
+            result = Request.getCount(mySearchEdit.getText().toString());
         } catch (IOException e) {
-            showErrorMessage("Search", e.getMessage());
-            return null;
+            ((MusicApplication)getApplication()).showErrorMessage("Get count", e.getMessage());
+            return;
         }
-        ArrayAdapter<Model> adapter = new ArrayAdapter<Model>(v.getContext(), R.layout.unplayable);
-        if (myResult.isEmpty()) {
-            adapter.add(new EmptyResult("No items were found."));
-        } else {
-            adapter.add(new ModelContainer("Artists", myResult.getArtists()));
-            AdapterHelper.addToAdapter(adapter, myResult.getArtists(), "");
-            adapter.add(new ModelContainer("Albums", myResult.getAlbums()));
-            AdapterHelper.addToAdapter(adapter, myResult.getAlbums(), "");
-            adapter.add(new ModelContainer("Tracks", myResult.getTracks()));
-            AdapterHelper.addToAdapter(adapter, myResult.getTracks(), "");
-        }
-        return adapter;
+        setTabCaption(0, "Artists (" + result.getArtistsSize() + ')');
+        setTabCaption(1, "Albums (" + result.getAlbumsSize() + ')');
+        setTabCaption(2, "Tracks (" + result.getTracksSize() + ')');
     }
 
+    private void onSearchClick () {
+        String searchString = mySearchEdit.getText().toString();
+        Result myResult;
+        try {
+            myResult = Request.search(searchString, 2*offsetStep, 0, MusicApplication.ALL);
+        } catch (IOException e) {
+            ((MusicApplication)getApplication()).showErrorMessage("Search", e.getMessage());
+            return;
+        }
+        if (myResult.isEmpty()) {
+            myAlbums.reset();
+            myArtists.reset();
+            myTracks.reset();
+        } else {
+            myArtists.reset(searchString, myResult.getArtists());
+            myAlbums.reset(searchString, myResult.getAlbums());
+            myTracks.reset(searchString, myResult.getTracks());
+        }
+        myTabHost.setCurrentTab(2);
+    }
 
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+        setContentView(R.layout.search);
+    }
 }

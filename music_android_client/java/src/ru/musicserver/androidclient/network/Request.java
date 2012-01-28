@@ -24,8 +24,9 @@ import java.lang.reflect.Type;
  */
 public class Request {
     private static HttpClient myHttpClient = null;
-    private static String myServerAddress = "192.168.211.119";
+    //private static String myServerAddress = "192.168.211.119";
     //private static String myServerAddress = "192.168.1.5";
+    private static String myServerAddress = "192.168.1.2";
 
     private static HttpResponse execute (String request) throws IOException {
         if (myHttpClient == null) {
@@ -59,9 +60,9 @@ public class Request {
         }
     }
 
-    public static Result search (String pattern, int limit, int offset) throws IOException {
+    public static Result search (String pattern, int limit, int offset, int contentType) throws IOException {
         try {
-            HttpResponse response = execute("http://" + myServerAddress + ":6006/search/?pattern=" + pattern + "&limit=" + limit + "&offset=" + offset);
+            HttpResponse response = execute("http://" + myServerAddress + ":6006/search/?pattern=" + pattern + "&limit=" + limit + "&offset=" + offset + "&type=" + contentType);
             StatusLine statusLine = response.getStatusLine();
             if (statusLine.getStatusCode() == HttpStatus.SC_OK){
                 InputStreamReader r = new InputStreamReader(response.getEntity().getContent());
@@ -85,5 +86,34 @@ public class Request {
         } catch (Exception e) {
             throw new IOException("Connection ERROR: " + e.getMessage());
         }
+    }
+    
+    public static ResultCount getCount (String pattern) throws IOException {
+        try {
+            HttpResponse response = execute("http://" + myServerAddress + ":6006/count/?pattern=" + pattern);
+            StatusLine statusLine = response.getStatusLine();
+            if (statusLine.getStatusCode() == HttpStatus.SC_OK){
+                InputStreamReader r = new InputStreamReader(response.getEntity().getContent());
+                return new Gson().fromJson(r, (Type)ResultCount.class);
+            } else {
+                //Closes the connection.
+                response.getEntity().getContent().close();
+                throw new IOException(statusLine.getReasonPhrase());
+            }
+        } catch (JsonSyntaxException e1) {
+            if (e1.getMessage().contains("{ERROR}")) {
+                return new ResultCount();
+            }
+            throw e1;
+        } catch (HttpHostConnectException e2) {
+            String msg = e2.getMessage();
+            if (msg.contains("Connection to ") && msg.contains(myServerAddress) && msg.contains("refused")) {
+                throw new IOException("Failed to connect to Music Server.\nCheck your internet connection.\nOr it may be Music Server Internal error ;)");
+            }
+            throw e2;
+        } catch (Exception e) {
+            throw new IOException("Connection ERROR: " + e.getMessage());
+        }
+
     }
 }

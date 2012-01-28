@@ -7,9 +7,10 @@
     <application android:label="@string/app_name"
                  android:icon="@drawable/icon"
                  android:theme="@android:style/Theme.Black"
-                 android:debuggable="true">
+                 android:debuggable="true" android:name=".MusicApplication">
 
         <activity android:name=".MainActivity"
+                  android:configChanges="keyboardHidden|orientation"
                   android:label="@string/app_name"
                   android:theme="@android:style/Theme.NoTitleBar">
             <intent-filter>
@@ -20,7 +21,10 @@
         <activity android:name=".SearchActivity" />
         <activity android:name=".PlaylistActivity"/>
         <activity android:name=".PlayingActivity"/>
+        <activity android:name=".SearchResultActivity"/>
 
         <service android:name=".MusicPlayerService"/>
+
+
     </application>
 </manifest> 

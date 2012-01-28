@@ -1,5 +1,7 @@
 package ru.musicserver.androidclient.model;
 
+import ru.musicserver.androidclient.activity.MusicApplication;
+
 import java.util.LinkedList;
 import java.util.List;
 
@@ -30,17 +32,42 @@ public class Result {
         return (artists.isEmpty() && albums.isEmpty() && tracks.isEmpty());
     }
 
+    /*public List<Artist> getArtists() {
+        return artists;
+    }
+
+    public List<Album> getAlbums() {
+        return albums;
+    }
+
+    public List<Track> getTracks() {
+        return tracks;
+    }   */
+    
+    public Model[] getModelsOfType (int type) {
+        switch (type) {
+            case MusicApplication.ARTISTS:
+                return getArtists();
+            case MusicApplication.ALBUMS:
+                return getAlbums();
+            case MusicApplication.TRACKS:
+                return getTracks();
+            default:
+                return new Model[]{new EmptyResult("No models of type " + type + ".")};
+        }
+    }
+
     public Artist[] getArtists() {
-       return artists.toArray(new Artist[artists.size()]);
-   }
+        return artists.toArray(new Artist[artists.size()]);
+    }
 
-   public Album[] getAlbums() {
-       return albums.toArray(new Album[albums.size()]);
-   }
+    public Album[] getAlbums() {
+        return albums.toArray(new Album[albums.size()]);
+    }
 
-   public Track[] getTracks() {
-       return tracks.toArray(new Track[tracks.size()]);
-   }
+    public Track[] getTracks() {
+        return tracks.toArray(new Track[tracks.size()]);
+    }
 
 
 }

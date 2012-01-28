@@ -1,6 +1,7 @@
 package ru.musicserver.androidclient.model;
 
 import java.util.LinkedList;
+import java.util.List;
 
 /**
  * Created by IntelliJ IDEA.
@@ -12,22 +13,28 @@ import java.util.LinkedList;
 public class Playlist implements Comparable<Playlist> {
     private String myName;
     private LinkedList<Track> myData;
-    private int myMaxCapacity;
+    //private int myMaxCapacity;
     private int nowPlaying;
 
     public Playlist (String name, int maxCapacity) {
-        myMaxCapacity = maxCapacity;
+        //myMaxCapacity = maxCapacity;
         myData = new LinkedList<Track>();
         nowPlaying = -1;
         myName = name;
     }
 
+    public void addTracks (List<Track> tracks) {
+        for (Track track: tracks) {
+            add(track);
+        }
+    }
+    
     public boolean add (Track track) {
         if (myData.contains(track))
             return false;
-        if (myData.size() == myMaxCapacity) {
+        /*if (myData.size() == myMaxCapacity) {
             myData.removeLast();
-        }
+        }*/
         myData.push(track);
         return true;
     }

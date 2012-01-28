@@ -1,13 +1,14 @@
 package ru.musicserver.androidclient.activity;
 
+import android.app.Activity;
 import android.app.ListActivity;
+import android.content.Context;
+import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
-import ru.musicserver.androidclient.model.EmptyResult;
-import ru.musicserver.androidclient.model.Model;
-import ru.musicserver.androidclient.model.Track;
+import ru.musicserver.androidclient.model.*;
 
 import java.io.IOException;
 
@@ -18,41 +19,64 @@ import java.io.IOException;
  * Time: 3:57 AM
  * To change this template use File | Settings | File Templates.
  */
-public abstract class OpenableListActivity extends ListActivity {
-    protected ListView myListView;
+public abstract class OpenableListActivity extends Activity {
+   // protected ListView myListView;
+
+   /* public void onCreate(Bundle savedInstanceState, int layoutResId) {
+        super.onCreate(savedInstanceState);
+        /*setContentView(layoutResId);
+        myListView = getListView();
+        setOnItemClickListener();
+    }                                       */
 
     protected void showErrorMessage (String title, String message) {
-        MainActivity.showErrorMessage(title, message, this);
+        ((MusicApplication)getApplication()).showErrorMessage(title, message);
     }
 
-    protected void setAdapter (ArrayAdapter<Model> adapter) {
-        myListView.setAdapter(adapter);
+    public void setAdapter (ListView listView, ArrayAdapter<Model> adapter) {
+        if (adapter == null)
+            return;
+        listView.setAdapter(adapter);
     }
 
-    protected void setOnItemClickListener () {
-        myListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+    protected void setOnListItemClickListener (final ListView listView) {
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
+                if (view.getId() == R.id.add_to_playlist) {
+                    Model item = (Model) adapterView.getItemAtPosition(position);
+                    if (item instanceof Track)
+                        ((MusicApplication)getApplicationContext()).getCurrentPlaylist().add((Track) item);
+                    else if (item instanceof Album)
+                        ((MusicApplication)getApplicationContext()).getCurrentPlaylist().addTracks(((Album) item).getTracks());
+                    else if (item instanceof Artist) {
+                        for (Album album: ((Artist) item).getAlbums()) {
+                            ((MusicApplication)getApplicationContext()).getCurrentPlaylist().addTracks(album.getTracks());
+                        }
+                    }
+                    return;
+                }
+                
                 Model item = (Model)adapterView.getItemAtPosition(position);
                 if (item instanceof Track) {
-                    MainActivity.trackClicked((Track)item, OpenableListActivity.this);
+                    ((MusicApplication)getApplication()).trackClicked((Track)item);
                     return;
                 }
                 if (item instanceof EmptyResult)
                     return;
 
-                ArrayAdapter<Model> adapter = (ArrayAdapter<Model>) adapterView.getAdapter();
-                if (AdapterHelper.isOpened(adapter, position)) {
-                    AdapterHelper.close(adapter, position);
+                OpenableArrayAdapter adapter = (OpenableArrayAdapter) adapterView.getAdapter();
+                if (adapter.isOpened(position)) {
+                    adapter.close(position);
                 } else {
                     try {
-                        AdapterHelper.open(adapter, position);
+                        adapter.open(position);
                     } catch (IOException e) {
                         showErrorMessage("Open list item", e.getMessage());
                         return;
                     }
                 }
-                setAdapter(adapter);
+                setAdapter(listView, adapter);
             }
         });
     }

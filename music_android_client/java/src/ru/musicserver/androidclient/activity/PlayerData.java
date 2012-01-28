@@ -7,7 +7,7 @@ package ru.musicserver.androidclient.activity;
  * Time: 10:45 PM
  * To change this template use File | Settings | File Templates.
  */
-public class MyPlayer {
+public class PlayerData {
     public enum Mode {PLAY, PAUSE, STOP}
 
     private String myCurrentTrack = null;
@@ -16,11 +16,11 @@ public class MyPlayer {
     private int myMediaFileLengthInMilliseconds = 0;
     private Mode myMode;
 
-    public MyPlayer () {
+    public PlayerData() {
         myMode = Mode.STOP;
     }
 
-    public MyPlayer (MyPlayer player) {
+    public PlayerData(PlayerData player) {
         myCurrentPosition = player.myCurrentPosition;
         myMediaFileLengthInMilliseconds = player.myMediaFileLengthInMilliseconds;
         myCurrentTrack = player.myCurrentTrack;
@@ -28,27 +28,27 @@ public class MyPlayer {
         myMode = player.myMode;
     }
 
-    // save player to new object and return it
-    public static MyPlayer save (MyPlayer player) {
-        if (player == null)
+    // save data to new object and return it
+    public static PlayerData save (PlayerData data) {
+        if (data == null)
             return null;
-        return new MyPlayer(player);
+        return new PlayerData(data);
     }
 
-    //set player from this
-    public void restoreFrom(MyPlayer player) {
-        myCurrentPosition = player.myCurrentPosition;
-        myMediaFileLengthInMilliseconds = player.myMediaFileLengthInMilliseconds;
-        myCurrentTrack = player.myCurrentTrack;
-        myCurrentTrackUrl = player.myCurrentTrackUrl;
-        myMode = player.myMode;
+    //set data from this
+    public void restoreFrom(PlayerData data) {
+        myCurrentPosition = data.myCurrentPosition;
+        myMediaFileLengthInMilliseconds = data.myMediaFileLengthInMilliseconds;
+        myCurrentTrack = data.myCurrentTrack;
+        myCurrentTrackUrl = data.myCurrentTrackUrl;
+        myMode = data.myMode;
 
 
-     /*   player.myCurrentTrack = myCurrentTrack;
-        player.myMode = myMode;
-        player.myCurrentPosition = myCurrentPosition;
-        player.myCurrentTrackUrl = myCurrentTrackUrl;
-        player.myMediaFileLengthInMilliseconds = myMediaFileLengthInMilliseconds;      */
+     /*   data.myCurrentTrack = myCurrentTrack;
+        data.myMode = myMode;
+        data.myCurrentPosition = myCurrentPosition;
+        data.myCurrentTrackUrl = myCurrentTrackUrl;
+        data.myMediaFileLengthInMilliseconds = myMediaFileLengthInMilliseconds;      */
     }
 
     public void setMode(Mode myMode) {

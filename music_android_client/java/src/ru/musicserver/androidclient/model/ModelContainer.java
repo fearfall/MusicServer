@@ -15,6 +15,10 @@ public class ModelContainer extends Model {
         this.models = models;
     }
 
+    public boolean isEmpty() {
+        return models.length == 0;
+    }
+
     @Override
     public Model[] getContent() {
         return models;

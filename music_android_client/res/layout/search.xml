@@ -1,54 +1,79 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<LinearLayout android:id="@+id/search_layout"
-              xmlns:android="http://schemas.android.com/apk/res/android"
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
               android:orientation="vertical"
-              android:layout_width="fill_parent"
-              android:layout_height="wrap_content">
+              android:padding="5px">
 
     <LinearLayout
-          android:orientation="horizontal"
-          android:layout_width="fill_parent"
-          android:layout_height="100px"
-          android:layout_weight="10"
-          android:padding="10px">
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="14"
+            android:padding="10px">
         <EditText android:id="@+id/searchEditText"
                   android:text="@string/emptyText"
-                  android:layout_height="fill_parent"
-                  android:layout_width="fill_parent"
-                  android:layout_weight="1"
-                  android:gravity="left"
-                  android:padding="10px"/>
-
-        <ImageButton android:id="@+id/searchBackwardButton"
-                     android:layout_width="wrap_content"
-                     android:layout_height="wrap_content"
-                     android:layout_marginTop="5px"
-                     android:tag="Back"
-                     android:background="@drawable/thumb_transparent"
-                     style="?android:attr/buttonStyleSmall"
-                     android:src="@drawable/search_backward"/>
+                  android:layout_height="wrap_content"
+                  android:layout_width="match_parent"
+                  android:gravity="center_vertical"
+                  android:lines="1"
+                  android:layout_weight="1"/>
 
         <Button   android:id="@+id/searchButton"
                   android:text="@string/search"
-                  android:layout_height="fill_parent"
-                  android:layout_width="fill_parent"
-                  android:layout_weight="1"
-                  android:gravity="right"
-                  android:padding="10px"/>
+                  android:layout_height="wrap_content"
+                  android:layout_width="match_parent"
+                  android:gravity="center_vertical"
+                  android:layout_weight="3"/>
 
-        <ImageButton android:id="@+id/searchForwardButton"
-                     android:layout_width="wrap_content"
-                     android:layout_height="wrap_content"
-                     android:layout_marginTop="5px"
-                     android:tag="Next"
-                     android:background="@drawable/thumb_transparent"
-                     android:src="@drawable/search_forward"/>
     </LinearLayout>
 
-    <ListView android:id="@android:id/list"
-              android:layout_width="fill_parent" 
-              android:layout_height="fill_parent"
-              android:layout_weight="1"
-              android:drawSelectorOnTop="false"/>
+    <TabHost xmlns:android="http://schemas.android.com/apk/res/android"
+             android:id="@android:id/tabhost"
+             android:layout_weight="17"
+             android:layout_width="fill_parent"
+             android:layout_height="fill_parent">
+
+        <LinearLayout android:orientation="vertical"
+                      android:layout_width="fill_parent"
+                      android:layout_height="fill_parent">
+
+            <View android:layout_width="fill_parent"
+                  android:layout_height="0.5dip"
+                  android:background="#000" />
+            <TabWidget android:id="@android:id/tabs"
+                       android:layout_width="fill_parent"
+                       android:layout_height="wrap_content"
+                       android:layout_marginLeft="0dip"
+                       android:layout_marginRight="0dip" />
+            <View android:layout_width="fill_parent"
+                  android:layout_height="2dip"
+                  android:background="#696969" />
+            <View android:layout_width="fill_parent"
+                  android:layout_height="2dip"
+                  android:background="#000" />
+
+            <FrameLayout android:id="@android:id/tabcontent"
+                         android:layout_width="fill_parent"
+                         android:layout_height="fill_parent">
+
+                <ListView android:id="@+id/list1"
+                          android:layout_width="match_parent"
+                          android:layout_height="match_parent"
+                          android:layout_weight="1"/>
+                <ListView android:id="@+id/list2"
+                          android:layout_width="match_parent"
+                          android:layout_height="match_parent"
+                          android:layout_weight="1"
+                          android:drawSelectorOnTop="false"/>
+                <ListView android:id="@+id/list3"
+                          android:layout_width="match_parent"
+                          android:layout_height="wrap_content"
+                          android:layout_weight="1"/>
+
+            </FrameLayout>
+        </LinearLayout>
+    </TabHost>
 
 </LinearLayout>

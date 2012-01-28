@@ -1,56 +1,82 @@
 <?xml version="1.0" encoding="utf-8"?>
+
 <TabHost xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@android:id/tabhost"
-    android:layout_width="fill_parent"
-    android:layout_height="fill_parent">
-    <LinearLayout
-        android:orientation="vertical"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:padding="5px">
+         android:id="@android:id/tabhost"
+         android:layout_width="match_parent"
+         android:layout_height="match_parent"
+         android:padding="5px">
 
-        <LinearLayout 	xmlns:android="http://schemas.android.com/apk/res/android"
-                          android:orientation="horizontal"
-                          android:layout_width="fill_parent"
-                          android:layout_height="wrap_content"
-                          android:padding="5px">
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                  android:orientation="vertical"
+                  android:layout_width="match_parent"
+                  android:layout_height="match_parent"
+                  android:padding="5px">
 
-            <TextView  	android:id="@+id/playing_track_name"
-                           android:layout_width="wrap_content"
-                           android:layout_height="wrap_content"
-                           android:textStyle="bold"
-                           android:gravity="left"
-                           android:text="@string/noTrackName"/>
+        <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                      android:orientation="horizontal"
+                      android:layout_width="match_parent"
+                      android:layout_height="wrap_content"
+                      android:padding="5px">
 
-            <TextView  	android:id="@+id/currentPlaylist"
-                           android:layout_width="wrap_content"
-                           android:layout_height="wrap_content"
-                           android:textStyle="bold"
-                           android:gravity="right"
-                           android:text="@string/defaultPlaylist"/>
-
-            <ImageButton android:id="@+id/button_minimize"
+            <ImageButton android:id="@+id/button_stop"
                          android:layout_width="wrap_content"
                          android:layout_height="wrap_content"
-                         android:layout_marginTop="5px"
-                         android:gravity="right"
                          android:background="@drawable/thumb_transparent"
-                         android:src="@drawable/minimize"/>
+                         android:src="@drawable/button_stop"/>
 
-            <ImageButton android:id="@+id/button_close"
+            <ImageButton android:id="@+id/button_back"
                          android:layout_width="wrap_content"
                          android:layout_height="wrap_content"
-                         android:layout_marginTop="5px"
-                         android:gravity="right"
                          android:background="@drawable/thumb_transparent"
-                         android:src="@drawable/close"/>
+                         android:src="@drawable/button_skipback"/>
+
+            <ImageButton android:id="@+id/button_play"
+                         android:layout_width="wrap_content"
+                         android:layout_height="wrap_content"
+                         android:background="@drawable/thumb_transparent"
+                         android:src="@drawable/button_pause"/>
+
+            <ImageButton android:id="@+id/button_fwd"
+                         android:layout_width="wrap_content"
+                         android:layout_height="wrap_content"
+                         android:background="@drawable/thumb_transparent"
+                         android:src="@drawable/button_skipfwd"/>
+
+            <TextView android:id="@+id/playing_track_name"
+                      android:layout_width="wrap_content"
+                      android:layout_height="wrap_content"
+                      android:textStyle="bold"
+                      android:gravity="left"
+                      android:paddingRight="20px"
+                      android:paddingLeft="20px"
+                      android:paddingTop="5px"
+                      android:text="@string/noTrackName"/>
+
+            <TextView android:id="@+id/currentPlaylist"
+                      android:layout_width="wrap_content"
+                      android:layout_height="wrap_content"
+                      android:textStyle="bold"
+                      android:gravity="right"
+                      android:layout_gravity="right"
+                      android:paddingTop="5px"
+                      android:text="@string/defaultPlaylist"/>
+
         </LinearLayout>
 
-        <LinearLayout 	xmlns:android="http://schemas.android.com/apk/res/android"
-                          android:orientation="horizontal"
-                          android:layout_width="fill_parent"
-                          android:layout_height="wrap_content"
-                          android:padding="5px">
+        <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                      android:orientation="horizontal"
+                      android:layout_width="match_parent"
+                      android:layout_height="wrap_content"
+                      android:padding="5px">
+
+            <TextView android:id="@+id/buffering"
+                      android:layout_width="wrap_content"
+                      android:layout_height="wrap_content"
+                      android:text="0"
+                      android:textStyle="bold"
+                      android:paddingBottom="5px"
+                      android:paddingRight="10px"
+                      android:paddingTop="5px"/>
 
             <TextView android:id="@+id/timing"
                       android:layout_width="wrap_content"
@@ -58,50 +84,35 @@
                       android:text="@string/nullTiming"
                       android:textStyle="bold"
                       android:paddingBottom="5px"
+                      android:paddingRight="10px"
                       android:paddingTop="5px"/>
-
-            <ImageButton	android:id="@+id/button_stop"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="5px"
-                            android:background="@drawable/thumb_transparent"
-                            android:src="@drawable/button_stop"/>
-
-            <ImageButton	android:id="@+id/button_back"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="5px"
-                            android:background="@drawable/thumb_transparent"
-                            android:src="@drawable/button_skipback"/>
-
-            <ImageButton	android:id="@+id/button_play"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="5px"
-                            android:background="@drawable/thumb_transparent"
-                            android:src="@drawable/button_pause"/>
-
-            <ImageButton	android:id="@+id/button_fwd"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="5px"
-                            android:background="@drawable/thumb_transparent"
-                            android:src="@drawable/button_skipfwd"/>
 
             <SeekBar android:id="@+id/seekBarTestPlay"
                      android:layout_height="wrap_content"
-                     android:layout_width="fill_parent"
+                     android:layout_width="match_parent"
                      style="?android:attr/progressBarStyleHorizontal"/>
+
         </LinearLayout>
 
-        <TabWidget
-            android:id="@android:id/tabs"
-            android:layout_width="fill_parent"
-            android:layout_height="fill_parent" />
-        <FrameLayout
-            android:id="@android:id/tabcontent"
-            android:layout_width="fill_parent"
-            android:layout_height="fill_parent"
-            android:padding="5dp" />
+        <TabWidget android:id="@android:id/tabs"
+                   android:layout_gravity="top"
+                   android:layout_width="match_parent"
+                   android:layout_height="wrap_content"/>
+        <FrameLayout android:id="@android:id/tabcontent"
+                     android:layout_width="match_parent"
+                     android:layout_height="match_parent"
+                     android:padding="5dp" />
+
     </LinearLayout>
 </TabHost>
+
+
+        <!--LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                      android:orientation="vertical"
+                      android:layout_width="match_parent"
+                      android:layout_height="match_parent"
+                      android:padding="5px">
+
+
+
+        </LinearLayout-->

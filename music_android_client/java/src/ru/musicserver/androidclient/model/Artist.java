@@ -40,4 +40,8 @@ public class Artist extends Model {
     public Album[] getContent() {
         return albums.toArray(new Album[albums.size()]);
     }
+    
+    public List<Album> getAlbums () {
+        return albums;
+    }
 }

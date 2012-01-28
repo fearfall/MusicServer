@@ -2,6 +2,7 @@ package ru.musicserver.androidclient.activity;
 
 import android.os.Bundle;
 import android.widget.ArrayAdapter;
+import android.widget.ListView;
 import ru.musicserver.androidclient.model.Model;
 import ru.musicserver.androidclient.model.Playlist;
 
@@ -15,25 +16,25 @@ import java.util.LinkedList;
  * To change this template use File | Settings | File Templates.
  */
 public class PlaylistActivity extends OpenableListActivity {
-
+    private ListView myListView;
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.playlists);
-        myListView = getListView();
-        setOnItemClickListener();
+        myListView = (ListView)findViewById(R.id.playlist_list);
+        setOnListItemClickListener(myListView);
     }
 
-    public void onResume() {
-        //todo : check, what has changed and update
-        super.onResume();
-
-        LinkedList<Playlist> playLists = MainActivity.getAllPlayLists();
-        ArrayAdapter<Model> adapter = new ArrayAdapter<Model>(PlaylistActivity.this, R.layout.unplayable);
-
-        for (Playlist playlist: playLists) {
-            adapter.add(playlist.toModelContainer());
-            AdapterHelper.addToAdapter(adapter, playlist.getData(), "");
-        }
-        setAdapter(adapter);
-    }
+//    public void onResume() {
+//        //todo : check, what has changed and update
+//        super.onResume();
+//
+//        LinkedList<Playlist> playLists = ((MusicApplication)getApplication()).getAllPlayLists();
+//        ArrayAdapter<Model> adapter = new ArrayAdapter<Model>(PlaylistActivity.this, R.layout.unplayable);
+//
+//        for (Playlist playlist: playLists) {
+//            adapter.add(playlist.toModelContainer());
+//            AdapterHelper.addToAdapter(adapter, playlist.getData(), "");
+//        }
+//        setAdapter(myListView, adapter);
+//    }
 }
