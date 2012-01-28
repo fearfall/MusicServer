@@ -1,0 +1,45 @@
+<mockup version="1.0" skin="sketch" measuredW="1251" measuredH="523" mockupW="1053" mockupH="494">
+  <controls>
+    <control controlID="38" controlTypeID="com.balsamiq.mockups::BrowserWindow" x="198" y="29" w="824" h="494" measuredW="450" measuredH="400" zOrder="0" locked="false" isInGroup="-1">
+      <controlProperties>
+        <text>A%20Web%20Page%0Ahttp%3A//</text>
+      </controlProperties>
+    </control>
+    <control controlID="39" controlTypeID="com.balsamiq.mockups::TagCloud" x="271" y="234" w="673" h="228" measuredW="350" measuredH="250" zOrder="1" locked="false" isInGroup="-1">
+      <controlProperties>
+        <text>%20%20%20%2070s%0A%20%20%20%2080s%0A%20%20%20%2090s%0A%20%20%20%2000s%0A%20%20%20%2010s%0A%20%0A%20%0A%20%20%20%208cm%20cd%0A%20%20%20%20abstract%0A%20%20%20%20acid%0A%20%20%20%20acid%20house%0A%20%20%20%20acid%20jazz%0A%20%20%20%20acoustic%0A%20%20%20%20adult%20contemporary%0A%20%20%20%20alternative%0A%20%20%20%20alternative%20and%20punk%0A%20%20%20%20alternative%20punk%0A%20%20%20%20alternative%20rock%0A%20%20%20%20ambient%0A%20%20%20%20american%0A%20%20%20%20am%E9ricain%0A%20%20%20%20anarcho%0A%20%20%20%20anime%0A%20%20%20%20art%20rock%0A%20%20%20%20avantgarde%0A%20%20%20%20ballad%0A%20%20%20%20big%20beat%0A%20%20%20%20black%20metal%0A%20%20%20%20blues%0A%20%20%20%20blues%20rock%0A%20%20%20%20breakbeat%0A%20%20%20%20breakcore%0A%20%20%20%20breaks%0A%20%20%20%20brit%20pop%0A%20%20%20%20britannique%0A%20%20%20%20british%0A%20%20%20%20canadian%0A%20%20%20%20celtic%0A%20%20%20%20check%20it%0A%20%20%20%20chinese%0A%20%20%20%20christmas%0A%20%20%20%20classic%20pop%20and%20rock%0A%20%20%20%20classic%20rock%0A%20%20%20%20classical%0A%20%20%20%20comedy%0A%20%20%20%20contra%0A%20%20%20%20country%0A%20%20%20%20country%20rock%0A%20%20%20%20dance%0A%20%20%20%20dance%20and%20electronica%0A%20%20%20%20dark%20ambient%0A%20%20%20%20death%20metal%0A%20%20%20%20deep%20house%0A%20%20%20%20disco%0A%20%20%20%20disco%20eurobeat%0A%20%20%20%20discoth%E8que%0A%20%20%20%20doom%20metal%0A%20%20%20%20doowop%0A%20%20%20%20downtempo%0A%20%20%20%20drum%20and%20bass%0A%20%20%20%20drum%20n%20bass%0A%20%20%20%20dub%0A%20%20%20%20dubstep%0A%20%20%20%20dutch%0A%20%20%20%20easy%20listening%0A%20%20%20%20ebm%0A%20%20%20%20electro%0A%20%20%20%20electronic%0A%20%20%20%20electronica%0A%20%20%20%20electronica%20dance%0A%20%20%20%20england%0A%20%20%20%20english%0A%20%20%20%20euro%20house%0A%20%20%20%20european%0A%20%20%20%20experimental%0A%20%20%20%20filk%0A%20%20%20%20finnish%0A%20%20%20%20folk%0A%20%20%20%20folk%20rock%0A%20%20%20%20folk-rock%0A%20%20%20%20france%0A%20%20%20%20francophone%0A%20%20%20%20fran%E7ais%0A%20%20%20%20french%0A%20%20%20%20funk%0A%20%20%20%20funk%20soul%0A%20%20%20%20fusion%0A%20%20%20%20future%20jazz%0A%20%20%20%20gabber%0A%20%20%20%20gangsta%0A%20%20%20%20garage%20house%0A%20%20%20%20garage%20rock%0A%20%20%20%20german%0A%20%20%20%20germany%0A%20%20%20%20glitch%0A%20%20%20%20goa%20trance%0A%20%20%20%20gospel%0A%20%20%20%20goth%20rock%0A%20%20%20%20greek%0A%20%20%20%20grime%0A%20%20%20%20grindcore%0A%20%20%20%20grunge%0A%20%20%20%20happy%20hardcore%0A%20%20%20%20hard%20house%0A%20%20%20%20hard%20rock%0A%20%20%20%20hard%20trance%0A%20%20%20%20hardcore%0A%20%20%20%20heavy%20metal%0A%20%20%20%20hello%20project%0A%20%20%20%20hip%20hop%0A%20%20%20%20hip%20hop%20rap%0A%20%20%20%20hip%20hop%20rnb%20and%20dance%20hall%0A%20%20%20%20hip-hop%0A%20%20%20%20house%0A%20%20%20%20hungarian%0A%20%20%20%20idm%0A%20%20%20%20indie%0A%20%20%20%20indie%20rock%0A%20%20%20%20industrial%0A%20%20%20%20industrial%20metal%0A%20%20%20%20instrumental%0A%20%20%20%20instrumental%20version%0A%20%20%20%20italian%0A%20%20%20%20japanese%0A%20%20%20%20jazz%0A%20%20%20%20jazz%20and%20blues%0A%20%20%20%20jazz%20fusion%0A%20%20%20%20jungle%0A%20%20%20%20karaoke%0A%20%20%20%20latin%0A%20%20%20%20latvian%0A%20%20%20%20leftfield%0A%20%20%20%20live%0A%20%20%20%20lo-fi%0A%20%20%20%20lounge%0A%20%20%20%20metal%0A%20%20%20%20minimal%0A%20%20%20%20modern%20classical%0A%20%20%20%20musical%0A%20%20%20%20nederlandstalig%0A%20%20%20%20new%20age%0A%20%20%20%20new%20wave%0A%20%20%20%20noise%0A%20%20%20%20non-music%0A%20%20%20%20oldies%0A%20%20%20%20other%20pop%0A%20%20%20%20owned%0A%20%20%20%20pop%0A%20%20%20%20pop%20and%20chart%0A%20%20%20%20pop%20rap%0A%20%20%20%20pop%20rock%0A%20%20%20%20post%20rock%0A%20%20%20%20post-punk%0A%20%20%20%20post-rock%0A%20%20%20%20production%20music%0A%20%20%20%20progressive%20house%0A%20%20%20%20progressive%20metal%0A%20%20%20%20progressive%20rock%0A%20%20%20%20progressive%20trance%0A%20%20%20%20psy-trance%0A%20%20%20%20psychadelic%0A%20%20%20%20psychedelic%0A%20%20%20%20psychedelic%20rock%0A%20%20%20%20punk%0A%20%20%20%20punk%20rock%0A%20%20%20%20r%20b%0A%20%20%20%20rap%0A%20%20%20%20reggae%0A%20%20%20%20remix%0A%20%20%20%20rnb%20swing%0A%20%20%20%20rock%0A%20%20%20%20rock%20and%20indie%0A%20%20%20%20rock%20and%20roll%0A%20%20%20%20rock%20pop%0A%20%20%20%20rock%20roll%0A%20%20%20%20rockabilly%0A%20%20%20%20schlager%0A%20%20%20%20series-daytrotter%20session%0A%20%20%20%20should%20be%20public%20domain%0A%20%20%20%20ska%0A%20%20%20%20soft%20rock%0A%20%20%20%20soul%0A%20%20%20%20soul%20and%20reggae%0A%20%20%20%20soundtrack%0A%20%20%20%20southern%20rock%0A%20%20%20%20swedish%0A%20%20%20%20swing%0A%20%20%20%20synth-pop%0A%20%20%20%20synthpop%0A%20%20%20%20tech%20house%0A%20%20%20%20techno%0A%20%20%20%20the%20netherlands%0A%20%20%20%20thrash%0A%20%20%20%20thrash%20metal%0A%20%20%20%20top%2040%0A%20%20%20%20touhou%0A%20%20%20%20trance%0A%20%20%20%20tribal%0A%20%20%20%20trip%20hop%0A%20%20%20%20trip-hop%0A%20%20%20%20turkish%0A%20%20%20%20uk%0A%20%20%20%20usa%0A%20%20%20%20vocal%0A%20%20%20%20world</text>
+      </controlProperties>
+    </control>
+    <control controlID="40" controlTypeID="com.balsamiq.mockups::TextInput" x="417" y="192" w="231" h="-1" measuredW="79" measuredH="27" zOrder="2" locked="false" isInGroup="-1">
+      <controlProperties>
+        <text/>
+      </controlProperties>
+    </control>
+    <control controlID="41" controlTypeID="com.balsamiq.mockups::SearchBox" x="687" y="192" w="-1" h="-1" measuredW="65" measuredH="25" zOrder="3" locked="false" isInGroup="-1">
+      <controlProperties>
+        <text>search</text>
+      </controlProperties>
+    </control>
+    <control controlID="46" controlTypeID="com.balsamiq.mockups::Image" x="270" y="101" w="147" h="56" measuredW="77" measuredH="79" zOrder="4" locked="false" isInGroup="-1">
+      <controlProperties>
+        <text>LOGO</text>
+      </controlProperties>
+    </control>
+    <control controlID="49" controlTypeID="com.balsamiq.mockups::Canvas" x="801" y="101" w="143" h="56" measuredW="100" measuredH="70" zOrder="5" locked="false" isInGroup="-1"/>
+    <control controlID="50" controlTypeID="com.balsamiq.mockups::StickyNote" x="1079" y="214" w="172" h="119" measuredW="109" measuredH="123" zOrder="6" locked="false" isInGroup="-1">
+      <controlProperties>
+        <text>Registration%20block%3A%20it%20is%20just%20space%20segmentation.%20%20It%20could%20be%20a%20button%20or%20a%20link%20for%20registration/login</text>
+      </controlProperties>
+    </control>
+    <control controlID="51" controlTypeID="com.balsamiq.mockups::Arrow" x="929" y="119" w="-1" h="-1" measuredW="150" measuredH="100" zOrder="7" locked="false" isInGroup="-1">
+      <controlProperties>
+        <text/>
+      </controlProperties>
+    </control>
+    <control controlID="52" controlTypeID="com.balsamiq.mockups::Label" x="835" y="118" w="-1" h="-1" measuredW="74" measuredH="21" zOrder="8" locked="false" isInGroup="-1">
+      <controlProperties>
+        <text>Registration</text>
+      </controlProperties>
+    </control>
+  </controls>
+</mockup>

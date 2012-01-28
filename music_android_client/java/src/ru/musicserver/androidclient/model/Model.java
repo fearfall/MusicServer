@@ -9,6 +9,7 @@ package ru.musicserver.androidclient.model;
  */
 public abstract class Model {
     protected String name;
+    //TODO: Что такое shift?
     protected String shift = "";
     protected String mbid;
 
