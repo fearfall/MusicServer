@@ -9,7 +9,8 @@ package ru.musicserver.androidclient.model;
  */
 public abstract class Model {
     protected String name;
-    //TODO: Что такое shift?
+    //TODO: Что такое shift? -- это сдвиг относительно левого края экрана для визуального разделения сущностей разного
+    // уровня: чем больше shift, тем глубже вложена сущность.
     protected String shift = "";
     protected String mbid;
 
