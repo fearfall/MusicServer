@@ -1,5 +1,6 @@
 package finder.model;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -14,9 +15,9 @@ public class Result {
     private List<Track> tracks;
 
     public Result(List<Artist> artists, List<Album> albums, List<Track> tracks) {
-        this.artists = artists;
-        this.albums = albums;
-        this.tracks = tracks;
+        this.artists = artists == null ? new ArrayList<Artist>() : artists;
+        this.albums = albums == null ? new ArrayList<Album>() : albums;
+        this.tracks = tracks == null ? new ArrayList<Track>() : tracks;
     }
 
     public boolean isValid() {

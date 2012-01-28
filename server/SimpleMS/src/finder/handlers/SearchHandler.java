@@ -44,9 +44,28 @@ public class SearchHandler extends AbstractHandler
         if(offsetParam != null) {
             limit = Integer.valueOf(limitParam);
         }
-        //todo check everything (limit > 0 && limit is not very big and the same
-        //todo for offset)
-        Result result = connection.search(pattern, offset, limit);
+        int resultContent = 0;
+        String resTypeParam = httpServletRequest.getParameter("type");
+        if(resTypeParam != null) {
+            resultContent = Integer.valueOf(resTypeParam);
+        }
+
+        Result result;
+        switch (resultContent) {
+            case 3:
+                result = connection.searchTracks(pattern, offset, limit);
+                break;
+            case 1:
+                result = connection.searchAlbums(pattern, offset, limit);
+                break;
+            case 2:
+                result = connection.searchArtists(pattern, offset, limit);
+                break;
+            default:
+                //todo check everything (limit > 0 && limit is not very big and the same for offset)
+                result = connection.search(pattern, offset, limit);
+        }
+
         StringBuilder html = new StringBuilder();
         System.out.println(pattern);
         //html.append("<html> <head/> <body> ");

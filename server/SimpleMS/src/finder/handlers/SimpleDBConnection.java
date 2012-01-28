@@ -1,9 +1,7 @@
 package finder.handlers;
 
-import finder.model.Album;
-import finder.model.Artist;
-import finder.model.Result;
-import finder.model.Track;
+import finder.model.*;
+import finder.model.ResultCount;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowCallbackHandler;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
@@ -39,10 +37,68 @@ public class SimpleDBConnection {
         );
         return result.isValid() ? result : null;
     }
+    
+    public Result searchArtists(String pattern, int offset, int limit) {
+        Result result = new Result(findArtists(pattern, offset, limit), null, null);
+        return result.isValid() ? result : null;
+    }
+
+    public Result searchAlbums(String pattern, int offset, int limit) {
+        Result result = new Result(null, findAlbums(pattern, offset, limit), null);
+        return result.isValid() ? result : null;
+    }
+
+    public Result searchTracks(String pattern, int offset, int limit) {
+        Result result = new Result(null, null, findTracks(pattern, offset, limit));
+        return result.isValid() ? result : null;
+    }
+
+    public ResultCount getTotalAmount(String pattern) {
+        return new ResultCount(getArtistsCount(pattern), getAlbumsCount(pattern), getTracksCount(pattern));
+    }
+
+    private int getArtistsCount (String pattern) {
+        final int[] count = {0};
+        String queryArtist = ("select count(*) from simple_artist_info where lower(name) like '%'||?||'%' ");
+        try {
+            jdbcTemplate.query(queryArtist, new RowCallbackHandler() {
+                public void processRow(ResultSet resultSet) throws SQLException {
+                    count[0] = Integer.parseInt(resultSet.getString("count"));
+                }
+            }, pattern.toLowerCase());
+        } catch (Exception e) {e.printStackTrace();}
+        return count[0];
+    }
+
+    private int getAlbumsCount (String pattern) {
+        final int[] count = {0};
+        String queryArtist = ("select count(*) from simple_album_info where lower(name) like '%'||?||'%' ");
+        try {
+            jdbcTemplate.query(queryArtist, new RowCallbackHandler() {
+                public void processRow(ResultSet resultSet) throws SQLException {
+                    count[0] = Integer.parseInt(resultSet.getString("count"));
+                }
+            }, pattern.toLowerCase());
+        } catch (Exception e) {e.printStackTrace();}
+        return count[0];
+    }
+
+    private int getTracksCount (String pattern) {
+        final int[] count = {0};
+        String queryTrack = ("select count(*) from simple_track_info where lower(name) like '%'||?||'%' ");
+        try {
+            jdbcTemplate.query(queryTrack, new RowCallbackHandler() {
+                public void processRow(ResultSet resultSet) throws SQLException {
+                    count[0] = Integer.parseInt(resultSet.getString("count"));
+                }
+            }, pattern.toLowerCase());
+        } catch (Exception e) {e.printStackTrace();}
+        return count[0];
+    }
 
     private List<Artist> findArtists(String pattern, int offset, int limit) {
         final List<Artist> artists = new ArrayList<Artist>();
-        String queryArtist = ("select * from simple_artist_info where lower(name) like \'%\' || ? || \'%\' order by mbid limit ? offset ? ");
+        String queryArtist = ("select * from simple_artist_info where lower(name) like '%'||?||'%' order by mbid limit ? offset ? ");
         try {
         jdbcTemplate.query(queryArtist, new RowCallbackHandler() {
             public void processRow(ResultSet resultSet) throws SQLException {
@@ -60,7 +116,7 @@ public class SimpleDBConnection {
 
     private List<Album> findAlbums(String pattern, int offset, int limit) {
         final List<Album> albums = new ArrayList<Album>();
-        String queryAlbum = ("select * from simple_album_info where lower(name) like \'%\' || ? || \'%\' order by mbid limit ? offset ?");
+        String queryAlbum = ("select * from simple_album_info where lower(name) like '%'||?||'%' order by mbid limit ? offset ?");
         try {
             jdbcTemplate.query(queryAlbum, new RowCallbackHandler() {
                 public void processRow(ResultSet resultSet) throws SQLException {
@@ -78,7 +134,7 @@ public class SimpleDBConnection {
 
     private List<Track> findTracks(String pattern, int offset, int limit) {
         final List<Track> tracks = new ArrayList<Track>();
-        String queryTrack = ("select * from simple_track_info where lower(name) like \'%\' || ? || \'%\' order by mbid limit ? offset ?");
+        String queryTrack = ("select * from simple_track_info where lower(name) like '%'||?||'%' order by mbid limit ? offset ?");
         try {
             jdbcTemplate.query(queryTrack, new RowCallbackHandler() {
                 public void processRow(ResultSet resultSet) throws SQLException {
