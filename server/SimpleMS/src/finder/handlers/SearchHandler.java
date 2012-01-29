@@ -55,10 +55,10 @@ public class SearchHandler extends AbstractHandler
             case 3:
                 result = connection.searchTracks(pattern, offset, limit);
                 break;
-            case 1:
+            case 2:
                 result = connection.searchAlbums(pattern, offset, limit);
                 break;
-            case 2:
+            case 1:
                 result = connection.searchArtists(pattern, offset, limit);
                 break;
             default:

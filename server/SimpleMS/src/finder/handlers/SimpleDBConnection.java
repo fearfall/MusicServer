@@ -104,7 +104,7 @@ public class SimpleDBConnection {
             public void processRow(ResultSet resultSet) throws SQLException {
                 Artist artist = new Artist(resultSet.getString("name"), resultSet.getString("mbid"));
                 if(artists.indexOf(artist) < 0) {
-                    if(artist.isValid()) {
+                    if(artist.isPartValid()) {
                         artists.add(artist);
                     }
                 }
@@ -122,7 +122,7 @@ public class SimpleDBConnection {
                 public void processRow(ResultSet resultSet) throws SQLException {
                     Album album = new Album(resultSet.getString("name"),resultSet.getString("mbid"));
                     if(albums.indexOf(album) < 0) {
-                        if(album.isValid()) {
+                        if(album.isPartValid()) {
                             albums.add(album);
                         }
                     }
@@ -142,9 +142,9 @@ public class SimpleDBConnection {
                                             resultSet.getString("url"),
                                             resultSet.getString("mbid"));
                     if(tracks.indexOf(track) < 0) {
-                        //if(track.isValid()) {
+                        if(track.isPartValid()) {
                             tracks.add(track);
-                        //}
+                        }
                     }
                 }
             }, pattern.toLowerCase(), limit, offset);
@@ -164,7 +164,7 @@ public class SimpleDBConnection {
             }
         }, UUID.fromString(id));
         artist.setAlbums(albums);
-        return artist.isValid() ? artist : null;
+        return artist.isPartValid() ? artist : null;
     }
 
     public Album getAlbum(String id) {
@@ -180,7 +180,7 @@ public class SimpleDBConnection {
             }
           }, UUID.fromString(id));
         album.setTracks(tracks);
-        return album.isValid() ? album : null;
+        return album.isAllValid() ? album : null;
     }
 
     public Track getTrack(String id) {
@@ -193,7 +193,7 @@ public class SimpleDBConnection {
                 track.setUrl(resultSet.getString("url"));
             }
         }, UUID.fromString(id));
-        return track.isValid() ? track : null;
+        return track.isAllValid() ? track : null;
     }
 
 }
