@@ -89,13 +89,10 @@ public class Track {
         return null;
     }
 
-    public boolean isPartValid() {
+    public boolean isValid() {
         return !(name == null || name.isEmpty()
-               || mbid.isEmpty() || mbid == null);
-    }
-
-    public boolean isAllValid() {
-        return (isPartValid() && url != null && !url.isEmpty());
+               || mbid.isEmpty() || mbid == null
+                || url == null || url.isEmpty());
     }
 
     @Override
