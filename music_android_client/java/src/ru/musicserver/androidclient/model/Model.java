@@ -31,4 +31,8 @@ public abstract class Model {
     public String getMbid() {
         return mbid;
     }
+    
+    public String getName() {
+        return name;
+    }
 }

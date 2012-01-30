@@ -7,8 +7,12 @@ import android.os.RemoteException;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
-import android.widget.*;
+import android.widget.ImageButton;
+import android.widget.SeekBar;
+import android.widget.TextView;
+import android.widget.Toast;
 import ru.musicserver.androidclient.model.Playlist;
+import ru.musicserver.androidclient.model.PlaylistIterator;
 import ru.musicserver.androidclient.model.Track;
 import ru.musicserver.androidclient.network.Request;
 
@@ -140,7 +144,7 @@ public class MusicApplication extends Application {
                 /*if (currentPlaylist == -1)
                     next = ourHistory.back();
                 else  */
-                next = getCurrentPlaylist().next();
+                next = PlaylistIterator.next(getCurrentPlaylist());
                 if (next == null) {
                     showToast("Current playlist is empty or currently selected is the last track.");
                     return;
@@ -158,7 +162,7 @@ public class MusicApplication extends Application {
                 /*if (currentPlaylist == -1)
                     back = ourHistory.next();
                 else   */
-                back = getCurrentPlaylist().back();
+                back = PlaylistIterator.back(getCurrentPlaylist());
                 if (back == null) {
                     showToast("Current playlist is empty or currently selected is the first track.");
                     return;

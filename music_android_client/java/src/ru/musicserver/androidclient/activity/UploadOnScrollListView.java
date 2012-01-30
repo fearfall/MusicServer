@@ -10,7 +10,6 @@ import ru.musicserver.androidclient.model.Result;
 import ru.musicserver.androidclient.network.Request;
 
 import java.io.IOException;
-import java.util.ArrayList;
 
 /**
  * Created by IntelliJ IDEA.
@@ -70,13 +69,13 @@ public class UploadOnScrollListView {
                         myApplication.showErrorMessage("Search", e.getMessage());
                         return;
                     }
-                    if (!myResult.isEmpty()) {
+                    if (myResult != null && !myResult.isEmpty()) {
                         Model[] additional = myResult.getModelsOfType(myModelType);
                         myOffset += additional.length;
                         OpenableArrayAdapter adapter = (OpenableArrayAdapter) myListView.getAdapter();
                         adapter.append(additional);
-                        System.out.println("");
-                       // myListView.setAdapter(adapter);
+                    } else {
+                        isAppendable = false;
                     }
                 }
             }
@@ -87,17 +86,18 @@ public class UploadOnScrollListView {
         if (objects == null || objects.length == 0) {
             myListView.setAdapter(new ArrayAdapter<Model>(myContext, R.layout.unplayable, new Model[] {new EmptyResult("No items were found.")}));
             myOffset = 0;
+            isAppendable = false;
         } else {
             myListView.setAdapter(new OpenableArrayAdapter(myContext, objects));
             myOffset = objects.length;
+            isAppendable = true;
         }
-        isAppendable = (myOffset == 2*myDownloadStep);
+        //isAppendable = (myOffset == 2*myDownloadStep);
         mySearchString = searchString;
     }
 
     public void reset () {
         myListView.setAdapter(new ArrayAdapter<Model>(myContext, R.layout.unplayable, new Model[] {new EmptyResult("No items were found.")}));
-        //myListView.setAdapter(new OpenableArrayAdapter(myContext, R.layout.search_item, R.id.name, new EmptyResult("No items were found.")));
         isAppendable = false;
     }
 }

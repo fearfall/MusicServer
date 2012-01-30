@@ -9,8 +9,8 @@
     <LinearLayout
             android:orientation="horizontal"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="14"
+            android:layout_height="fill_parent"
+            android:layout_weight="1"
             android:padding="10px">
         <EditText android:id="@+id/searchEditText"
                   android:text="@string/emptyText"
@@ -31,7 +31,7 @@
 
     <TabHost xmlns:android="http://schemas.android.com/apk/res/android"
              android:id="@android:id/tabhost"
-             android:layout_weight="17"
+             android:layout_weight="1"
              android:layout_width="fill_parent"
              android:layout_height="fill_parent">
 

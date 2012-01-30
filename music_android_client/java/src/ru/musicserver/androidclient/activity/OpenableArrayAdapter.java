@@ -11,9 +11,6 @@ import ru.musicserver.androidclient.model.*;
 import ru.musicserver.androidclient.network.Request;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 
 /**
  * Created by IntelliJ IDEA.
@@ -24,11 +21,13 @@ import java.util.List;
  */
 public class OpenableArrayAdapter extends ArrayAdapter<Model> {
     private final String singleTab = "      ";
-    private Context myContext;
+    private final Context myContext;
+    private final MusicApplication myApplication;
 
     public OpenableArrayAdapter(Context context, Model... objects) {
         super(context, R.layout.search_item, R.id.name);
         myContext = context;
+        myApplication = ((MusicApplication)context.getApplicationContext());
         setContent("", objects);
     }
 
@@ -43,7 +42,7 @@ public class OpenableArrayAdapter extends ArrayAdapter<Model> {
             public void onClick(View view) {
                 Model item = getItem(position);
                 if (item instanceof Track) {
-                    ((MusicApplication)view.getContext().getApplicationContext()).trackClicked((Track)item);
+                    myApplication.trackClicked((Track)item);
                     return;
                 }
                 if (item instanceof EmptyResult)
@@ -54,7 +53,7 @@ public class OpenableArrayAdapter extends ArrayAdapter<Model> {
                     try {
                         open(position);
                     } catch (IOException e) {
-                        ((MusicApplication)view.getContext().getApplicationContext()).showErrorMessage("Open list item", e.getMessage());
+                        myApplication.showErrorMessage("Open list item", e.getMessage());
                     }
                 }
             }
@@ -65,12 +64,12 @@ public class OpenableArrayAdapter extends ArrayAdapter<Model> {
             public void onClick(View view) {
                 Model item = getItem(position);
                 if (item instanceof Track)
-                    ((MusicApplication)view.getContext().getApplicationContext()).getCurrentPlaylist().add((Track) item);
+                    myApplication.getCurrentPlaylist().add((Track) item);
                 else if (item instanceof Album)
-                    ((MusicApplication)view.getContext().getApplicationContext()).getCurrentPlaylist().addTracks(((Album) item).getTracks());
+                    myApplication.getCurrentPlaylist().addTracks(((Album) item).getTracks());
                 else if (item instanceof Artist) {
                     for (Album album: ((Artist) item).getAlbums()) {
-                        ((MusicApplication)view.getContext().getApplicationContext()).getCurrentPlaylist().addTracks(album.getTracks());
+                        myApplication.getCurrentPlaylist().addTracks(album.getTracks());
                     }
                 }
             }
@@ -125,6 +124,10 @@ public class OpenableArrayAdapter extends ArrayAdapter<Model> {
         if (!(item instanceof ModelContainer)) {
             String type = (item instanceof Artist) ? "artist" : "album";
             trueItem = Request.get(type, item.getMbid());
+            if (trueItem == null) {
+                myApplication.showToast(item.getName() + " is empty");
+                return;
+            }
         }
         for (Model child: trueItem.getContent()) {
             child.setShift(newShift);

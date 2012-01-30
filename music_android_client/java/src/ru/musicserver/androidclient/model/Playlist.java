@@ -10,7 +10,7 @@ import java.util.List;
  * Time: 3:58 PM
  * To change this template use File | Settings | File Templates.
  */
- //TODO: Плохо смешивать логику итерирования с логикой модели. Лучше отдельный итератор 
+ //TODO: Плохо смешивать логику итерирования с логикой модели. Лучше отдельный итератор: done PlaylistIterator
 public class Playlist implements Comparable<Playlist> {
     private String myName;
     private LinkedList<Track> myData;
@@ -78,17 +78,23 @@ public class Playlist implements Comparable<Playlist> {
         return myName.compareTo(playlist.myName);
     }
 
-    public Track next() {
-        if (nowPlaying == -1 || nowPlaying == myData.size()-1)
-            return null;
-        nowPlaying++;
-        return myData.get(nowPlaying);
+    public boolean isPlaying() {
+        return (nowPlaying != -1);
     }
 
-    public Track back() {
-        if (nowPlaying == -1 || nowPlaying == 0)
-            return null;
+    public boolean isAtTheEnd() {
+        return nowPlaying == myData.size()-1;
+    }
+
+    public boolean isAtTheBeginning() {
+        return nowPlaying == 0;
+    }
+
+    public void inc() {
+        nowPlaying++;
+    }
+
+    public void dec() {
         nowPlaying--;
-        return myData.get(nowPlaying);
     }
 }

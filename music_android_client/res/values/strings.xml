@@ -2,7 +2,7 @@
 <resources>
     <string name="app_name">Music Player</string>
     <string name="search">Search</string>
-    <string name="emptyText">vision</string>
+    <string name="emptyText">vi</string>
     <string name="emptyText1">Type search string here</string>
     <string name="noTrackName">Select track to play...</string>
     <string name="noUrl">URL could not be retrieved: </string>
