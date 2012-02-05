@@ -35,6 +35,6 @@ public class RequestAndroidTest extends ActivityInstrumentationTestCase2<MainAct
 
     public void testText() throws IOException {
         String r = Request.playlistAction("create", "one");
-        assertTrue(r.contains("success"));
+        assertTrue(r.contains("Unauthorized"));
     }
 }

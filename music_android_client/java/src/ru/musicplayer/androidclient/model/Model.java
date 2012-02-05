@@ -8,30 +8,32 @@ package ru.musicplayer.androidclient.model;
  * To change this template use File | Settings | File Templates.
  */
 public abstract class Model {
-    protected String myName;
+    protected String name;
     //TODO: Что такое shift? -- это сдвиг относительно левого края экрана для визуального разделения сущностей разного
     // уровня: чем больше shift, тем глубже вложена сущность.
     protected String shift = "";
-    protected String myMbid;
+    protected String mbid;
     protected boolean wasFilled = false;
 
-    public Model (String name, String mbid) {
-        myName = name;
-        myMbid = mbid;
+   /* public Model (String name, String mbid) {
+        this.name = name;
+        this.mbid = mbid;
     }
     
     public Model (String name) {
-        myName = name;
-        myMbid = null;
-    }
+        this.name = name;
+        this.mbid = null;
+    }*/
     
     public abstract Model[] getContent ();
 
     public void fillWith (Model model) {
         if (getClass() != model.getClass())
             throw new RuntimeException("Cant't fill " + getClass().getSimpleName() + " with " + model.getClass().getSimpleName());
-        myName = model.getName();
-        myMbid = model.getMbid();
+        if (model.getName() != null && !model.getName().equals(""))
+            name = model.getName();
+        if (model.getMbid() != null && !model.getMbid().equals(""))
+            mbid = model.getMbid();
         wasFilled = true;
     }
     
@@ -40,7 +42,7 @@ public abstract class Model {
     }
 
     public String toString() {
-        return shift + myName;
+        return shift + name;
     }
 
     public void setShift (String shift) {
@@ -52,10 +54,10 @@ public abstract class Model {
     }
 
     public String getMbid() {
-        return myMbid;
+        return mbid;
     }
     
     public String getName() {
-        return myName;
+        return name;
     }
 }

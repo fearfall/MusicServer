@@ -126,7 +126,7 @@ public class SearchActivity extends Activity {
         String searchString = mySearchEdit.getText().toString();
         Result myResult;
         try {
-            myResult = Request.search(searchString, 2*offsetStep, 0, MusicApplication.ALL);
+            myResult = Request.search(searchString, 3*offsetStep, 0, MusicApplication.ALL);
         } catch (IOException e) {
             ((MusicApplication)getApplication()).showErrorMessage("Search", e.getMessage());
             return;
@@ -136,9 +136,9 @@ public class SearchActivity extends Activity {
             myArtists.reset();
             myTracks.reset();
         } else {
-            myArtists.reset(searchString, myResult.getArtists());
-            myAlbums.reset(searchString, myResult.getAlbums());
-            myTracks.reset(searchString, myResult.getTracks());
+            myArtists.reset(myResult.getArtistsOffset(), searchString, myResult.getModelsOfType(MusicApplication.ARTISTS));
+            myAlbums.reset(myResult.getAlbumsOffset(), searchString, myResult.getModelsOfType(MusicApplication.ALBUMS));
+            myTracks.reset(myResult.getTracksOffset(), searchString, myResult.getModelsOfType(MusicApplication.TRACKS));
         }
         myTabHost.setCurrentTab(2);
     }

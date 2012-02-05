@@ -13,7 +13,9 @@ public class Artist extends Model {
     private List<Album> albums = new LinkedList<Album>();
 
     public Artist(String name, String mbid) {
-        super(name, mbid);
+        //super(name, mbid);
+        this.name = name;
+        this.mbid = mbid;
     }
 
     @Override
@@ -23,14 +25,14 @@ public class Artist extends Model {
 
         Artist artist = (Artist) o;
 
-        if (myMbid != null ? !myMbid.equals(artist.myMbid) : artist.myMbid != null) return false;
+        if (mbid != null ? !mbid.equals(artist.mbid) : artist.mbid != null) return false;
 
         return true;
     }
 
     @Override
     public int hashCode() {
-        return myMbid != null ? myMbid.hashCode() : 0;
+        return mbid != null ? mbid.hashCode() : 0;
     }
 
     @Override

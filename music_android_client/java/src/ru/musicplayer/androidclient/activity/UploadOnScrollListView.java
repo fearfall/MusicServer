@@ -83,14 +83,14 @@ public class UploadOnScrollListView {
         });
     }
 
-    public void reset (String searchString, Model... objects) {
+    public void reset (int offset, String searchString, Model... objects) {
         if (objects == null || objects.length == 0) {
             myListView.setAdapter(new ArrayAdapter<Model>(myContext, R.layout.unplayable, new Model[] {new EmptyResult("No items were found.")}));
             myOffset = 0;
             isAppendable = false;
         } else {
             myListView.setAdapter(new OpenableArrayAdapter(myContext, objects));
-            myOffset = objects.length;
+            myOffset = offset;
             isAppendable = true;
         }
         //isAppendable = (myOffset == 2*myDownloadStep);

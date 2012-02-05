@@ -1,6 +1,6 @@
 /*
  * This file is auto-generated.  DO NOT MODIFY.
- * Original file: /home/kate/au/3_semestr/test/music_android_client/java/src/ru/musicplayer/androidclient/activity/MusicPlayerServiceInterface.aidl
+ * Original file: /home/kate/au/3_semestr/music_server/MusicServer/music_android_client/java/src/ru/musicplayer/androidclient/activity/MusicPlayerServiceInterface.aidl
  */
 package ru.musicplayer.androidclient.activity;
 /**

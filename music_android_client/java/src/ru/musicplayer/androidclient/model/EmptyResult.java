@@ -10,7 +10,8 @@ package ru.musicplayer.androidclient.model;
 public class EmptyResult extends Model {
 
     public EmptyResult (String message) {
-        super(message);
+        //super(message);
+        name = message;
     }
 
     @Override

@@ -11,62 +11,60 @@ import java.util.List;
  * Time: 11:18 AM
  */
 public class Result {
-    private List<Artist> artists;
-    private List<Album> albums;
-    private List<Track> tracks;
+    private SmallResult<Artist> artists = new SmallResult<Artist>();
+    private SmallResult<Album> albums = new SmallResult<Album>();
+    private SmallResult<Track> tracks = new SmallResult<Track>();
 
-    public Result () {
-        artists = new LinkedList<Artist>();
-        albums = new LinkedList<Album>();
-        tracks = new LinkedList<Track>();
-    }
-
-    public Result(List<Artist> artists, List<Album> albums, List<Track> tracks) {
+    public Result(SmallResult<Artist> artists, SmallResult<Album> albums, SmallResult<Track> tracks) {
         this.artists = artists;
         this.albums = albums;
         this.tracks = tracks;
+    }
+
+    public Result () {
     }
 
     public boolean isEmpty() {
         return (artists.isEmpty() && albums.isEmpty() && tracks.isEmpty());
     }
 
-    /*public List<Artist> getArtists() {
-        return artists;
-    }
-
-    public List<Album> getAlbums() {
-        return albums;
-    }
-
-    public List<Track> getTracks() {
-        return tracks;
-    }   */
-    
     public Model[] getModelsOfType (int type) {
         switch (type) {
             case MusicApplication.ARTISTS:
-                return getArtists();
+                return artists.getModels().toArray(new Model[artists.getModels().size()]);
             case MusicApplication.ALBUMS:
-                return getAlbums();
+                return albums.getModels().toArray(new Model[albums.getModels().size()]);
             case MusicApplication.TRACKS:
-                return getTracks();
+                return tracks.getModels().toArray(new Model[tracks.getModels().size()]);
             default:
                 return new Model[]{new EmptyResult("No models of type " + type + ".")};
         }
     }
 
-    public Artist[] getArtists() {
-        return artists.toArray(new Artist[artists.size()]);
+   /* public Artist[] getArtists() {
+        List<Artist> m = (List<Artist>) artists.getModels();
+        return m.toArray(new Artist[m.size()]);
     }
 
     public Album[] getAlbums() {
-        return albums.toArray(new Album[albums.size()]);
+        List<Album> m = (List<Album>) albums.getModels();
+        return m.toArray(new Album[m.size()]);
     }
 
     public Track[] getTracks() {
-        return tracks.toArray(new Track[tracks.size()]);
+        List<Track> m = (List<Track>) tracks.getModels();
+        return m.toArray(new Track[m.size()]);
+    }                  */
+    
+    public int getArtistsOffset() {
+        return artists.getOffset();
     }
 
+    public int getAlbumsOffset() {
+        return albums.getOffset();
+    }
 
+    public int getTracksOffset() {
+        return tracks.getOffset();
+    }
 }

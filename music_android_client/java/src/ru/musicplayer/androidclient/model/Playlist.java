@@ -15,7 +15,8 @@ public class Playlist extends Model implements Comparable<Playlist> {
     private int nowPlaying = -1;
 
     public Playlist (String name) {
-        super(name);
+       // super(name);
+        this.name = name;
     }
 
     @Override
@@ -72,7 +73,7 @@ public class Playlist extends Model implements Comparable<Playlist> {
                 return;
             }
         }
-        throw new RuntimeException("Track " + mbid + " is not in " + myName + " playlist!");
+        throw new RuntimeException("Track " + mbid + " is not in " + name + " playlist!");
     }
 
     public Track getPlayingTrack() {
@@ -83,7 +84,7 @@ public class Playlist extends Model implements Comparable<Playlist> {
 
     @Override
     public int compareTo(Playlist playlist) {
-        return myName.compareTo(playlist.myName);
+        return name.compareTo(playlist.name);
     }
 
     public boolean isPlaying() {

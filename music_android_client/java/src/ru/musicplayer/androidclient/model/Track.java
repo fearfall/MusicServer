@@ -11,7 +11,9 @@ public class Track extends Model {
     private String url;
 
     public Track(String name, String mbid, String url) {
-        super(name, mbid);
+        //super(name, mbid);
+        this.name = name;
+        this.mbid = mbid;
         this.url = url;
     }
 
@@ -37,8 +39,8 @@ public class Track extends Model {
 
         Track track = (Track) o;
 
-        if (myMbid != null ? !myMbid.equals(track.myMbid) : track.myMbid != null) return false;
-        if (myName != null ? !myName.equals(track.myName) : track.myName != null) return false;
+        if (mbid != null ? !mbid.equals(track.mbid) : track.mbid != null) return false;
+        if (name != null ? !name.equals(track.name) : track.name != null) return false;
         if (url != null ? !url.equals(track.url) : track.url != null) return false;
 
         return true;

@@ -7,7 +7,9 @@ public class Album extends Model {
     private List<Track> tracks = new LinkedList<Track>();
 
     public Album(String name, String mbid) {
-        super(name, mbid);
+        //super(name, mbid);
+        this.name = name;
+        this.mbid = mbid;
     }
 
     public boolean addTrack(Track track) {
@@ -29,14 +31,14 @@ public class Album extends Model {
 
         Album album = (Album) o;
 
-        if (myMbid != null ? !myMbid.equals(album.myMbid) : album.myMbid != null) return false;
+        if (mbid != null ? !mbid.equals(album.mbid) : album.mbid != null) return false;
 
         return true;
     }
 
     @Override
     public int hashCode() {
-        return myMbid != null ? myMbid.hashCode() : 0;
+        return mbid != null ? mbid.hashCode() : 0;
     }
 
     @Override
