@@ -80,7 +80,7 @@ public class SearchHandler extends AbstractHandler
             }
             else html.append(jsonElement);
         } else {
-            //httpServletResponse.setStatus(HttpServletResponse.SC_NO_CONTENT);
+            httpServletResponse.setStatus(HttpServletResponse.SC_NO_CONTENT);
             html.append("{ERROR}");
         }
         //html.append(" </body> </html>");

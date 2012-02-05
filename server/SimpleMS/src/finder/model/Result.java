@@ -10,14 +10,14 @@ import java.util.List;
  * Time: 11:18 AM
  */
 public class Result {
-    private List<Artist> artists;
-    private List<Album> albums;
-    private List<Track> tracks;
+    private SmallResult<Artist> artists;
+    private SmallResult<Album> albums;
+    private SmallResult<Track> tracks;
 
-    public Result(List<Artist> artists, List<Album> albums, List<Track> tracks) {
-        this.artists = artists == null ? new ArrayList<Artist>() : artists;
-        this.albums = albums == null ? new ArrayList<Album>() : albums;
-        this.tracks = tracks == null ? new ArrayList<Track>() : tracks;
+    public Result(SmallResult<Artist> artists, SmallResult<Album> albums, SmallResult<Track> tracks) {
+        this.artists = artists == null ? new SmallResult<Artist>() : artists;
+        this.albums = albums == null ? new SmallResult<Album>() : albums;
+        this.tracks = tracks == null ? new SmallResult<Track>() : tracks;
     }
 
     public boolean isValid() {
