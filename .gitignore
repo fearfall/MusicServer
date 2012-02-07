@@ -4,6 +4,10 @@
 # generated files
 bin/
 out/
+res/
 
 # files for the dex VM
 *.dex
+
+# idea service files
+authorization_server/.idea/*
