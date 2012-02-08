@@ -8,4 +8,4 @@ out/
 # files for the dex VM
 *.dex
 
-authorization_server/src/utilities/DbConnectUtility.java
+authorization_server/.idea
