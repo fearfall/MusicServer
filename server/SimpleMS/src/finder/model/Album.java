@@ -71,9 +71,12 @@ public class Album {
         return mbid != null ? mbid.hashCode() : 0;
     }
 
-    public boolean isValid() {
+    public boolean isPartValid() {
         return !(name == null || name.isEmpty()
-               || mbid.isEmpty() || mbid == null
-               || tracks.isEmpty());
+               || mbid.isEmpty() || mbid == null);
+    }
+    
+    public boolean isAllValid() {
+        return (isPartValid() && tracks != null && !tracks.isEmpty());
     }
 }

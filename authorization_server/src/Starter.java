@@ -28,6 +28,15 @@ public class Starter {
         connector.setPort(6009);
         server.setConnectors(new Connector[] {connector});
 
+//        SslSocketConnector sslConnector = new SslSocketConnector();
+//        sslConnector.setPort(8443);
+//        sslConnector.setKeystore("config/server.keys");
+//        sslConnector.setTruststore("config/server.keys");
+//        sslConnector.setKeyPassword("GoodLuck");
+//        sslConnector.setTrustPassword("GoodLuck");
+//        sslConnector.setProtocol("SSL");
+//        server.addConnector(sslConnector);
+
         Constraint constraint = new Constraint();
         constraint.setName(Constraint.__BASIC_AUTH);
         constraint.setRoles(new String[] {"authUser"});

@@ -15,10 +15,12 @@ public class Playlist {
 
     public static class Entry {
         public String mbid;
+        public String data;
         public int order;
 
-        public Entry(String id, int order) {
+        public Entry(final String id, final String data, int order) {
             this.mbid = id;
+            this.data = data;
             this.order = order;
         }
 
@@ -55,8 +57,8 @@ public class Playlist {
         this.entries = entries;
     }
 
-    public void add (int order, String track) {
-        entries.add(new Entry(track, order));
+    public void add (int order, final String id, final String track) {
+        entries.add(new Entry(id, track, order));
     }
 
     private void add (Entry track) {

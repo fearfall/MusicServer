@@ -1,9 +1,7 @@
 package finder.handlers;
 
-import finder.model.Album;
-import finder.model.Artist;
-import finder.model.Result;
-import finder.model.Track;
+import finder.model.*;
+import finder.model.ResultCount;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowCallbackHandler;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
@@ -22,13 +20,13 @@ public class SimpleDBConnection {
     private JdbcTemplate jdbcTemplate;
 
     public SimpleDBConnection() throws SQLException {
-            DriverManagerDataSource dataSource = new DriverManagerDataSource();
-            dataSource.setDriverClassName("org.postgresql.Driver");//:1521
-            dataSource.setUrl("jdbc:postgresql://localhost/musicbrainz_db");
-            dataSource.setUsername("musicbrainz");
-            dataSource.setPassword("");
-            this.jdbcTemplate = new JdbcTemplate(dataSource);
-            dataSource.getConnection();
+        DriverManagerDataSource dataSource = new DriverManagerDataSource();
+        dataSource.setDriverClassName("org.postgresql.Driver");//:1521
+        dataSource.setUrl("jdbc:postgresql://localhost/musicbrainz_db");
+        dataSource.setUsername("musicbrainz");
+        dataSource.setPassword("");
+        this.jdbcTemplate = new JdbcTemplate(dataSource);
+        dataSource.getConnection();
     }
 
     public Result search(String pattern, int offset, int limit) {
@@ -40,60 +38,116 @@ public class SimpleDBConnection {
         return result.isValid() ? result : null;
     }
 
-    private List<Artist> findArtists(String pattern, int offset, int limit) {
-        final List<Artist> artists = new ArrayList<Artist>();
-        String queryArtist = ("select * from simple_artist_info where lower(name) like \'%\' || ? || \'%\' order by mbid limit ? offset ? ");
+    public Result searchArtists(String pattern, int offset, int limit) {
+        Result result = new Result(findArtists(pattern, offset, limit), null, null);
+        return result.isValid() ? result : null;
+    }
+
+    public Result searchAlbums(String pattern, int offset, int limit) {
+        Result result = new Result(null, findAlbums(pattern, offset, limit), null);
+        return result.isValid() ? result : null;
+    }
+
+    public Result searchTracks(String pattern, int offset, int limit) {
+        Result result = new Result(null, null, findTracks(pattern, offset, limit));
+        return result.isValid() ? result : null;
+    }
+
+    public ResultCount getTotalAmount(String pattern) {
+        return new ResultCount(getArtistsCount(pattern), getAlbumsCount(pattern), getTracksCount(pattern));
+    }
+
+    private int getArtistsCount (String pattern) {
+        final int[] count = {0};
+        String queryArtist = ("select count (distinct mbid) from simple_artist_info where lower(name) like '%'||?||'%' ");
         try {
-        jdbcTemplate.query(queryArtist, new RowCallbackHandler() {
-            public void processRow(ResultSet resultSet) throws SQLException {
-                Artist artist = new Artist(resultSet.getString("name"), resultSet.getString("mbid"));
-                if(artists.indexOf(artist) < 0) {
-                    if(artist.isValid()) {
+            jdbcTemplate.query(queryArtist, new RowCallbackHandler() {
+                public void processRow(ResultSet resultSet) throws SQLException {
+                    count[0] = Integer.parseInt(resultSet.getString("count"));
+                }
+            }, pattern.toLowerCase());
+        } catch (Exception e) {e.printStackTrace();}
+        return count[0];
+    }
+
+    private int getAlbumsCount (String pattern) {
+        final int[] count = {0};
+        String queryArtist = ("select count(distinct mbid) from simple_album_info where lower(name) like '%'||?||'%' ");
+        try {
+            jdbcTemplate.query(queryArtist, new RowCallbackHandler() {
+                public void processRow(ResultSet resultSet) throws SQLException {
+                    count[0] = Integer.parseInt(resultSet.getString("count"));
+                }
+            }, pattern.toLowerCase());
+        } catch (Exception e) {e.printStackTrace();}
+        return count[0];
+    }
+
+    private int getTracksCount (String pattern) {
+        final int[] count = {0};
+        String queryTrack = ("select count(distinct mbid) from simple_track_info where lower(name) like '%'||?||'%' ");
+        try {
+            jdbcTemplate.query(queryTrack, new RowCallbackHandler() {
+                public void processRow(ResultSet resultSet) throws SQLException {
+                    count[0] = Integer.parseInt(resultSet.getString("count"));
+                }
+            }, pattern.toLowerCase());
+        } catch (Exception e) {e.printStackTrace();}
+        return count[0];
+    }
+
+    private SmallResult<Artist> findArtists(String pattern, int offset, int limit) {
+        final List<Artist> artists = new ArrayList<Artist>();
+        final Counter realOffset = new Counter(offset);
+        String queryArtist = ("select * from simple_artist_info where lower(name) like '%'||?||'%' order by mbid limit ? offset ? ");
+        try {
+            jdbcTemplate.query(queryArtist, new RowCallbackHandler() {
+                public void processRow(ResultSet resultSet) throws SQLException {
+                    Artist artist = new Artist(resultSet.getString("name"), resultSet.getString("mbid"));
+                    realOffset.increase();
+                    if(artists.indexOf(artist) < 0 && artist.isPartValid()) {
                         artists.add(artist);
                     }
                 }
-            }
-        }, pattern.toLowerCase(), limit, offset);
+            }, pattern.toLowerCase(), limit, offset);
         } catch (Exception e) {e.printStackTrace();}
-        return artists;
+        return new SmallResult<Artist>(artists, realOffset.getValue());
     }
 
-    private List<Album> findAlbums(String pattern, int offset, int limit) {
+    private SmallResult<Album> findAlbums(String pattern, int offset, int limit) {
         final List<Album> albums = new ArrayList<Album>();
-        String queryAlbum = ("select * from simple_album_info where lower(name) like \'%\' || ? || \'%\' order by mbid limit ? offset ?");
+        final Counter realOffset = new Counter(offset);
+        String queryAlbum = ("select * from simple_album_info where lower(name) like '%'||?||'%' order by mbid limit ? offset ?");
         try {
             jdbcTemplate.query(queryAlbum, new RowCallbackHandler() {
                 public void processRow(ResultSet resultSet) throws SQLException {
                     Album album = new Album(resultSet.getString("name"),resultSet.getString("mbid"));
-                    if(albums.indexOf(album) < 0) {
-                        if(album.isValid()) {
-                            albums.add(album);
-                        }
+                    realOffset.increase();
+                    if(albums.indexOf(album) < 0 && album.isPartValid()) {
+                        albums.add(album);
                     }
                 }
             }, pattern.toLowerCase(), limit, offset);
         } catch (Exception e) {e.printStackTrace();}
-        return albums;
+        return new SmallResult<Album>(albums, realOffset.getValue());
     }
 
-    private List<Track> findTracks(String pattern, int offset, int limit) {
+    private SmallResult<Track> findTracks(String pattern, int offset, int limit) {
         final List<Track> tracks = new ArrayList<Track>();
-        String queryTrack = ("select * from simple_track_info where lower(name) like \'%\' || ? || \'%\' order by mbid limit ? offset ?");
+        final Counter realOffset = new Counter(offset);
+        String queryTrack = ("select * from simple_track_info where lower(name) like '%'||?||'%' order by mbid limit ? offset ?");
         try {
             jdbcTemplate.query(queryTrack, new RowCallbackHandler() {
                 public void processRow(ResultSet resultSet) throws SQLException {
-                    Track track = new Track(resultSet.getString("name"),
-                                            resultSet.getString("url"),
-                                            resultSet.getString("mbid"));
-                    if(tracks.indexOf(track) < 0) {
-                        //if(track.isValid()) {
-                            tracks.add(track);
-                        //}
+                    Track track = new Track(resultSet.getString("name"), resultSet.getString("url"), resultSet.getString("mbid"));
+                    realOffset.increase();
+                    if (tracks.indexOf(track) < 0 && track.isValid()) {
+                        tracks.add(track);
                     }
                 }
             }, pattern.toLowerCase(), limit, offset);
         } catch (Exception e) {e.printStackTrace();}
-        return tracks;
+        return new SmallResult<Track>(tracks, realOffset.getValue());
     }
 
     public Artist getArtist(String id) {
@@ -104,11 +158,14 @@ public class SimpleDBConnection {
             public void processRow(ResultSet resultSet) throws SQLException {
                 artist.setName(resultSet.getString("name"));
                 artist.setMbid(resultSet.getString("mbid"));
-                albums.add(new Album(resultSet.getString("a_name"), resultSet.getString("a_mbid")));
+                Album album = new Album(resultSet.getString("a_name"),resultSet.getString("a_mbid"));
+                if (albums.indexOf(album) < 0 && album.isPartValid()) {
+                    albums.add(album);
+                }
             }
         }, UUID.fromString(id));
         artist.setAlbums(albums);
-        return artist.isValid() ? artist : null;
+        return artist.isAllValid() ? artist : null;
     }
 
     public Album getAlbum(String id) {
@@ -120,11 +177,14 @@ public class SimpleDBConnection {
                 if(resultSet.wasNull()) return;
                 album.setName(resultSet.getString("name"));
                 album.setMbid(resultSet.getString("mbid"));
-                tracks.add(new Track(resultSet.getString("t_name"), resultSet.getString("t_url"), resultSet.getString("t_mbid")));
+                Track track = new Track(resultSet.getString("t_name"), resultSet.getString("t_url"), resultSet.getString("t_mbid"));
+                if (tracks.indexOf(track) < 0 && track.isValid()) {
+                    tracks.add(track);
+                }
             }
-          }, UUID.fromString(id));
+        }, UUID.fromString(id));
         album.setTracks(tracks);
-        return album.isValid() ? album : null;
+        return album.isAllValid() ? album : null;
     }
 
     public Track getTrack(String id) {

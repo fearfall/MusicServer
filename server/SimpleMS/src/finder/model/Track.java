@@ -77,13 +77,12 @@ public class Track {
         }
         return null;*/
         try {
-        url = "http://localhost:6007/up/" + mbid;
-        HttpURLConnection.setFollowRedirects(false);
-        HttpURLConnection connection =
-        (HttpURLConnection) new URL(url).openConnection();
-        connection.setRequestMethod("GET");
-        if(connection.getResponseCode() == HttpURLConnection.HTTP_OK)
-            return new Scanner(connection.getInputStream()).nextLine();
+            url = "http://localhost:6007/up/" + mbid;
+            HttpURLConnection.setFollowRedirects(false);
+            HttpURLConnection connection = (HttpURLConnection) new URL(url).openConnection();
+            connection.setRequestMethod("GET");
+            if(connection.getResponseCode() == HttpURLConnection.HTTP_OK)
+                return new Scanner(connection.getInputStream()).nextLine();
         } catch (Exception e) {
             return null;
         }
@@ -93,6 +92,28 @@ public class Track {
     public boolean isValid() {
         return !(name == null || name.isEmpty()
                || mbid.isEmpty() || mbid == null
-               || url == null || url.isEmpty());
+                || url == null || url.isEmpty());
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Track track = (Track) o;
+
+        if (mbid != null ? !mbid.equals(track.mbid) : track.mbid != null) return false;
+        if (name != null ? !name.equals(track.name) : track.name != null) return false;
+        if (url != null ? !url.equals(track.url) : track.url != null) return false;
+
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = name != null ? name.hashCode() : 0;
+        result = 31 * result + (url != null ? url.hashCode() : 0);
+        result = 31 * result + (mbid != null ? mbid.hashCode() : 0);
+        return result;
     }
 }

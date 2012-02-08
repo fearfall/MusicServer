@@ -1,9 +1,6 @@
 package finder;
 
-import finder.handlers.ErrorHandler;
-import finder.handlers.GetHandler;
-import finder.handlers.SearchHandler;
-import finder.handlers.SimpleDBConnection;
+import finder.handlers.*;
 import org.mortbay.jetty.Server;
 import org.mortbay.jetty.handler.ContextHandler;
 
@@ -33,8 +30,15 @@ public class SimpleMusicServer
             getContext.setResourceBase(".");
             getContext.setClassLoader(Thread.currentThread().getContextClassLoader());
             server.addHandler(getContext);
-
             getContext.setHandler(new GetHandler(connection));
+
+            ContextHandler getCountContext = new ContextHandler();
+            getCountContext.setContextPath("/count");
+            getCountContext.setResourceBase(".");
+            getCountContext.setClassLoader(Thread.currentThread().getContextClassLoader());
+            server.addHandler(getCountContext);
+            getCountContext.setHandler(new GetCountHandler(connection));
+
         } catch (Exception e) {
             ErrorHandler errorHandler = new ErrorHandler();
             server.setHandler(errorHandler);

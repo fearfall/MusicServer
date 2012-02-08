@@ -10,6 +10,7 @@ import org.springframework.jdbc.datasource.DriverManagerDataSource;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
@@ -83,18 +84,18 @@ public class DbConnectUtility {
     }
 
     public List<Playlist.Entry> getPlaylist(final int userId, final String playlist) {
-        String queryPlaylistId = ("select id from playlists where user_id = ? and title = ?");
         final List<Playlist.Entry> result = new ArrayList<Playlist.Entry>();
         try {
-            Integer playlistId = jdbcTemplate.queryForInt(queryPlaylistId, userId, playlist);
-
+            Integer playlistId = getPlaylistId(userId, playlist);
             if (playlistId == null) return result;
-            String queryPlaylist = ("select order_num, entry_id from playlist_entries where playlist_id = ?");
+            String queryPlaylist = ("select order_num, entry_id, entry_data from playlist_entries where playlist_id = ?");
             jdbcTemplate.query(queryPlaylist, new RowCallbackHandler() {
                 public void processRow(ResultSet resultSet) throws SQLException {
-                     result.add(
-                             new Playlist.Entry((String)resultSet.getString("entry_id"),
-                             Integer.valueOf(resultSet.getString("order_num"))));
+                     result.add( new Playlist.Entry(
+                             (String)resultSet.getString("entry_id"),
+                             (String)resultSet.getString("entry_data"),
+                             Integer.valueOf(resultSet.getString("order_num"))
+                             ));
                 }
             }, playlistId);
         } catch (EmptyResultDataAccessException e) {
@@ -124,6 +125,14 @@ public class DbConnectUtility {
         }
     }
 
+    public boolean clearPlaylist(final int userId, final String title) {
+        Integer playlistId = getPlaylistId(userId, title);
+        if (playlistId == null) return false;
+        String query = ("delete from playlist_entries where playlist_id = ?");
+        int res = jdbcTemplate.update(query, playlistId);
+        return true;
+    }
+
     public Integer getPlaylistId(final int userId, final String title) {
         String queryPlaylistId = ("select id from playlists where user_id = ? and title = ?");
         Integer id = -1;
@@ -136,14 +145,29 @@ public class DbConnectUtility {
         }
     }
 
-    public boolean insertTrack(final int playlistId, int orderNum, final String mbid) {
-        String query = ("insert into playlist_entries (playlist_id, entry_id, order_num) values (?, ?, ?)");
+    public boolean insertTrack(final int playlistId, int orderNum, final String mbid, final String data) {
+        String query = ("insert into playlist_entries (playlist_id, entry_id, order_num, entry_data) values (?, ?, ?, ?)");
         try {
-            int res = jdbcTemplate.update(query, playlistId, mbid, orderNum);
+            int res = jdbcTemplate.update(query, playlistId, mbid, orderNum, data);
             return res > 0;
         } catch (DataIntegrityViolationException e) {
             return false;
         }
+    }
+
+    public void insertTrackBatch(final int playlistId, final Collection<Playlist.Entry> entries) {
+        StringBuilder query = new StringBuilder("insert into playlist_entries (playlist_id, entry_id, order_num, entry_data) values ");
+        for (Playlist.Entry entry: entries) {
+            query.append("(");
+            query.append(playlistId + ", ");
+            query.append("\"" + entry.mbid + "\", ");
+            query.append(entry.order + ", ");
+            query.append("\"" + entry.data + "\"");
+            query.append("), ");
+        }
+        int lastComma = query.lastIndexOf(",");
+        query.deleteCharAt(lastComma);
+        jdbcTemplate.execute(query.toString());
     }
 
     public boolean deleteTrack(final int playlistId, int orderNum, final String mbid) {
