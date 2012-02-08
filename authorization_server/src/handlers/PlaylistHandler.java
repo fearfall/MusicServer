@@ -83,11 +83,11 @@ public class PlaylistHandler extends AbstractHandler{
             Gson gsonConverter = new Gson();
             switch (actionType) {
                 case ADD:
-                    if (httpServletRequest.getParameter("track") == null) {
+                    if (httpServletRequest.getParameter("data") == null) {
                         httpServletResponse.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-                        httpServletResponse.getWriter().println("Parameter track is not defined");
+                        httpServletResponse.getWriter().println("Parameter data is not defined");
                         break;
-                    } else trackData = (String)httpServletRequest.getParameter("track");
+                    } else trackData = (String)httpServletRequest.getParameter("data");
                     if (dbService.insertTrack(playlistId,orderNum, mbid, trackData)) {
                         httpServletResponse.setStatus(HttpServletResponse.SC_OK);
                         httpServletResponse.getWriter().println("inserted");// !!!!!!!!!!!
