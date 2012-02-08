@@ -4,8 +4,11 @@
 # generated files
 bin/
 out/
+res/
 
 # files for the dex VM
 *.dex
 
-authorization_server/src/utilities/DbConnectUtility.java
+# idea service files
+authorization_server/.idea/*
+
