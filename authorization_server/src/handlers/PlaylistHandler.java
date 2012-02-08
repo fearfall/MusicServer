@@ -1,6 +1,7 @@
 package handlers;
 
 import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import model.Playlist;
 import org.mortbay.jetty.HttpConnection;
 import org.mortbay.jetty.handler.AbstractHandler;
@@ -10,7 +11,11 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.lang.reflect.Type;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 import java.util.StringTokenizer;
 
 /**
@@ -27,7 +32,7 @@ public class PlaylistHandler extends AbstractHandler{
         dbService = new DbConnectUtility();
     }
 
-    static enum ActionType {GET, GETALL, CREATE, REMOVE, ADD, DELETE}
+    static enum ActionType {GET, GETALL, CREATE, REMOVE, SAVE, ADD, ADD_BATCH, CLEAR, DELETE}
 
     public void handle(String s, HttpServletRequest httpServletRequest,
                        HttpServletResponse httpServletResponse, int i) throws IOException, ServletException {
@@ -57,6 +62,7 @@ public class PlaylistHandler extends AbstractHandler{
         }
         int orderNum = -1;
         String mbid = "";
+        String trackData = "";
         int playlistId = -1;
         if (actionType == ActionType.ADD || actionType == ActionType.DELETE) {
             if (httpServletRequest.getParameter("order") == null ||
@@ -77,7 +83,12 @@ public class PlaylistHandler extends AbstractHandler{
             Gson gsonConverter = new Gson();
             switch (actionType) {
                 case ADD:
-                    if (dbService.insertTrack(playlistId,orderNum, mbid)) {
+                    if (httpServletRequest.getParameter("track") == null) {
+                        httpServletResponse.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+                        httpServletResponse.getWriter().println("Parameter track is not defined");
+                        break;
+                    } else trackData = (String)httpServletRequest.getParameter("track");
+                    if (dbService.insertTrack(playlistId,orderNum, mbid, trackData)) {
                         httpServletResponse.setStatus(HttpServletResponse.SC_OK);
                         httpServletResponse.getWriter().println("inserted");// !!!!!!!!!!!
                     } else {
@@ -85,6 +96,26 @@ public class PlaylistHandler extends AbstractHandler{
                         httpServletResponse.getWriter().println("Such track already exists");
                     }
                     break;
+                case ADD_BATCH: {
+                    String serializedEntries = httpServletRequest.getParameter("entries");
+                    if (serializedEntries == null) {
+                        httpServletResponse.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+                        httpServletResponse.getWriter().println("Parameter entries is not defined");
+                        break;
+                    }
+                    Type collectionType = new TypeToken<Collection<Playlist.Entry>>(){}.getType();
+                    Collection<Playlist.Entry> entries = gsonConverter.fromJson(serializedEntries, collectionType);
+                    if (entries.isEmpty()) {
+                        httpServletResponse.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+                        httpServletResponse.getWriter().println("Collection of tracks is empty");
+                    } else {
+                        playlistId = dbService.getPlaylistId(userId, title);
+                        dbService.insertTrackBatch(playlistId, entries);
+                        httpServletResponse.setStatus(HttpServletResponse.SC_OK);
+                        httpServletResponse.getWriter().println("inserted");// !!!!!!!!!!!
+                    }
+                    break;
+                }
                 case DELETE:
                     if (dbService.deleteTrack(playlistId,orderNum, mbid)) {
                         httpServletResponse.setStatus(HttpServletResponse.SC_OK);
@@ -92,6 +123,15 @@ public class PlaylistHandler extends AbstractHandler{
                     } else {
                         httpServletResponse.setStatus(HttpServletResponse.SC_BAD_REQUEST);
                         httpServletResponse.getWriter().println("Such track doesn`t exist");
+                    }
+                    break;
+                case CLEAR:
+                    if (dbService.clearPlaylist(userId, title)) {
+                        httpServletResponse.setStatus(HttpServletResponse.SC_OK);
+                        httpServletResponse.getWriter().println("clear playlist");// !!!!!!!!!!!
+                    } else {
+                        httpServletResponse.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+                        httpServletResponse.getWriter().println("Such playlist doesn`t exist");
                     }
                     break;
                 case GET:
@@ -120,6 +160,32 @@ public class PlaylistHandler extends AbstractHandler{
                         httpServletResponse.getWriter().println("Such playlist doesn`t exist");
                     }
                     break;
+                case SAVE: {
+                    if (dbService.clearPlaylist(userId, title)) {
+                        String serializedEntries = httpServletRequest.getParameter("entries");
+                        if (serializedEntries == null) {
+                            httpServletResponse.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+                            httpServletResponse.getWriter().println("Parameter entries is not defined");
+                            break;
+                        }
+                        Type collectionType = new TypeToken<Collection<Playlist.Entry>>(){}.getType();
+                        Collection<Playlist.Entry> entries = gsonConverter.fromJson(serializedEntries, collectionType);
+                        if (entries.isEmpty()) {
+                            httpServletResponse.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+                            httpServletResponse.getWriter().println("Collection of tracks is empty");
+                        } else {
+                            playlistId = dbService.getPlaylistId(userId, title);
+                            dbService.insertTrackBatch(playlistId, entries);
+                            httpServletResponse.setStatus(HttpServletResponse.SC_OK);
+                            httpServletResponse.getWriter().println("inserted");// !!!!!!!!!!!
+                        }
+                        break;
+                    } else {
+                        httpServletResponse.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+                        httpServletResponse.getWriter().println("Such playlist doesn`t exist");
+                    }
+                    break;
+                }
             }
         } else {
             httpServletResponse.setStatus(HttpServletResponse.SC_BAD_REQUEST);
