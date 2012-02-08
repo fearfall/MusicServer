@@ -28,18 +28,6 @@ public class UploadOnScrollListView {
     private String mySearchString = "";
     private boolean isAppendable = false;
     private int myOffset = 0;
-    
-    /*private void setSearchString(String searchString) {
-        mySearchString = searchString;
-    }
-
-    private void setAppendable (boolean appendable) {
-        isAppendable = appendable;
-    }
-
-    private void setOffset (int offset) {
-        myOffset = offset;
-    }          */
 
     public UploadOnScrollListView (int type, int downloadStep) {
         myListView = null;
@@ -89,7 +77,7 @@ public class UploadOnScrollListView {
             myOffset = 0;
             isAppendable = false;
         } else {
-            myListView.setAdapter(new OpenableArrayAdapter(myContext, objects));
+            myListView.setAdapter(new SearchArrayAdapter(myContext, objects));
             myOffset = offset;
             isAppendable = true;
         }

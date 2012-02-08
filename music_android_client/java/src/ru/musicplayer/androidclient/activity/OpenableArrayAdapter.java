@@ -1,17 +1,15 @@
 package ru.musicplayer.androidclient.activity;
 
-import ru.musicplayer.androidclient.activity.R;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.ImageButton;
 import android.widget.TextView;
 import ru.musicplayer.androidclient.model.*;
-import ru.musicplayer.androidclient.network.Request;
 
 import java.io.IOException;
+import java.util.List;
 
 /**
  * Created by IntelliJ IDEA.
@@ -20,24 +18,31 @@ import java.io.IOException;
  * Time: 12:25
  * To change this template use File | Settings | File Templates.
  */
-public class OpenableArrayAdapter extends ArrayAdapter<Model> {
-    private final String singleTab = "      ";
-    private final Context myContext;
-    private final MusicApplication myApplication;
-
-    public OpenableArrayAdapter(Context context, Model... objects) {
-        super(context, R.layout.search_item, R.id.name);
+public abstract class OpenableArrayAdapter extends ArrayAdapter<Model> {
+    protected final String singleTab = "      ";
+    protected final Context myContext;
+    protected final MusicApplication myApplication;
+    protected final int myResource;
+    protected final int myTextViewResource;
+        
+    public OpenableArrayAdapter(Context context, int resource, int textViewResource, Model... objects) {
+        super(context, resource, textViewResource);
         myContext = context;
         myApplication = ((MusicApplication)context.getApplicationContext());
+        myResource = resource;
+        myTextViewResource = textViewResource;
         setContent("", objects);
     }
+    
+    protected abstract void setViewControls (View rowView, final int position);
 
     @Override
     public View getView(final int position, View convertView, ViewGroup parent) {
         LayoutInflater inflater = (LayoutInflater) myContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        View rowView = inflater.inflate(R.layout.search_item, parent, false);
-        TextView textView = (TextView) rowView.findViewById(R.id.name);
+        View rowView = inflater.inflate(myResource, parent, false);
+        TextView textView = (TextView) rowView.findViewById(myTextViewResource);
         textView.setText(getItem(position).toString());
+        
         textView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -59,22 +64,9 @@ public class OpenableArrayAdapter extends ArrayAdapter<Model> {
                 }
             }
         });
-        ImageButton addButton = (ImageButton) rowView.findViewById(R.id.add_to_playlist);
-        addButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Model item = getItem(position);
-                if (item instanceof Track)
-                    myApplication.getCurrentPlaylist().add((Track) item);
-                else if (item instanceof Album)
-                    myApplication.getCurrentPlaylist().addTracks(((Album) item).getTracks());
-                else if (item instanceof Artist) {
-                    for (Album album: ((Artist) item).getAlbums()) {
-                        myApplication.getCurrentPlaylist().addTracks(album.getTracks());
-                    }
-                }
-            }
-        });
+        
+        setViewControls(rowView, position);
+        
         return rowView;
     }
 
@@ -115,31 +107,19 @@ public class OpenableArrayAdapter extends ArrayAdapter<Model> {
                 hasChild = false;
         }
     }
+    
+    protected abstract Model get(Model item) throws IOException;
 
     public void open (int position) throws IOException {
         Model item = getItem(position);
         String newShift = item.getShift() + singleTab;
         int childPosition = position + 1;
 
-        Model trueItem = item;
         if (item.needsUpdate()) {
-            String type = item.getClass().getSimpleName().toLowerCase();
             try {
-                if (item instanceof Playlist) {
-                    PlaylistResult result = Request.getPlaylist(item.getName());
-                    if (result.getStatus() != null) {
-                        myApplication.showToast(result.getStatus());
-                        return;
-                    }
-                    trueItem = result.toPlaylist(item.getName());
-                }
-                else {
-                    trueItem = Request.get(type, item.getMbid());
-                    if (trueItem == null) {
-                        myApplication.showToast(item.getName() + " is empty");
-                        return;
-                    }
-                }
+                Model trueItem = get(item);
+                if (trueItem == null)
+                    return;
                 item.fillWith(trueItem);
             } catch (Exception e) {
                 myApplication.showErrorMessage("Open " + item.getName(), e.getMessage());

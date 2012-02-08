@@ -1,7 +1,18 @@
 package ru.musicplayer.androidclient.activity;
 
+import android.app.Activity;
+import android.app.Dialog;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.os.Bundle;
-import android.widget.ListView;
+import android.view.KeyEvent;
+import android.view.View;
+import android.view.inputmethod.InputMethodManager;
+import android.widget.*;
+import ru.musicplayer.androidclient.model.Model;
+import ru.musicplayer.androidclient.model.Playlist;
+
+import java.util.LinkedList;
 
 /**
  * Created by IntelliJ IDEA.
@@ -10,26 +21,34 @@ import android.widget.ListView;
  * Time: 3:36 PM
  * To change this template use File | Settings | File Templates.
  */
-public class PlaylistActivity extends OpenableListActivity {
+public class PlaylistActivity extends Activity {
     private ListView myListView;
+    private MusicApplication myApplication;
+
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.playlists);
+        myApplication = (MusicApplication) getApplication();
         myListView = (ListView)findViewById(R.id.playlist_list);
-        setOnListItemClickListener(myListView);
+        myListView.setAdapter(new PlaylistArrayAdapter(PlaylistActivity.this, myApplication.getAllPlayListsArray()));
+
+        final Dialog dialog = NewPlaylistDialog.create(myApplication, PlaylistActivity.this,
+                (InputMethodManager)getSystemService(SearchActivity.INPUT_METHOD_SERVICE));
+        
+        Button newPlaylistButton = (Button)findViewById(R.id.newPlaylistButton);
+        newPlaylistButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dialog.show();
+            }
+        });
+    }
+    
+    public void onResume() {
+        //todo : check, what has changed and update
+        super.onResume();
+        myListView.setAdapter(new PlaylistArrayAdapter(PlaylistActivity.this, myApplication.getAllPlayListsArray()));
+        //todo: remember dialog state?
     }
 
-//    public void onResume() {
-//        //todo : check, what has changed and update
-//        super.onResume();
-//
-//        LinkedList<Playlist> playLists = ((MusicApplication)getApplication()).getAllPlayLists();
-//        ArrayAdapter<Model> adapter = new ArrayAdapter<Model>(PlaylistActivity.this, R.layout.unplayable);
-//
-//        for (Playlist playlist: playLists) {
-//            adapter.add(playlist.toModelContainer());
-//            AdapterHelper.addToAdapter(adapter, playlist.getData(), "");
-//        }
-//        setAdapter(myListView, adapter);
-//    }
 }

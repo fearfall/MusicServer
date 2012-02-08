@@ -10,4 +10,7 @@
     <string name="retrievingUrl">Retrieving URL: </string>
     <string name="nullTiming">00:00</string>
     <string name="defaultPlaylist">Play History</string>
+    <string name="newPlaylist">New Playlist</string>
+    <string name="cancel">Cancel</string>
+    <string name="ok">OK</string>
 </resources>

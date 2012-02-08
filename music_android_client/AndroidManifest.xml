@@ -22,7 +22,6 @@
         <activity android:name=".SearchActivity" />
         <activity android:name=".PlaylistActivity"/>
         <activity android:name=".PlayingActivity"/>
-        <activity android:name=".SearchResultActivity"/>
 
         <service android:name=".MusicPlayerService"/>
 
