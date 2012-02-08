@@ -24,18 +24,19 @@ public class Starter {
     public static void main(String[] args) throws Exception, IOException, IllegalAccessException, InstantiationException, InterruptedException {
         Server server = new Server();
 
-        Connector connector = new SelectChannelConnector();
-        connector.setPort(6009);
-        server.setConnectors(new Connector[] {connector});
+//        Connector connector = new SelectChannelConnector();
+//        connector.setPort(6009);
+//        server.setConnectors(new Connector[] {connector});
 
-//        SslSocketConnector sslConnector = new SslSocketConnector();
-//        sslConnector.setPort(8443);
-//        sslConnector.setKeystore("config/server.keys");
-//        sslConnector.setTruststore("config/server.keys");
-//        sslConnector.setKeyPassword("GoodLuck");
-//        sslConnector.setTrustPassword("GoodLuck");
-//        sslConnector.setProtocol("SSL");
-//        server.addConnector(sslConnector);
+        SslSocketConnector sslConnector = new SslSocketConnector();
+        sslConnector.setPort(8443);
+        sslConnector.setKeystore("config/jetty-ssl.keystore");
+        sslConnector.setKeyPassword("jetty6");
+        sslConnector.setPassword("jetty6");
+        sslConnector.setProtocol("SSL");
+        sslConnector.setNeedClientAuth(false);
+        sslConnector.setWantClientAuth(true);
+        server.addConnector(sslConnector);
 
         Constraint constraint = new Constraint();
         constraint.setName(Constraint.__BASIC_AUTH);
@@ -72,6 +73,5 @@ public class Starter {
         server.setSessionIdManager(new HashSessionIdManager());
         server.start();
         server.join();
-
     }
 }
