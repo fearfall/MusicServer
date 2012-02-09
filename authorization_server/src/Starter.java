@@ -1,14 +1,14 @@
+import com.google.appengine.api.urlfetch.HTTPHeader;
+import com.google.appengine.api.urlfetch.HTTPMethod;
+import com.sun.deploy.net.HttpRequest;
 import handlers.PlaylistHandler;
 import handlers.RegisterHandler;
-import org.mortbay.jetty.Connector;
-import org.mortbay.jetty.Handler;
-import org.mortbay.jetty.Server;
+import org.mortbay.jetty.*;
 import org.mortbay.jetty.handler.ContextHandler;
 import org.mortbay.jetty.handler.HandlerCollection;
-import org.mortbay.jetty.nio.SelectChannelConnector;
 import org.mortbay.jetty.security.*;
-import org.mortbay.jetty.servlet.Context;
 import org.mortbay.jetty.servlet.HashSessionIdManager;
+import security.MyBasicAuthenticator;
 
 import java.io.IOException;
 
@@ -35,7 +35,7 @@ public class Starter {
         sslConnector.setPassword("jetty6");
         sslConnector.setProtocol("SSL");
         sslConnector.setNeedClientAuth(false);
-        sslConnector.setWantClientAuth(true);
+        //sslConnector.setWantClientAuth(true);
         server.addConnector(sslConnector);
 
         Constraint constraint = new Constraint();
@@ -48,6 +48,7 @@ public class Starter {
         playlistConstraint.setPathSpec("/playlist/*");
 
         SecurityHandler securityHandler = new SecurityHandler();
+        securityHandler.setAuthenticator(new MyBasicAuthenticator());
         securityHandler.setUserRealm(new JDBCUserRealm("authUserRealm", "config/realm.properties"));
         securityHandler.setConstraintMappings(new ConstraintMapping[] {playlistConstraint});
 
