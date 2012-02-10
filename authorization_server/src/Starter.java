@@ -1,5 +1,3 @@
-import com.google.appengine.api.urlfetch.HTTPHeader;
-import com.google.appengine.api.urlfetch.HTTPMethod;
 import com.sun.deploy.net.HttpRequest;
 import handlers.PlaylistHandler;
 import handlers.RegisterHandler;

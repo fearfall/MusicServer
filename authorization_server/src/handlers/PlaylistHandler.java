@@ -3,7 +3,9 @@ package handlers;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import model.Playlist;
+import org.eclipse.jetty.http.HttpHeaders;
 import org.mortbay.jetty.HttpConnection;
+import org.mortbay.jetty.Response;
 import org.mortbay.jetty.handler.AbstractHandler;
 import utilities.DbConnectUtility;
 
@@ -80,6 +82,9 @@ public class PlaylistHandler extends AbstractHandler{
             }
         }
         if (validRequest) {
+            boolean needWrap = (httpServletRequest.getParameter("callback") != null);
+            StringBuilder responseBody = new StringBuilder();
+            if (needWrap) responseBody.append(httpServletRequest.getParameter("callback") + "(");
             Gson gsonConverter = new Gson();
             switch (actionType) {
                 case ADD:
@@ -136,11 +141,11 @@ public class PlaylistHandler extends AbstractHandler{
                     break;
                 case GET:
                     httpServletResponse.setStatus(HttpServletResponse.SC_OK);
-                    httpServletResponse.getWriter().println(gsonConverter.toJson(dbService.getPlaylist(userId, title)));
+                    responseBody.append(gsonConverter.toJson(dbService.getPlaylist(userId, title)));
                     break;
                 case GETALL:
                     httpServletResponse.setStatus(HttpServletResponse.SC_OK);
-                    httpServletResponse.getWriter().println(gsonConverter.toJson(dbService.getAllPlaylists(userId)));
+                    responseBody.append(gsonConverter.toJson(dbService.getAllPlaylists(userId)));
                     break;
                 case CREATE:
                     if (dbService.createPlaylist(userId, title)) {
@@ -187,6 +192,8 @@ public class PlaylistHandler extends AbstractHandler{
                     break;
                 }
             }
+            if (needWrap) responseBody.append(");");
+            httpServletResponse.getWriter().println(responseBody.toString());
         } else {
             httpServletResponse.setStatus(HttpServletResponse.SC_BAD_REQUEST);
         }

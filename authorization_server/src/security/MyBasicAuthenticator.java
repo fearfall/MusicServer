@@ -3,6 +3,7 @@ package security;
 import java.io.IOException;
 import java.security.Principal;
 import javax.servlet.http.HttpServletResponse;
+
 import org.mortbay.jetty.HttpHeaders;
 import org.mortbay.jetty.Request;
 import org.mortbay.jetty.Response;
@@ -26,43 +27,64 @@ public class MyBasicAuthenticator implements Authenticator {
             String pathInContext,
             Request request,
             Response response) throws IOException {
-        // Get the user if we can
         Principal user=null;
-        String credentials = request.getHeader(HttpHeaders.AUTHORIZATION);
+        //first check if it is OPTIONS request method
+        if (request.getMethod().toUpperCase().equals("OPTIONS")) {
+            String accessControlHeaders = request.getHeader("Access-Control-Request-Headers");
+            if (accessControlHeaders != null && accessControlHeaders.toLowerCase().contains("authorization")) {
+                response.setHeader("Access-Control-Allow-Headers", accessControlHeaders);
+                response.setHeader("Access-Control-Allow-Methods", "GET, POST, OPTIONS");
+                response.setHeader("Access-Control-Max-Age", "172800");
+                response.setHeader("Access-Control-Allow-Origin", "*");
+                response.setHeader("Connection", "Keep-Alive");
+                response.setHeader("Keep-Alive", "timeout=2, max=100");
+                response.setHeader("Content-Type", "text/plain");
+                response.setHeader("Vary", "Accept-Encoding");
+                response.setHeader("Content-Encoding", "gzip");
+                response.setStatus(HttpServletResponse.SC_OK);
+            }
 
-        if (credentials!=null )
-        {
-            try
+        }  else {
+            // Get the user if we can
+            String credentials = request.getHeader(HttpHeaders.AUTHORIZATION);
+
+            if (credentials!=null )
             {
-                if(Log.isDebugEnabled())Log.debug("Credentials: "+credentials);
-                credentials = credentials.substring(credentials.indexOf(' ')+1);
-                //credentials = B64Code.decode(credentials, StringUtil.__UTF8);
-                int i = credentials.indexOf(':');
-                String username = credentials.substring(0,i);
-                String password = credentials.substring(i+1);
-                user = realm.authenticate(username,password,request);
+                try
+                {
+                    if(Log.isDebugEnabled())Log.debug("Credentials: "+credentials);
+                    credentials = credentials.substring(credentials.indexOf(' ')+1);
+                    credentials = B64Code.decode(credentials, StringUtil.__ISO_8859_1);
+                    int i = credentials.indexOf(':');
+                    String username = credentials.substring(0,i);
+                    String password = credentials.substring(i+1);
+                    user = realm.authenticate(username,password,request);
 
-                if (user==null)
-                {
-                    Log.warn("AUTH FAILURE: user {}",StringUtil.printable(username));
+                    if (user==null)
+                    {
+                        Log.warn("AUTH FAILURE: user {}",StringUtil.printable(username));
+                        response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "AUTH FAILURE: user " + username);
+                        return null;
+                    }
+                    else
+                    {
+                        request.setAuthType(Constraint.__BASIC_AUTH);
+                        request.setUserPrincipal(user);
+                    }
                 }
-                else
+                catch (Exception e)
                 {
-                    request.setAuthType(Constraint.__BASIC_AUTH);
-                    request.setUserPrincipal(user);
+                    Log.warn("AUTH FAILURE: "+e.toString());
+                    Log.ignore(e);
                 }
             }
-            catch (Exception e)
-            {
-                Log.warn("AUTH FAILURE: "+e.toString());
-                Log.ignore(e);
+            // Challenge if we have no user
+            if (user==null && response!=null) {
+                String hasOwnForm = request.getHeader("Own-Authentication-Form");
+                boolean needFormAuthentication = (hasOwnForm == null || hasOwnForm.toLowerCase().equals("false"));
+                sendChallenge(realm,response, needFormAuthentication);
             }
         }
-
-        // Challenge if we have no user
-        if (user==null && response!=null)
-            sendChallenge(realm,response);
-
         return user;
     }
 
@@ -72,10 +94,10 @@ public class MyBasicAuthenticator implements Authenticator {
     }
 
     /* ------------------------------------------------------------ */
-    public void sendChallenge(UserRealm realm,Response response)
+    public void sendChallenge(UserRealm realm,Response response, boolean needForm)
         throws IOException
     {
-        response.setHeader(HttpHeaders.WWW_AUTHENTICATE, "basic realm=\""+realm.getName()+'"');
+        if (needForm) response.setHeader(HttpHeaders.WWW_AUTHENTICATE, "basic realm=\""+realm.getName()+'"');
         response.sendError(HttpServletResponse.SC_UNAUTHORIZED);
     }
 }

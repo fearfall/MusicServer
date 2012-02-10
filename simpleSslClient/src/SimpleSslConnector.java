@@ -1,3 +1,5 @@
+import com.sun.org.apache.xerces.internal.impl.dv.util.Base64;
+
 import java.io.*;
 import java.net.*;
 import javax.net.ssl.*;
@@ -14,7 +16,8 @@ public class SimpleSslConnector {
 
         URL url = new URL("https://localhost:8443/playlist/?action=getall");
         HttpsURLConnection connection = (HttpsURLConnection) url.openConnection();
-        connection.setRequestProperty("Authorization", "user lana:GoodLuck");
+        connection.setRequestProperty("authorization", "Basic "+ Base64.encode("user_name:pwd".getBytes()));
+        connection.setRequestProperty("Own-Authentication-Form", "false");
         connection.setDoOutput(true);
         BufferedReader in = new BufferedReader(
                 new InputStreamReader(connection.getInputStream()));
