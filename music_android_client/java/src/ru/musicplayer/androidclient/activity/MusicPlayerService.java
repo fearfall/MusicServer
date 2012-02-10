@@ -63,12 +63,12 @@ public class MusicPlayerService extends Service {
 
     private void initMediaPlayer (MediaPlayer player) {
         player.setAudioStreamType(AudioManager.STREAM_MUSIC);
-        player.setOnBufferingUpdateListener(new MediaPlayer.OnBufferingUpdateListener() {
+        /*player.setOnBufferingUpdateListener(new MediaPlayer.OnBufferingUpdateListener() {
             @Override
             public void onBufferingUpdate(MediaPlayer mp, int i) {
                 ((MusicApplication)getApplication()).onBufferingUpdate(i);
             }
-        });
+        }); */
         player.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
             @Override
             public void onCompletion(MediaPlayer arg0) {

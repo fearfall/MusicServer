@@ -11,6 +11,7 @@ import android.widget.ImageButton;
 import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
+import ru.musicplayer.androidclient.model.Model;
 import ru.musicplayer.androidclient.model.Playlist;
 import ru.musicplayer.androidclient.model.PlaylistIterator;
 import ru.musicplayer.androidclient.model.Track;
@@ -19,6 +20,7 @@ import ru.musicplayer.androidclient.network.Request;
 import java.io.IOException;
 import java.util.Collections;
 import java.util.LinkedList;
+import java.util.List;
 
 /**
  * Created by IntelliJ IDEA.
@@ -40,15 +42,13 @@ public class MusicApplication extends Application {
     private MusicPlayerServiceInterface ourPlayer;
     private SeekBar seekBarProgress;
     private TextView myTiming;
-    //private int mediaFileLengthInMilliseconds;
     private NotificationManager myNotificationManager;
     private TextView myBuffering;
-    //private Button streamButton;
     private ImageButton playButton;
     private TextView playingTrack;
 
     private Playlist ourHistory;
-    private LinkedList<Playlist> ourPlayLists = new LinkedList<Playlist>();
+    private LinkedList<Playlist> myPlayLists = new LinkedList<Playlist>();
     private int currentPlaylist = -1;
     
     private Context myContext;
@@ -175,7 +175,7 @@ public class MusicApplication extends Application {
     public Playlist getCurrentPlaylist() {
         if (currentPlaylist == -1)
             return ourHistory;
-        return ourPlayLists.get(currentPlaylist);
+        return myPlayLists.get(currentPlaylist);
     }
 
     public Track currentPlayingTrack () {
@@ -184,12 +184,18 @@ public class MusicApplication extends Application {
 
     public LinkedList<Playlist> getAllPlayLists() {
         LinkedList<Playlist> all = new LinkedList<Playlist>();
-        all.push(ourHistory);
-        if (!ourPlayLists.isEmpty()) {
-            Collections.sort(ourPlayLists);
-            all.addAll(ourPlayLists);
+        //all.push(ourHistory);
+        if (!myPlayLists.isEmpty()) {
+            Collections.sort(myPlayLists);
+            all.addAll(myPlayLists);
         }
+        all.add(0, ourHistory);
         return all;
+    }
+
+    public Model[] getAllPlayListsArray() {
+        List<Playlist> list = getAllPlayLists();
+        return list.toArray(new Model[list.size()]);
     }
 
     public void notifyUser (String text) {
@@ -275,10 +281,6 @@ public class MusicApplication extends Application {
         Toast.makeText(this, text, Toast.LENGTH_LONG).show();
     }
 
-    /*public String getString(int id) {
-        return getResources().getString(id);
-    }  */
-    
     public void trackClicked(Track item) {
         try {
             if (ourPlayer.isPlaying(item.getMbid())) {
@@ -287,17 +289,13 @@ public class MusicApplication extends Application {
                 Track track;
                 try {
                     notifyUser(getString(R.string.retrievingUrl) + item.getName() + "...");
-                    //setPlayerStatus(getString(this, R.string.retrievingUrl) + item.getName() + "...");
                     track = (Track) Request.get("track", item.getMbid());
                     if (track == null) {
                         notifyUser(getString(R.string.noUrl) + item.getName());
                         setPlayerStatus(getString(R.string.noTrackName) + item.getName());
-                        //setPlayerStatus(getString(this, R.string.noUrl) + item.getName());
-                        //showErrorMessage(item.getName(), "The track URL couldn't be retrieved. We are sorry.", this);
                         return;
                     }
                 } catch (IOException e) {
-                    //showToast("The track URL couldn't be retrieved. We are sorry.", this);
                     setPlayerStatus(getString(R.string.noTrackName));
                     showErrorMessage(item.getName(), e.getMessage());
                     return;
@@ -325,5 +323,23 @@ public class MusicApplication extends Application {
     public void setPlayButtonEnabled (boolean enabled) {
         playButton.setEnabled(enabled);
     }
+    
+    public boolean newPlaylist (String name) {
+        if (name.length() == 0) {
+            showToast("You have to enter the name!");
+            return false;
+        }
+        for (Playlist p: myPlayLists) {
+            if (p.getName().equals(name)) {
+                showToast("You already have playlist with this name!");
+                return false;
+            }
+        }
+        myPlayLists.push(new Playlist(name));
+        //todo: update PlaylistActivity list view
+        //todo: CREATE PLAYLIST REQUEST
+        return true;
+    }
+    
 
 }

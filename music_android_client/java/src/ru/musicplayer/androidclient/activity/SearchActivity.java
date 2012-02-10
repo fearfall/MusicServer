@@ -42,7 +42,6 @@ public class SearchActivity extends Activity {
         TextView tv = (TextView)myTabHost.getTabWidget().getChildTabViewAt(k).findViewById(R.id.tabsText);
         tv.setText(caption);
     }
-    
 
     private void setupTab(final View view, final String tag) {
         View tabView = createTabView(myTabHost.getContext(), tag);
@@ -84,7 +83,6 @@ public class SearchActivity extends Activity {
         searchButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //InputMethodManager imm = (InputMethodManager)getSystemService(SearchActivity.INPUT_METHOD_SERVICE);
                 imm.hideSoftInputFromWindow(view.getWindowToken(), 2);
                 getResultCount();
                 onSearchClick();

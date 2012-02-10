@@ -11,7 +11,7 @@ public final class R {
     public static final class attr {
     }
     public static final class color {
-        public static final int transparent=0x7f050000;
+        public static final int transparent=0x7f040000;
     }
     public static final class drawable {
         public static final int add=0x7f020000;
@@ -39,52 +39,62 @@ public final class R {
         public static final int thumb_transparent=0x7f020016;
     }
     public static final class id {
-        public static final int add_to_playlist=0x7f070013;
-        public static final int buffering=0x7f070006;
-        public static final int button_back=0x7f070001;
-        public static final int button_fwd=0x7f070003;
-        public static final int button_play=0x7f070002;
-        public static final int button_stop=0x7f070000;
-        public static final int currentPlaylist=0x7f070005;
-        public static final int list1=0x7f07000f;
-        public static final int list2=0x7f070010;
-        public static final int list3=0x7f070011;
-        public static final int name=0x7f070012;
-        public static final int playing_layout=0x7f070009;
-        public static final int playing_track_name=0x7f070004;
-        public static final int playlist_layout=0x7f07000b;
-        public static final int playlist_list=0x7f07000c;
-        public static final int searchButton=0x7f07000e;
-        public static final int searchEditText=0x7f07000d;
-        public static final int seekBarTestPlay=0x7f070008;
-        public static final int tabsLayout=0x7f070014;
-        public static final int tabsText=0x7f070015;
-        public static final int text1=0x7f07000a;
-        public static final int timing=0x7f070007;
+        public static final int add_to_playlist=0x7f06001c;
+        public static final int buffering=0x7f060006;
+        public static final int button_back=0x7f060001;
+        public static final int button_fwd=0x7f060003;
+        public static final int button_play=0x7f060002;
+        public static final int button_stop=0x7f060000;
+        public static final int cancel=0x7f06000c;
+        public static final int currentPlaylist=0x7f060005;
+        public static final int delete=0x7f060016;
+        public static final int edit=0x7f060015;
+        public static final int editText=0x7f06000b;
+        public static final int layout_root=0x7f060009;
+        public static final int list1=0x7f060019;
+        public static final int list2=0x7f06001a;
+        public static final int list3=0x7f06001b;
+        public static final int name=0x7f060013;
+        public static final int newPlaylistButton=0x7f060011;
+        public static final int ok=0x7f06000d;
+        public static final int play=0x7f060014;
+        public static final int playing_layout=0x7f06000e;
+        public static final int playing_track_name=0x7f060004;
+        public static final int playlist_layout=0x7f060010;
+        public static final int playlist_list=0x7f060012;
+        public static final int searchButton=0x7f060018;
+        public static final int searchEditText=0x7f060017;
+        public static final int seekBarTestPlay=0x7f060008;
+        public static final int tabsLayout=0x7f06001d;
+        public static final int tabsText=0x7f06001e;
+        public static final int text=0x7f06000a;
+        public static final int text1=0x7f06000f;
+        public static final int timing=0x7f060007;
     }
     public static final class layout {
         public static final int main=0x7f030000;
-        public static final int playing=0x7f030001;
-        public static final int playlists=0x7f030002;
-        public static final int search=0x7f030003;
-        public static final int search_item=0x7f030004;
-        public static final int search_result=0x7f030005;
-        public static final int tabs_bg=0x7f030006;
-        public static final int unplayable=0x7f030007;
-    }
-    public static final class raw {
-        public static final int test=0x7f040000;
+        public static final int new_playlist_dialog=0x7f030001;
+        public static final int playing=0x7f030002;
+        public static final int playlists=0x7f030003;
+        public static final int playlists_item=0x7f030004;
+        public static final int search=0x7f030005;
+        public static final int search_item=0x7f030006;
+        public static final int tabs_bg=0x7f030007;
+        public static final int unplayable=0x7f030008;
     }
     public static final class string {
-        public static final int app_name=0x7f060000;
-        public static final int deadUrl=0x7f060006;
-        public static final int defaultPlaylist=0x7f060009;
-        public static final int emptyText=0x7f060002;
-        public static final int emptyText1=0x7f060003;
-        public static final int noTrackName=0x7f060004;
-        public static final int noUrl=0x7f060005;
-        public static final int nullTiming=0x7f060008;
-        public static final int retrievingUrl=0x7f060007;
-        public static final int search=0x7f060001;
+        public static final int app_name=0x7f050000;
+        public static final int cancel=0x7f05000b;
+        public static final int deadUrl=0x7f050006;
+        public static final int defaultPlaylist=0x7f050009;
+        public static final int emptyText=0x7f050002;
+        public static final int emptyText1=0x7f050003;
+        public static final int newPlaylist=0x7f05000a;
+        public static final int noTrackName=0x7f050004;
+        public static final int noUrl=0x7f050005;
+        public static final int nullTiming=0x7f050008;
+        public static final int ok=0x7f05000c;
+        public static final int retrievingUrl=0x7f050007;
+        public static final int search=0x7f050001;
     }
 }

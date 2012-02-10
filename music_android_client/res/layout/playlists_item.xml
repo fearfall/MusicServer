@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:orientation="horizontal"
+              android:layout_width="fill_parent"
+              android:layout_height="fill_parent">
+    <TextView android:id="@+id/name"
+              android:layout_width="fill_parent"
+              android:layout_height="wrap_content"
+              android:layout_weight="1"
+              android:paddingBottom="5px"
+              android:paddingTop="5px"/>
+    <ImageButton android:id="@+id/play"
+                 android:layout_width="wrap_content"
+                 android:layout_height="wrap_content"
+                 android:layout_weight="1"
+                 android:background="@drawable/thumb_transparent"
+                 android:src="@drawable/add"/>
+    <ImageButton android:id="@+id/edit"
+                 android:layout_width="wrap_content"
+                 android:layout_height="wrap_content"
+                 android:layout_weight="1"
+                 android:background="@drawable/thumb_transparent"
+                 android:src="@drawable/add"/>
+    <ImageButton android:id="@+id/delete"
+                 android:layout_width="wrap_content"
+                 android:layout_height="wrap_content"
+                 android:layout_weight="1"
+                 android:background="@drawable/thumb_transparent"
+                 android:src="@drawable/add"/>
+
+</LinearLayout>
