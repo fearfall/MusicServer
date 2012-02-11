@@ -15,29 +15,27 @@ public class SimpleMusicServer
     public static void main(String[] args) throws Exception
     {
         Server server = new Server(6006);
-        SimpleDBConnection connection;
         try {
-            connection = new SimpleDBConnection();
             ContextHandler searchContext = new ContextHandler();
             searchContext.setContextPath("/search");
             searchContext.setResourceBase(".");
             searchContext.setClassLoader(Thread.currentThread().getContextClassLoader());
             server.addHandler(searchContext);
-            searchContext.setHandler(new SearchHandler(connection));
+            searchContext.setHandler(new SearchHandler());
 
             ContextHandler getContext = new ContextHandler();
             getContext.setContextPath("/get");
             getContext.setResourceBase(".");
             getContext.setClassLoader(Thread.currentThread().getContextClassLoader());
             server.addHandler(getContext);
-            getContext.setHandler(new GetHandler(connection));
+            getContext.setHandler(new GetHandler());
 
             ContextHandler getCountContext = new ContextHandler();
             getCountContext.setContextPath("/count");
             getCountContext.setResourceBase(".");
             getCountContext.setClassLoader(Thread.currentThread().getContextClassLoader());
             server.addHandler(getCountContext);
-            getCountContext.setHandler(new GetCountHandler(connection));
+            getCountContext.setHandler(new GetCountHandler());
 
         } catch (Exception e) {
             ErrorHandler errorHandler = new ErrorHandler();

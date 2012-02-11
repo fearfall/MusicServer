@@ -1,0 +1,55 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<script src="http://code.jquery.com/jquery-latest.min.js"></script>
+	<script src="http://ajax.microsoft.com/ajax/jquery.templates/beta1/jquery.tmpl.min.js"></script>
+	<!--<script src="js/artist_template.js" id="artist_expanded_template" type="text/x-jquery-tmpl"></script>-->
+	<script src="js/templates.js" type="text/javascript"></script>
+	<link media="all" type="text/css" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.17/themes/base/jquery-ui.css" rel="stylesheet"/>
+</head>
+<body>
+	<!--<button id="showBtn">Show artists</button><br/>-->
+		<div id="artists"> </div>	
+		
+<script id="artist_expanded_template" type="text/x-jquery-tmpl">
+	<div class="artist">
+	  <div class="artist_title">
+		<button class="expand_button">a</button> 
+		<h3><a href='http://example.com/${mbid}'>${name}</a></h3>
+	  </div>
+	  <div class="albums">
+		  <ul>
+		  {{each albums}}
+			<div class='album'> 
+				<li> <a href='http://example.com/${mbid}'>${name}</a> </li>
+			</div>
+		  {{/each}}
+		  </ul>
+	  </div>
+	</div>
+</script>				
+
+<script>
+  var artists = [
+		{"name":"Rammstein","mbid":"b2d122f9-eadb-4930-a196-8f221eeb0c66" , 
+				"albums":[{"name":"The Very Best of Rammstein","mbid":"7bea3d88-533d-4684-ad3a-8eee7b5079e8","tracks":[]}
+						]
+		},
+		{"name":"Ololo","mbid":"b2d122f9-eadb-4930-a196-8f221edb0sc66", 
+				"albums":[
+						{"name":"The Very Best of Rammstein","mbid":"7bea3d88-533d-4684-ad3a-8eee7b5079e8","tracks":[]}
+						]
+		}
+		
+  ];
+
+  applyTemplate("#artist_expanded_template", artists, "#artists");
+  addHiding(".artist .artist_title .expand_button");
+  
+</script>
+
+
+</body>
+</html>
+
