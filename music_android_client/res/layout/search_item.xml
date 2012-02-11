@@ -11,10 +11,9 @@
               android:paddingBottom="5px"
               android:paddingTop="5px"/>
     <ImageButton android:id="@+id/add_to_playlist"
-                 android:layout_width="wrap_content"
+                 android:layout_width="fill_parent"
                  android:layout_height="wrap_content"
-                 android:layout_weight="1"
+                 android:layout_weight="6"
                  android:background="@drawable/thumb_transparent"
                  android:src="@drawable/add"/>
-
 </LinearLayout>

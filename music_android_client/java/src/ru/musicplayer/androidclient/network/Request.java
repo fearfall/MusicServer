@@ -5,7 +5,6 @@ import com.google.gson.JsonSyntaxException;
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
 import org.apache.http.StatusLine;
-import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.conn.HttpHostConnectException;
 import org.apache.http.impl.client.DefaultHttpClient;
@@ -15,6 +14,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.lang.reflect.Type;
 
+
 /**
  * Created by IntelliJ IDEA.
  * User: kate
@@ -23,24 +23,35 @@ import java.lang.reflect.Type;
  * To change this template use File | Settings | File Templates.
  */
 public class Request {
-    private static HttpClient myHttpClient = null;
+    private static SecureHttpClient mySecureHttpClient = null;
     //private static String myServerAddress = "192.168.211.119";
     //private static String myServerAddress = "192.168.1.5";
-    private static String myServerAddress = "192.168.1.2";
-    private static String myAuthorizationServerAddress = myServerAddress;
+    private static String myIp = "192.168.1.4";
+    private static String myServerAddress = "http://" + myIp + ":6006";
+    private static String myAuthorizationServerAddress = "https://" + myIp + ":8443";
+
+    public static void setIp(String ip) {
+        //todo: validate
+        myIp = ip;
+    }
+
+    public static void init (String username, String password) {
+        mySecureHttpClient = new SecureHttpClient(username, password, myIp);
+    }
 
     private static HttpResponse execute (String request) throws IOException {
-        if (myHttpClient == null) {
-            myHttpClient = new DefaultHttpClient();
+        if (request.contains("https://")) {
+            if (mySecureHttpClient == null)
+                throw new RuntimeException("You are unauthorized!");
+            return mySecureHttpClient.execute(request);
         }
-        return myHttpClient.execute(new HttpGet(request));
+        return new DefaultHttpClient().execute(new HttpGet(request));
     }
 
     // requests to base server
-    
     public static Model get (String type, String mbid) throws IOException {
         try {
-            HttpResponse response = execute("http://" + myServerAddress + ":6006/get/" + type + "?id=" + mbid);
+            HttpResponse response = execute(myServerAddress + "/get/" + type + "?id=" + mbid);
             StatusLine statusLine = response.getStatusLine();
             switch (statusLine.getStatusCode()) {
                 case HttpStatus.SC_OK:
@@ -65,7 +76,7 @@ public class Request {
 
     public static Result search (String pattern, int limit, int offset, int contentType) throws IOException {
         try {
-            HttpResponse response = execute("http://" + myServerAddress + ":6006/search/?pattern=" + pattern + "&limit=" + limit + "&offset=" + offset + "&type=" + contentType);
+            HttpResponse response = execute(myServerAddress + "/search/?pattern=" + pattern + "&limit=" + limit + "&offset=" + offset + "&type=" + contentType);
             StatusLine statusLine = response.getStatusLine();
             if (statusLine.getStatusCode() == HttpStatus.SC_OK){
                 InputStreamReader r = new InputStreamReader(response.getEntity().getContent());
@@ -90,10 +101,10 @@ public class Request {
             throw new IOException("Connection ERROR: " + e.getMessage());
         }
     }
-    
+
     public static ResultCount getCount (String pattern) throws IOException {
         try {
-            HttpResponse response = execute("http://" + myServerAddress + ":6006/count/?pattern=" + pattern);
+            HttpResponse response = execute(myServerAddress + "/count/?pattern=" + pattern);
             StatusLine statusLine = response.getStatusLine();
             if (statusLine.getStatusCode() == HttpStatus.SC_OK){
                 InputStreamReader r = new InputStreamReader(response.getEntity().getContent());
@@ -118,13 +129,13 @@ public class Request {
             throw new IOException("Connection ERROR: " + e.getMessage());
         }
     }
-    
+
     //requests to authorization server
-    
+
     //create, remove
     public static String playlistAction (String action, String playlistName) throws IOException {
         try {
-            HttpResponse response = execute("http://" + myAuthorizationServerAddress + ":6009/playlist/?action=" + action + "&name=" + playlistName);
+            HttpResponse response = execute(myAuthorizationServerAddress + "/playlist/?action=" + action + "&name=" + playlistName);
             StatusLine statusLine = response.getStatusLine();
             if (statusLine.getStatusCode() == HttpStatus.SC_OK){
                 return "Playlist " + playlistName + " successfully " + action + 'd';
@@ -135,7 +146,7 @@ public class Request {
             }
         } catch (HttpHostConnectException e2) {
             String msg = e2.getMessage();
-            if (msg.contains("Connection to ") && msg.contains(myServerAddress) && msg.contains("refused")) {
+            if (msg.contains("Connection to ") && msg.contains(myAuthorizationServerAddress) && msg.contains("refused")) {
                 throw new IOException("Failed to connect to Music Authorization Server.\nCheck your internet connection.\nOr it may be Music Authorization Server Internal error ;)");
             }
             throw e2;
@@ -144,10 +155,43 @@ public class Request {
         }
     }
 
+    /*public static String playlistAction(String action, String playlistName) throws IOException {
+        URL url = new URL(myAuthorizationServerAddressSecure + "/playlist/?action=" + action + "&name=" + playlistName);
+        HttpsURLConnection connection = (HttpsURLConnection) url.openConnection();
+        connection.setRequestProperty("authorization", "Basic "+ Base64.encode((myUsername + ':' + myPwd).getBytes()));
+        connection.setRequestProperty("Own-Authentication-Form", "false");
+        try {
+            connection.setDoOutput(true);
+            switch (connection.getResponseCode()) {
+                case HttpStatus.SC_OK:
+                    return "Playlist " + playlistName + " successfully " + action + 'd';
+                default:
+                    return connection.getResponseMessage();
+            }
+        }  catch (HttpHostConnectException e2) {
+            String msg = e2.getMessage();
+            if (msg.contains("Connection to ") && msg.contains(myAuthorizationServerAddressSecure) && msg.contains("refused")) {
+                throw new IOException("Failed to connect to Music Authorization Server.\nCheck your internet connection.\nOr it may be Music Authorization Server Internal error ;)");
+            }
+            throw e2;
+        } catch (Exception e) {
+            throw new IOException("Connection ERROR: " + e.getMessage());
+        }  */
+
+
+
+        /*BufferedReader in = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+       String line;
+       while ((line = in.readLine()) != null) {
+           System.out.println(line);
+       }
+       in.close(); */
+    //}
+
     //add, delete
     public static String trackAction (String action, String playlistName, int order, int mbid) throws IOException {
         try {
-            HttpResponse response = execute("http://" + myAuthorizationServerAddress + ":6009/playlist/?action=" +
+            HttpResponse response = execute(myAuthorizationServerAddress + "/playlist/?action=" +
                     action + "&name=" + playlistName + "&order=" + order + "&mbid=" + mbid);
 
             StatusLine statusLine = response.getStatusLine();
@@ -160,7 +204,7 @@ public class Request {
             }
         } catch (HttpHostConnectException e2) {
             String msg = e2.getMessage();
-            if (msg.contains("Connection to ") && msg.contains(myServerAddress) && msg.contains("refused")) {
+            if (msg.contains("Connection to ") && msg.contains(myAuthorizationServerAddress) && msg.contains("refused")) {
                 throw new IOException("Failed to connect to Music Authorization Server.\nCheck your internet connection.\nOr it may be Music Authorization Server Internal error ;)");
             }
             throw e2;
@@ -171,11 +215,11 @@ public class Request {
 
     public static PlaylistResult getPlaylist (String playlistName) throws IOException {
         try {
-            HttpResponse response = execute("http://" + myAuthorizationServerAddress + ":6009/playlist/?action=get&name=" + playlistName);
+            HttpResponse response = execute(myAuthorizationServerAddress + "/playlist/?action=get&name=" + playlistName);
             StatusLine statusLine = response.getStatusLine();
             if (statusLine.getStatusCode() == HttpStatus.SC_OK) {
-                 InputStreamReader r = new InputStreamReader(response.getEntity().getContent());
-                 return new Gson().fromJson(r, (Type)PlaylistResult.class);
+                InputStreamReader r = new InputStreamReader(response.getEntity().getContent());
+                return new Gson().fromJson(r, (Type)PlaylistResult.class);
             } else {
                 //Closes the connection.
                 response.getEntity().getContent().close();
@@ -188,7 +232,7 @@ public class Request {
             throw e1;
         } catch (HttpHostConnectException e2) {
             String msg = e2.getMessage();
-            if (msg.contains("Connection to ") && msg.contains(myServerAddress) && msg.contains("refused")) {
+            if (msg.contains("Connection to ") && msg.contains(myAuthorizationServerAddress) && msg.contains("refused")) {
                 throw new IOException("Failed to connect to Music Authorization Server.\nCheck your internet connection.\nOr it may be Music Authorization Server Internal error ;)");
             }
             throw e2;
@@ -200,7 +244,7 @@ public class Request {
 
     public static AllPlaylistsResult getAllPlaylists () throws IOException {
         try {
-            HttpResponse response = execute("http://" + myAuthorizationServerAddress + ":6009/playlist/?action=getall");
+            HttpResponse response = execute(myAuthorizationServerAddress + "/playlist/?action=getall");
             StatusLine statusLine = response.getStatusLine();
             if (statusLine.getStatusCode() == HttpStatus.SC_OK){
                 InputStreamReader r = new InputStreamReader(response.getEntity().getContent());
@@ -217,7 +261,7 @@ public class Request {
             throw e1;
         } catch (HttpHostConnectException e2) {
             String msg = e2.getMessage();
-            if (msg.contains("Connection to ") && msg.contains(myServerAddress) && msg.contains("refused")) {
+            if (msg.contains("Connection to ") && msg.contains(myAuthorizationServerAddress) && msg.contains("refused")) {
                 throw new IOException("Failed to connect to Music Authorization Server.\nCheck your internet connection.\nOr it may be Music Authorization Server Internal error ;)");
             }
             throw e2;
@@ -225,4 +269,34 @@ public class Request {
             throw new IOException("Connection ERROR: " + e.getMessage());
         }
     }
+
+    public static String register (String user, String pwd) throws IOException {
+        try {
+            init(user, pwd);
+            HttpResponse response = execute(myAuthorizationServerAddress + "/register/?username=" + user + "&pwd=" + pwd);
+            StatusLine statusLine = response.getStatusLine();
+            if (statusLine.getStatusCode() == HttpStatus.SC_OK){
+                return "Registration successful!";
+            } else {
+                //Closes the connection.
+                response.getEntity().getContent().close();
+                return statusLine.getReasonPhrase();
+            }
+        } catch (JsonSyntaxException e1) {
+            if (e1.getMessage().contains("{ERROR}")) {
+                return "Music Authorization Server internal error";
+            }
+            throw e1;
+        } catch (HttpHostConnectException e2) {
+            String msg = e2.getMessage();
+            if (msg.contains("Connection to ") && msg.contains(myAuthorizationServerAddress) && msg.contains("refused")) {
+                throw new IOException("Failed to connect to Music Authorization Server.\nCheck your internet connection.\nOr it may be Music Authorization Server Internal error ;)");
+            }
+            throw e2;
+        } catch (Exception e) {
+            throw new IOException("Connection ERROR: " + e.getMessage());
+        }
+    }
+
+
 }

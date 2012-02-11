@@ -21,7 +21,7 @@ import java.io.IOException;
 public class SearchArrayAdapter extends OpenableArrayAdapter {
 
     public SearchArrayAdapter(Context context, Model... objects) {
-        super(context, R.layout.search_item, R.id.name, objects);
+        super(context, R.layout.search_item, R.id.name, true, objects);
     }
 
     @Override

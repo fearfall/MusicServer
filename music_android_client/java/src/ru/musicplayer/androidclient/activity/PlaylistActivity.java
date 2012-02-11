@@ -50,5 +50,10 @@ public class PlaylistActivity extends Activity {
         myListView.setAdapter(new PlaylistArrayAdapter(PlaylistActivity.this, myApplication.getAllPlayListsArray()));
         //todo: remember dialog state?
     }
+    
+    public void newPlaylist(Playlist playlist) {
+        //todo: highlight ?
+        ((OpenableArrayAdapter) myListView.getAdapter()).append(playlist);
+    }
 
 }

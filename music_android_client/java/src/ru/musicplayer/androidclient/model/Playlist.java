@@ -62,10 +62,6 @@ public class Playlist extends Model implements Comparable<Playlist> {
                 : myData.toArray(new Track[myData.size()]);
     }
 
-   /* public ModelContainer toModelContainer() {
-        return new ModelContainer(myName, getData());
-    }   */
-
     public void setPlaying (String mbid) {
         for (int i=0; i<myData.size(); ++i) {
             if (myData.get(i).getMbid().equals(mbid)) {
@@ -105,5 +101,14 @@ public class Playlist extends Model implements Comparable<Playlist> {
 
     public void dec() {
         nowPlaying--;
+    }
+    
+    public Track get (int index) {
+        return myData.get(index);
+    }
+    
+    public Track start() {
+        nowPlaying = 0;
+        return myData.get(0);
     }
 }
