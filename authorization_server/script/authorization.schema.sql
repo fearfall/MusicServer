@@ -23,5 +23,5 @@ CREATE TABLE roles (
   id INTEGER PRIMARY KEY AUTO_INCREMENT,
   role VARCHAR(100) NOT NULL UNIQUE KEY
 );
-INSERT INTO role(role) VALUES ('authUser');
+INSERT INTO roles(role) VALUES ('authUser');
 GRANT ALL PRIVILEGES ON ms_authorization.* TO 'authJaas' IDENTIFIED BY '';

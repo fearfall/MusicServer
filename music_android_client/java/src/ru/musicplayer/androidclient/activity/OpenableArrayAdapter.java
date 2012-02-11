@@ -6,10 +6,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
-import ru.musicplayer.androidclient.model.*;
+import ru.musicplayer.androidclient.model.EmptyResult;
+import ru.musicplayer.androidclient.model.Model;
+import ru.musicplayer.androidclient.model.Track;
 
 import java.io.IOException;
-import java.util.List;
 
 /**
  * Created by IntelliJ IDEA.
@@ -24,13 +25,15 @@ public abstract class OpenableArrayAdapter extends ArrayAdapter<Model> {
     protected final MusicApplication myApplication;
     protected final int myResource;
     protected final int myTextViewResource;
+    protected boolean writeToHistory;
         
-    public OpenableArrayAdapter(Context context, int resource, int textViewResource, Model... objects) {
+    public OpenableArrayAdapter(Context context, int resource, int textViewResource, boolean doWriteToHistory, Model... objects) {
         super(context, resource, textViewResource);
         myContext = context;
         myApplication = ((MusicApplication)context.getApplicationContext());
         myResource = resource;
         myTextViewResource = textViewResource;
+        writeToHistory = doWriteToHistory;
         setContent("", objects);
     }
     
@@ -48,7 +51,7 @@ public abstract class OpenableArrayAdapter extends ArrayAdapter<Model> {
             public void onClick(View view) {
                 Model item = getItem(position);
                 if (item instanceof Track) {
-                    myApplication.trackClicked((Track)item);
+                    myApplication.trackClicked((Track)item, writeToHistory);
                     return;
                 }
                 if (item instanceof EmptyResult)
@@ -80,7 +83,9 @@ public abstract class OpenableArrayAdapter extends ArrayAdapter<Model> {
         }
     }
     
-    public void append (Model[] objects) {
+    public void append (Model... objects) {
+        if (objects == null)
+            return;
         for (Model model: objects) {
             model.setShift("" + singleTab);
             add(model);

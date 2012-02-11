@@ -50,8 +50,11 @@ public class MusicApplication extends Application {
     private Playlist ourHistory;
     private LinkedList<Playlist> myPlayLists = new LinkedList<Playlist>();
     private int currentPlaylist = -1;
-    
     private Context myContext;
+
+//    private String myUsername;
+//    private String myPassword;
+//    private boolean isAuthorized;
 
     private ServiceConnection myServiceConnection = new ServiceConnection() {
         @Override
@@ -69,6 +72,7 @@ public class MusicApplication extends Application {
         super.onCreate();
         myNotificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
         ourHistory = new Playlist("Search history");
+        currentPlaylist = 0;
         bindService(new Intent(this, MusicPlayerService.class), myServiceConnection, BIND_AUTO_CREATE);
     }
 
@@ -140,16 +144,7 @@ public class MusicApplication extends Application {
         skipFwdButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Track next;
-                /*if (currentPlaylist == -1)
-                    next = ourHistory.back();
-                else  */
-                next = PlaylistIterator.next(getCurrentPlaylist());
-                if (next == null) {
-                    showToast("Current playlist is empty or currently selected is the last track.");
-                    return;
-                }
-                tryPlay(next, "Forward");
+                MusicApplication.this.next();
             }
         });
 
@@ -170,6 +165,19 @@ public class MusicApplication extends Application {
                 tryPlay(back, "Backward");
             }
         });
+    }
+
+    public void next() {
+        Track next;
+        /*if (currentPlaylist == -1)
+  next = ourHistory.back();
+else  */
+        next = PlaylistIterator.next(getCurrentPlaylist());
+        if (next == null) {
+            showToast("Current playlist is empty or currently selected is the last track.");
+            return;
+        }
+        tryPlay(next, "Forward");
     }
 
     public Playlist getCurrentPlaylist() {
@@ -281,7 +289,7 @@ public class MusicApplication extends Application {
         Toast.makeText(this, text, Toast.LENGTH_LONG).show();
     }
 
-    public void trackClicked(Track item) {
+    public void trackClicked(Track item, boolean writeToHistory) {
         try {
             if (ourPlayer.isPlaying(item.getMbid())) {
                 ourPlayer.stop();
@@ -307,7 +315,11 @@ public class MusicApplication extends Application {
                     //setPlayerStatus(getString(this, R.string.deadUrl) + item.getName());
                     //showErrorMessage(item.getName(), "Dead track URL :-(", this);
                 } else {
-                    ourHistory.addAndPlay(track);
+                    if (writeToHistory) {
+                        ourHistory.addAndPlay(track);
+                    } else {
+                        getCurrentPlaylist().setPlaying(item.getMbid());
+                    }
                 }
             }
 
@@ -324,22 +336,47 @@ public class MusicApplication extends Application {
         playButton.setEnabled(enabled);
     }
     
-    public boolean newPlaylist (String name) {
+    public Playlist newPlaylist (String name) {
         if (name.length() == 0) {
             showToast("You have to enter the name!");
-            return false;
+            return null;
         }
         for (Playlist p: myPlayLists) {
             if (p.getName().equals(name)) {
                 showToast("You already have playlist with this name!");
-                return false;
+                return null;
             }
         }
-        myPlayLists.push(new Playlist(name));
-        //todo: update PlaylistActivity list view
-        //todo: CREATE PLAYLIST REQUEST
-        return true;
+        try {
+            showToast(Request.playlistAction("create", name));
+            Playlist playlist = new Playlist(name);
+            myPlayLists.push(playlist);
+            return playlist;
+        } catch (IOException e) {
+            showErrorMessage("Add playlist", e.getMessage());
+            return null;
+        }
     }
     
+    public void setCurrentPlaylist (int index) {
+        currentPlaylist = index;
+        //todo: inform PlayingActivity
+        Track first = myPlayLists.get(currentPlaylist).start();
+        trackClicked(first, false);
+    }
+        
+    public Playlist getHistory() {
+        return ourHistory;
+    }
+    
+   /* public boolean isAuthorized() {
+        return isAuthorized;
+    }
+
+    public void setCredentials(String username, String password) {
+        myUsername = username;
+        myPassword = password;
+        //Request.init(myUsername, myPassword);
+    }  */
 
 }

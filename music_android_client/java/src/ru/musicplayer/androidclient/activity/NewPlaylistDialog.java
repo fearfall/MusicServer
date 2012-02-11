@@ -10,8 +10,6 @@ import android.widget.Button;
 import android.widget.EditText;
 import ru.musicplayer.androidclient.model.Playlist;
 
-import java.util.List;
-
 /**
  * Created by IntelliJ IDEA.
  * User: kate
@@ -21,7 +19,7 @@ import java.util.List;
  */
 public abstract class NewPlaylistDialog {
 
-    public static Dialog create (final MusicApplication myApplication, Context mContext, final InputMethodManager imm)    {
+    public static Dialog create (final MusicApplication myApplication, final Context mContext, final InputMethodManager imm)    {
 
         final Dialog dialog = new Dialog(mContext);
         dialog.setContentView(R.layout.new_playlist_dialog);
@@ -34,8 +32,11 @@ public abstract class NewPlaylistDialog {
             @Override
             public void onClick(View view) {
                 String name = edit.getText().toString();
-                if (myApplication.newPlaylist(name))
+                Playlist playlist = myApplication.newPlaylist(name);
+                if (playlist != null) {
+                    ((PlaylistActivity)mContext).newPlaylist(playlist);
                     dialog.hide();
+                }
             }
         });
 

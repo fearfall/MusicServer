@@ -32,6 +32,8 @@ public class MainActivity extends TabActivity {
         TabHost.TabSpec spec;  // Resusable TabSpec for each tab
         Intent intent;  // Reusable Intent for each tab
 
+
+
         intent = new Intent().setClass(this, SearchActivity.class);
         spec = tabHost.newTabSpec("search").setIndicator("Search", res.getDrawable(R.drawable.ic_tab_search)).setContent(intent);
         tabHost.addTab(spec);
@@ -42,6 +44,10 @@ public class MainActivity extends TabActivity {
 
         intent = new Intent().setClass(this, PlayingActivity.class);
         spec = tabHost.newTabSpec("playing").setIndicator("Playing", res.getDrawable(R.drawable.ic_tab_playing)).setContent(intent);
+        tabHost.addTab(spec);
+
+        intent = new Intent().setClass(this, AuthorizationActivity.class);
+        spec = tabHost.newTabSpec("authorization").setIndicator("Login").setContent(intent);
         tabHost.addTab(spec);
 
         tabHost.setCurrentTab(0);
