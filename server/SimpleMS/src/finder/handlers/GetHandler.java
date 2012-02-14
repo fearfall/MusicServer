@@ -29,49 +29,44 @@ public class GetHandler extends AbstractHandler
                        int i) throws IOException, ServletException {
 
         httpServletResponse.setContentType("application/json");
-
-        String id = httpServletRequest.getParameter("id");
-        String jsonCallbackParam = httpServletRequest.getParameter("jsoncallback");
-        Object result = null;
-        System.out.println(id);
         StringBuilder html = new StringBuilder();
-        if(s.equals("/artist")) {
-            result = SimpleDBConnection.getInstance().getArtist(id);
-        }
-        if(s.equals("/album")) {
-            result = SimpleDBConnection.getInstance().getAlbum(id);
-        }
-        if(s.equals("/track")) {
-            result = SimpleDBConnection.getInstance().getTrack(id);
-        }
-        //html.append("<html> <head/> <body>");
-        if(result != null) {
-            httpServletResponse.setStatus(HttpServletResponse.SC_OK);
-            String jsonElement = new Gson().toJson(result);
-            if (jsonCallbackParam != null) {
-                html.append(jsonCallbackParam);
-                html.append("(");
-                html.append(jsonElement);
-                html.append(");");
+        String error = "";
+        try {
+            String id = httpServletRequest.getParameter("id");
+            if(id == null)
+                throw new MusicServerException("No entity specified");
+            String jsonCallbackParam = httpServletRequest.getParameter("jsoncallback");
+            Object result = null;
+            if(s.equals("/artist")) {
+                result = SimpleDBConnection.getInstance().getArtist(id);
             }
-            else html.append(jsonElement);
-        } else {
-            httpServletResponse.setStatus(HttpServletResponse.SC_NO_CONTENT);
-            html.append("{ERROR}");
-        }
-        //html.append(" </body> </html>");
-        //httpServletResponse.setContentLength(html.length());
+            if(s.equals("/album")) {
+                result = SimpleDBConnection.getInstance().getAlbum(id);
+            }
+            if(s.equals("/track")) {
+                result = SimpleDBConnection.getInstance().getTrack(id);
+            }
+
+            if(result != null) {
+                httpServletResponse.setStatus(HttpServletResponse.SC_OK);
+                String jsonElement = new Gson().toJson(result);
+                if (jsonCallbackParam != null) {
+                    html.append(jsonCallbackParam);
+                    html.append("(");
+                    html.append(jsonElement);
+                    html.append(");");
+                }
+                else html.append(jsonElement);
+            } else {
+                httpServletResponse.setStatus(HttpServletResponse.SC_NO_CONTENT);  
+            }
+        } catch (MusicServerException e) {
+            html.append(e.getMessage());
+        }                             
+        
         System.out.println(html.toString());
         httpServletResponse.getWriter().println(html.toString());
         Request baseRequest = (httpServletRequest instanceof Request) ? (Request)httpServletRequest: HttpConnection.getCurrentConnection().getRequest();
         baseRequest.setHandled(true);
-    }
-
-    public static String sanitizeJsonpParam(String s) {
-        if ( s.isEmpty()) return null;
-        if ( !StringUtils.startsWithIgnoreCase(s,"jsonp")) return null;
-        if ( s.length() > 128 ) return null;
-        if ( !s.matches("^jsonp\\d+$")) return null;
-        return s;
     }
 }

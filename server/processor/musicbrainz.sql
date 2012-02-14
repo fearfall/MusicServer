@@ -66,10 +66,18 @@ when not matched then insert into (aid, rid, quality) values ("123_123", 8181, 2
 delete from aid where exists ( select 'x' from aid i where i.rid = aid.rid  and i.quality < aid.quality )
 --duplicates real =)
 delete from all_tracks_info where id not in ( select distinct on(recording) id from all_tracks_info);
+
+-- select * from simple_track_info where track_mbid not in (select distinct on(track_mbid) track_mbid from simple_track_info);
 DELETE FROM all_tracks_info
        WHERE recording NOT IN (SELECT min(recording)
                         FROM all_tracks_info
                         GROUP BY hash HAVING count(*) >= 1)
+                        
+                        
+select * from simple_track_info
+       where track_mbid not in (select min(track_mbid)
+                        FROM simple_track_info
+                        GROUP BY hash HAVING count(*) >= 1)                        
 -- artist's tracks names and length
 select r.gid, tn.name, r.length from 
 artist a, artist_name an, 
