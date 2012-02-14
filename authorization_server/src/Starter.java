@@ -1,12 +1,13 @@
-import com.sun.deploy.net.HttpRequest;
-import handlers.PlaylistHandler;
-import handlers.RegisterHandler;
+import handlers.playlist.PlaylistHandler;
+import handlers.user.LoginHandler;
+import handlers.user.RegisterHandler;
 import org.mortbay.jetty.*;
 import org.mortbay.jetty.handler.ContextHandler;
 import org.mortbay.jetty.handler.HandlerCollection;
 import org.mortbay.jetty.security.*;
 import org.mortbay.jetty.servlet.HashSessionIdManager;
 import security.MyBasicAuthenticator;
+import utilities.CommonDbService;
 
 import java.io.IOException;
 
@@ -21,11 +22,6 @@ public class Starter {
 
     public static void main(String[] args) throws Exception, IOException, IllegalAccessException, InstantiationException, InterruptedException {
         Server server = new Server();
-
-//        Connector connector = new SelectChannelConnector();
-//        connector.setPort(6009);
-//        server.setConnectors(new Connector[] {connector});
-
         SslSocketConnector sslConnector = new SslSocketConnector();
         sslConnector.setPort(8443);
         sslConnector.setKeystore("config/jetty-ssl.keystore");
@@ -33,7 +29,6 @@ public class Starter {
         sslConnector.setPassword("jetty6");
         sslConnector.setProtocol("SSL");
         sslConnector.setNeedClientAuth(false);
-        //sslConnector.setWantClientAuth(true);
         server.addConnector(sslConnector);
 
         Constraint constraint = new Constraint();
@@ -45,18 +40,30 @@ public class Starter {
         playlistConstraint.setConstraint(constraint);
         playlistConstraint.setPathSpec("/playlist/*");
 
+        ConstraintMapping loginConstraint = new ConstraintMapping();
+        loginConstraint.setConstraint(constraint);
+        loginConstraint.setPathSpec("/login");
+
         SecurityHandler securityHandler = new SecurityHandler();
         securityHandler.setAuthenticator(new MyBasicAuthenticator());
         securityHandler.setUserRealm(new JDBCUserRealm("authUserRealm", "config/realm.properties"));
-        securityHandler.setConstraintMappings(new ConstraintMapping[] {playlistConstraint});
+        securityHandler.setConstraintMappings(new ConstraintMapping[] {
+                playlistConstraint,
+                loginConstraint});
 
-        PlaylistHandler playlistHandler = new PlaylistHandler();
+        CommonDbService commonDbService = new CommonDbService();
+        PlaylistHandler playlistHandler = new PlaylistHandler(commonDbService);
         ContextHandler playlistContextHandler = new ContextHandler();
         playlistContextHandler.setContextPath("/playlist");
         playlistContextHandler.setResourceBase(".");
         playlistContextHandler.addHandler(playlistHandler);
 
-        RegisterHandler registerHandler = new RegisterHandler();
+        LoginHandler loginHandler = new LoginHandler();
+        ContextHandler loginContextHandler = new ContextHandler("/login");
+        loginContextHandler.setResourceBase(".");
+        loginContextHandler.addHandler(loginHandler);
+
+        RegisterHandler registerHandler = new RegisterHandler(commonDbService);
         ContextHandler registerContextHandler = new ContextHandler("/register");
         registerContextHandler.setResourceBase(".");
         registerContextHandler.addHandler(registerHandler);
@@ -65,10 +72,11 @@ public class Starter {
         handlers.setHandlers(new Handler[] {
                 securityHandler,
                 playlistContextHandler,
-                registerContextHandler
+                loginContextHandler
         });
 
-        server.setHandler(handlers);
+        server.addHandler(handlers);
+        server.addHandler(registerContextHandler);
         server.setSessionIdManager(new HashSessionIdManager());
         server.start();
         server.join();
