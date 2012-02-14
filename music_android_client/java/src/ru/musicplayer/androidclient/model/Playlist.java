@@ -1,5 +1,6 @@
 package ru.musicplayer.androidclient.model;
 
+import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -17,6 +18,14 @@ public class Playlist extends Model implements Comparable<Playlist> {
     public Playlist (String name) {
        // super(name);
         this.name = name;
+    }
+    
+    public Playlist (List<PlaylistResultEntry> entries) {
+        wasFilled = false;
+        Collections.sort(entries);
+        for (PlaylistResultEntry entry: entries) {
+            myData.add(new Track(entry));
+        }
     }
 
     @Override

@@ -21,4 +21,15 @@ public class AllPlaylistsResult {
         myPlaylists = playlists;
     }
 
+    public AllPlaylistsResult (PlaylistList playlists) {
+        myPlaylists = playlists.getData();
+    }
+
+    public String getMyStatus() {
+        return myStatus;
+    }
+
+    public List<String> getMyPlaylists() {
+        return myPlaylists;
+    }
 }

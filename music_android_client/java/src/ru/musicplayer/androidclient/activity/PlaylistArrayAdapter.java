@@ -19,11 +19,11 @@ import java.io.IOException;
  */
 public class PlaylistArrayAdapter extends OpenableArrayAdapter {
 
-    private AlertDialog.Builder builder;
+    //private AlertDialog.Builder builder;
 
     public PlaylistArrayAdapter(Context context, Model... objects) {
         super(context, R.layout.playlists_item, R.id.name, false,objects);
-        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+
     }
 
     @Override
@@ -50,12 +50,18 @@ public class PlaylistArrayAdapter extends OpenableArrayAdapter {
             @Override
             public void onClick(View view) {
                 final Model item = getItem(position);
+                AlertDialog.Builder builder = new AlertDialog.Builder(myContext);
                 builder.setMessage("Are you sure you want to remove playlist "+ item.getName() +"?")
                         .setCancelable(false)
                         .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int id) {
                                 try {
-                                    myApplication.showToast(Request.playlistAction("remove", item.getName()));
+                                    String result = Request.playlistAction("remove", item.getName());
+                                    myApplication.showToast(result);
+                                    if (result.contains("success")) {
+                                        remove(item);
+                                        myApplication.removePlaylist(position);
+                                    }
                                 } catch (IOException e) {
                                     myApplication.showErrorMessage("Remove playlist", e.getMessage());
                                 }

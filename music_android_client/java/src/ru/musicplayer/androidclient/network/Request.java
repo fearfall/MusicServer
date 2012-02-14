@@ -24,10 +24,12 @@ import java.lang.reflect.Type;
  */
 public class Request {
     private static SecureHttpClient mySecureHttpClient = null;
-    //private static String myServerAddress = "192.168.211.119";
+    private static String myIp = "192.168.4.36";
     //private static String myServerAddress = "192.168.1.5";
-    private static String myIp = "192.168.1.4";
-    private static String myServerAddress = "http://" + myIp + ":6006";
+
+    //private static String myIp = "192.168.1.4";
+    //private static String myServerAddress = "http://" + myIp + ":6006";
+    private static String myServerAddress = "http://192.168.4.20:6006";
     private static String myAuthorizationServerAddress = "https://" + myIp + ":8443";
 
     public static void setIp(String ip) {
@@ -62,9 +64,9 @@ public class Request {
                         return new Gson().fromJson(r, (Type)Album.class);
                     if (type.equals("track"))
                         return new Gson().fromJson(r, (Type) Track.class);
-                    return new Gson().fromJson(r, (Type)Model.class);
-                case HttpStatus.SC_NO_CONTENT:
-                    return null;
+                   // return new Gson().fromJson(r, (Type)Model.class);
+                /*case HttpStatus.SC_NO_CONTENT:
+                    return null;   */
                 default:
                     //response.getEntity().getContent().close();
                     throw new IOException(statusLine.getReasonPhrase());
@@ -248,7 +250,7 @@ public class Request {
             StatusLine statusLine = response.getStatusLine();
             if (statusLine.getStatusCode() == HttpStatus.SC_OK){
                 InputStreamReader r = new InputStreamReader(response.getEntity().getContent());
-                return new Gson().fromJson(r, (Type)AllPlaylistsResult.class);
+                return new AllPlaylistsResult(new Gson().fromJson(r, PlaylistList.class));
             } else {
                 //Closes the connection.
                 response.getEntity().getContent().close();

@@ -7,6 +7,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import ru.musicplayer.androidclient.model.AllPlaylistsResult;
 import ru.musicplayer.androidclient.network.Request;
 
 import java.io.IOException;
@@ -46,6 +47,18 @@ public class AuthorizationActivity extends Activity {
                 String pwd = myPwdEdit.getText().toString();
                 //myApplication.setCredentials(username, pwd);
                 Request.init(username, pwd);
+                try {
+                    AllPlaylistsResult result = Request.getAllPlaylists();
+                    if (result.getMyStatus() != null) {
+                        myApplication.showToast(result.getMyStatus());
+                    } else {
+                        myApplication.setPlaylists(result);
+
+                    }
+                } catch (IOException e) {
+                    myApplication.showErrorMessage("Get all playlists", e.getMessage());
+                }
+
                 showLogin();
                 //todo: validate
             }
