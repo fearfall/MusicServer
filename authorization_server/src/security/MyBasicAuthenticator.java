@@ -15,18 +15,20 @@ import org.mortbay.log.Log;
 import org.mortbay.util.StringUtil;
 
 /**
- * Created by IntelliJ IDEA.
- * User: lana
- * Date: 2/9/12
- * Time: 9:15 AM
- * To change this template use File | Settings | File Templates.
- */
+* Created by IntelliJ IDEA.
+* User: lana
+* Date: 2/9/12
+* Time: 9:15 AM
+* To change this template use File | Settings | File Templates.
+*/
 public class MyBasicAuthenticator implements Authenticator {
+    private static String CREDENTIALS = "credentials";
 
     public Principal authenticate(UserRealm realm,
             String pathInContext,
             Request request,
             Response response) throws IOException {
+
         Principal user=null;
         //first check if it is OPTIONS request method
         if (request.getMethod().toUpperCase().equals("OPTIONS")) {
@@ -44,15 +46,14 @@ public class MyBasicAuthenticator implements Authenticator {
                 response.setStatus(HttpServletResponse.SC_OK);
             }
 
-        }  else {
+        } else {
             // Get the user if we can
-            String credentials = request.getHeader(HttpHeaders.AUTHORIZATION);
+            String credentials = request.getParameter(CREDENTIALS);
 
             if (credentials!=null )
             {
                 try
                 {
-                    if(Log.isDebugEnabled())Log.debug("Credentials: "+credentials);
                     credentials = credentials.substring(credentials.indexOf(' ')+1);
                     credentials = B64Code.decode(credentials, StringUtil.__ISO_8859_1);
                     int i = credentials.indexOf(':');
@@ -70,6 +71,9 @@ public class MyBasicAuthenticator implements Authenticator {
                     {
                         request.setAuthType(Constraint.__BASIC_AUTH);
                         request.setUserPrincipal(user);
+                        response.setHeader(
+                                "Set-Cookie",
+                                "credentials="+request.getParameter(CREDENTIALS)+"; path=/; ");
                     }
                 }
                 catch (Exception e)
@@ -80,9 +84,7 @@ public class MyBasicAuthenticator implements Authenticator {
             }
             // Challenge if we have no user
             if (user==null && response!=null) {
-                String hasOwnForm = request.getHeader("Own-Authentication-Form");
-                boolean needFormAuthentication = (hasOwnForm == null || hasOwnForm.toLowerCase().equals("false"));
-                sendChallenge(realm,response, needFormAuthentication);
+                response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
             }
         }
         return user;
@@ -94,10 +96,11 @@ public class MyBasicAuthenticator implements Authenticator {
     }
 
     /* ------------------------------------------------------------ */
-    public void sendChallenge(UserRealm realm,Response response, boolean needForm)
+    public void sendChallenge(UserRealm realm,Response response)
         throws IOException
     {
-        if (needForm) response.setHeader(HttpHeaders.WWW_AUTHENTICATE, "basic realm=\""+realm.getName()+'"');
+        response.getWriter().println(
+                "Error: please send 'credentials' parameter with encoded with Base64 scheme for value login:pwd\n");
         response.sendError(HttpServletResponse.SC_UNAUTHORIZED);
     }
 }
