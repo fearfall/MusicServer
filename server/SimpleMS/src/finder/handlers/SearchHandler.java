@@ -33,7 +33,7 @@ public class SearchHandler extends SessionHandler//AbstractHandler
                        int i) throws IOException, ServletException {
         final StringBuilder html = new StringBuilder();
         httpServletResponse.setContentType("application/json");
-
+        long start =  System.currentTimeMillis();
 
         try {
         String pattern = getParameter(httpServletRequest, "pattern"); 
@@ -76,6 +76,7 @@ public class SearchHandler extends SessionHandler//AbstractHandler
             httpServletResponse.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
             html.append("{" + e.getMessage() + "}");
         }
+        System.out.println((System.currentTimeMillis() - start)/1000);
         System.out.println(html);
         httpServletResponse.getWriter().println(html.toString());
         Request baseRequest = (httpServletRequest instanceof Request) ? (Request)httpServletRequest: HttpConnection.getCurrentConnection().getRequest();
@@ -94,7 +95,7 @@ public class SearchHandler extends SessionHandler//AbstractHandler
             return validateOffset(result);
         }
         if("jsoncallback".equals(name)) {
-            return validateCallback(result);
+            return result;//validateCallback(result);
         }
         if("limit".equals(name)) {
             if(result == null)
@@ -140,8 +141,7 @@ public class SearchHandler extends SessionHandler//AbstractHandler
     }
 
     public String validateCallback(String s) throws MusicServerException {
-        boolean res = s.isEmpty() ||
-        ( !StringUtils.startsWithIgnoreCase(s,"jsonp")) ||
+        boolean res = ( !StringUtils.startsWithIgnoreCase(s,"jsonp")) ||
         ( s.length() > 128 ) ||
         ( !s.matches("^jsonp\\d+$"));
         if(res)
