@@ -9,15 +9,21 @@ package ru.musicplayer.androidclient.model;
  */
 public class PlaylistResultEntry implements Comparable<PlaylistResultEntry> {
     private String myMbid = null;
+    private String myTitle = null;
     private int myOrder = -1;
 
-    public PlaylistResultEntry (String mbid, int order) {
+    public PlaylistResultEntry (String mbid, int order, String title) {
         myMbid = mbid;
         myOrder = order;
+        myTitle = title;
     }
 
     public String getMbid () {
         return myMbid;
+    }
+    
+    public String getTitle() {
+        return myTitle;
     }
 
     @Override

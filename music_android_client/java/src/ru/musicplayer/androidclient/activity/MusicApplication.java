@@ -11,10 +11,7 @@ import android.widget.ImageButton;
 import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
-import ru.musicplayer.androidclient.model.Model;
-import ru.musicplayer.androidclient.model.Playlist;
-import ru.musicplayer.androidclient.model.PlaylistIterator;
-import ru.musicplayer.androidclient.model.Track;
+import ru.musicplayer.androidclient.model.*;
 import ru.musicplayer.androidclient.network.Request;
 
 import java.io.IOException;
@@ -367,6 +364,32 @@ else  */
         
     public Playlist getHistory() {
         return ourHistory;
+    }
+    
+    public void setPlaylists(AllPlaylistsResult result) {
+        myPlayLists.clear();
+        //myPlayLists.add(ourHistory);
+        List<String> list = result.getMyPlaylists();
+        if (list == null)
+            return;
+        for (String title : list) {
+            myPlayLists.add(new Playlist(title));
+        }
+    }
+    
+    public void removePlaylist(int index) {
+        if (currentPlaylist == index) {
+            currentPlaylist = 0;
+            try {
+                ourPlayer.stop();
+            } catch (RemoteException e) {
+                showErrorMessage("Stop player", e.getMessage());
+                return;
+            }
+        } else if (currentPlaylist > index)
+            currentPlaylist--;
+
+        myPlayLists.remove(index);
     }
     
    /* public boolean isAuthorized() {
