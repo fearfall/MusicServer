@@ -1,6 +1,7 @@
 package utilities;
 
 import model.Playlist;
+import model.PlaylistList;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -12,7 +13,6 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-import java.util.Map;
 
 /**
  * Created by IntelliJ IDEA.
@@ -28,7 +28,7 @@ public class DbConnectUtility {
         DriverManagerDataSource driverManagerDataSource = new DriverManagerDataSource(
                 "jdbc:mysql://localhost/ms_authorization",
                 "root",
-                "");
+                "Ghbrjk!2");
         driverManagerDataSource.setDriverClassName("org.gjt.mm.mysql.Driver");
         this.jdbcTemplate = new JdbcTemplate(driverManagerDataSource);
         driverManagerDataSource.getConnection();
@@ -71,7 +71,7 @@ public class DbConnectUtility {
         return false;
     }
 
-    public List<String> getAllPlaylists(final int userId) {
+    public PlaylistList getAllPlaylists(final int userId) {
         String query  = ("select title from playlists where user_id = ? ");
         final List<String> playlists = new ArrayList<String>();
         jdbcTemplate.query(query, new RowCallbackHandler() {
@@ -80,7 +80,7 @@ public class DbConnectUtility {
             }
         }, userId
         );
-        return playlists;
+        return new PlaylistList(playlists);
     }
 
     public List<Playlist.Entry> getPlaylist(final int userId, final String playlist) {
