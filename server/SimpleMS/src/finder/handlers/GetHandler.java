@@ -20,10 +20,7 @@ import java.io.IOException;
  */
 public class GetHandler extends AbstractHandler
 {
-    SimpleDBConnection connection;
-
-    public GetHandler(SimpleDBConnection connection) {
-        this.connection = connection;
+    public GetHandler() {
     }
 
     public void handle(String s,
@@ -39,13 +36,13 @@ public class GetHandler extends AbstractHandler
         System.out.println(id);
         StringBuilder html = new StringBuilder();
         if(s.equals("/artist")) {
-            result = connection.getArtist(id);
+            result = SimpleDBConnection.getInstance().getArtist(id);
         }
         if(s.equals("/album")) {
-            result = connection.getAlbum(id);
+            result = SimpleDBConnection.getInstance().getAlbum(id);
         }
         if(s.equals("/track")) {
-            result = connection.getTrack(id);
+            result = SimpleDBConnection.getInstance().getTrack(id);
         }
         //html.append("<html> <head/> <body>");
         if(result != null) {

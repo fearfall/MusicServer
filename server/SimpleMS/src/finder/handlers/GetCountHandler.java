@@ -19,18 +19,14 @@ import java.io.IOException;
  * To change this template use File | Settings | File Templates.
  */
 public class GetCountHandler extends AbstractHandler {
-    SimpleDBConnection connection;
-
-    public GetCountHandler(SimpleDBConnection connection) {
-        this.connection = connection;
-    }
+    public GetCountHandler() {}
 
     public void handle(String s, HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, int i) throws IOException, ServletException {
         httpServletResponse.setContentType("application/json");
         String pattern = httpServletRequest.getParameter("pattern");
         String jsonCallbackParam = httpServletRequest.getParameter("jsoncallback");
 
-        ResultCount result = connection.getTotalAmount(pattern);
+        ResultCount result = SimpleDBConnection.getInstance().getTotalAmount(pattern);
 
         StringBuilder html = new StringBuilder();
         //html.append("<html> <head/> <body>");
