@@ -8,7 +8,6 @@ import java.util.List;
  * User: kate
  * Date: 05/02/12
  * Time: 21:01
- * To change this template use File | Settings | File Templates.
  */
 public class SmallResult<T> {
     List<T> models = new ArrayList<T>();

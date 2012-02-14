@@ -16,7 +16,6 @@ import java.io.IOException;
  * User: kate
  * Date: 28/01/12
  * Time: 21:13
- * To change this template use File | Settings | File Templates.
  */
 public class GetCountHandler extends AbstractHandler {
     public GetCountHandler() {}
@@ -25,11 +24,10 @@ public class GetCountHandler extends AbstractHandler {
         httpServletResponse.setContentType("application/json");
         String pattern = httpServletRequest.getParameter("pattern");
         String jsonCallbackParam = httpServletRequest.getParameter("jsoncallback");
-
-        ResultCount result = SimpleDBConnection.getInstance().getTotalAmount(pattern);
-
         StringBuilder html = new StringBuilder();
-        //html.append("<html> <head/> <body>");
+        ResultCount result;
+        try {
+            result = SimpleDBConnection.getInstance().getTotalAmount(pattern);
         if(result != null) {
             httpServletResponse.setStatus(HttpServletResponse.SC_OK);
             String jsonElement = new Gson().toJson(result);
@@ -42,11 +40,11 @@ public class GetCountHandler extends AbstractHandler {
                 html.append(jsonElement);
         } else {
             httpServletResponse.setStatus(HttpServletResponse.SC_NO_CONTENT);
-            html.append("{ERROR}");
         }
-        //html.append(" </body> </html>");
-        //httpServletResponse.setContentLength(html.length());
-        System.out.println(html.toString());
+        } catch (MusicServerException e) {
+            httpServletResponse.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+            html.append("{" + e.getMessage() + "}");
+        }
         httpServletResponse.getWriter().println(html.toString());
         Request baseRequest = (httpServletRequest instanceof Request) ? (Request)httpServletRequest: HttpConnection.getCurrentConnection().getRequest();
         baseRequest.setHandled(true);

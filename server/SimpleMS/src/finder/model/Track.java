@@ -1,6 +1,7 @@
 package finder.model;
 
 import com.google.gson.*;
+import finder.handlers.MusicServerException;
 import finder.handlers.SimpleDBConnection;
 
 import java.io.BufferedReader;
@@ -35,15 +36,7 @@ public class Track {
         this.name = name;
     }
 
-    public String getUrl() {
-        return url;
-    }
-
-    public void setUrl(String url) {
-        //this.url = getValid(url, aid);
-    }
-
-    private String getValid(String url, String aid, String uid, String accessToken) {
+    private String getValid(String url, String aid, String uid, String accessToken) throws MusicServerException {
         return (exists(url)) ? url : getUrlFromSource(aid, uid, accessToken);
     }
 
@@ -69,7 +62,7 @@ public class Track {
         }
     }
 
-    public String getUrlFromSource(String aid, String uid, String accessToken) {
+    public String getUrlFromSource(String aid, String uid, String accessToken) throws MusicServerException {
         JsonParser parser = new JsonParser();
         String url = "audios=" + aid
                 + "&uid=" + uid
@@ -86,21 +79,26 @@ public class Track {
                 JsonArray songs = retrieved.getAsJsonObject().get("response").getAsJsonArray();
                 for(JsonElement element : songs) {
                     if(!element.isJsonPrimitive()) {
-
-                        String newUrl = element.getAsJsonObject().get("url").getAsString();
-                        SimpleDBConnection.getInstance().saveUrl(mbid, newUrl);
+                        final String newUrl = element.getAsJsonObject().get("url").getAsString();
+                        new Thread() {
+                            public void run() {
+                                try {
+                                    SimpleDBConnection.getInstance().saveUrl(mbid, newUrl);
+                                } catch (MusicServerException e) {}
+                            }
+                        }.start();
                         return newUrl;
                     }
                 }
             }
         } catch (JsonSyntaxException e) {
-            e.printStackTrace();
+            throw new MusicServerException(e.getMessage());
         } catch (MalformedURLException e) {
-            e.printStackTrace();
+            throw new MusicServerException(e.getMessage());
         } catch (IOException e) {
-            e.printStackTrace();
+            throw new MusicServerException(e.getMessage());
         } catch (URISyntaxException e) {
-            e.printStackTrace();
+            throw new MusicServerException(e.getMessage());
         }
         return null;
     }
@@ -111,7 +109,7 @@ public class Track {
                 || url == null || url.isEmpty());
     }
 
-    public void checkUrl(String url, String aid, String uid, String accessToken) {
+    public void checkUrl(String url, String aid, String uid, String accessToken) throws MusicServerException {
         this.url = getValid(url, aid, uid, accessToken);
     }
 }

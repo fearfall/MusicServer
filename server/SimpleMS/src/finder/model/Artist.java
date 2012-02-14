@@ -21,28 +21,6 @@ public class Artist {
 
     public Artist() {}
 
-    /*public boolean addAlbum(Album album) {
-        int albIndex = 0;
-        if((albIndex = albums.indexOf(album)) < 0) {
-            albums.add(album);
-            return true;
-        }
-        else {
-            for (Track track : album.getTracks()) {
-                albums.get(albIndex).addTrack(track);
-            }
-            return false;
-        }
-    }
-
-    public void addTrack(Track track) {
-        for (Album album : albums) {
-            if(album.addTrack(track)) {
-                break;
-            }
-        }
-    }*/
-
     public String getName() {
         return name;
     }

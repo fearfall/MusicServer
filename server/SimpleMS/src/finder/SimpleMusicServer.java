@@ -2,7 +2,12 @@ package finder;
 
 import finder.handlers.*;
 import org.mortbay.jetty.Server;
+import org.mortbay.jetty.SessionManager;
 import org.mortbay.jetty.handler.ContextHandler;
+import org.mortbay.jetty.servlet.HashSessionIdManager;
+import org.mortbay.jetty.servlet.HashSessionManager;
+import org.mortbay.jetty.servlet.SessionHandler;
+import org.mortbay.jetty.webapp.WebAppContext;
 
 /**
  * User: Alice Afonina
@@ -16,18 +21,26 @@ public class SimpleMusicServer
     {
         Server server = new Server(6006);
         try {
-            ContextHandler searchContext = new ContextHandler();
-            searchContext.setContextPath("/search");
-            searchContext.setResourceBase(".");
-            searchContext.setClassLoader(Thread.currentThread().getContextClassLoader());
-            server.addHandler(searchContext);
-            searchContext.setHandler(new SearchHandler());
+            SessionManager sessionManager = new HashSessionManager();
+
+            server.setSessionIdManager(new HashSessionIdManager());
+            sessionManager.setIdManager(server.getSessionIdManager());
+
+            WebAppContext context = new WebAppContext();
+            context.setContextPath("/search");
+            context.setResourceBase(".");
+            context.setClassLoader(Thread.currentThread().getContextClassLoader());
+            context.setSessionHandler(new SearchHandler(sessionManager));
+            server.addHandler(context);
+
+
 
             ContextHandler getContext = new ContextHandler();
             getContext.setContextPath("/get");
             getContext.setResourceBase(".");
             getContext.setClassLoader(Thread.currentThread().getContextClassLoader());
             server.addHandler(getContext);
+
             getContext.setHandler(new GetHandler());
 
             ContextHandler getCountContext = new ContextHandler();

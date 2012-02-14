@@ -5,7 +5,8 @@ import com.google.gson.JsonElement;
 import finder.model.Result;
 import org.mortbay.jetty.HttpConnection;
 import org.mortbay.jetty.Request;
-import org.mortbay.jetty.handler.AbstractHandler;
+import org.mortbay.jetty.SessionManager;
+import org.mortbay.jetty.servlet.SessionHandler;
 import org.springframework.util.StringUtils;
 
 import javax.servlet.ServletException;
@@ -19,53 +20,43 @@ import java.io.IOException;
  * Date: 10/18/11
  * Time: 12:49 PM
  */
-public class SearchHandler extends AbstractHandler
+
+public class SearchHandler extends SessionHandler//AbstractHandler
 {
-    public SearchHandler() {}
+    public SearchHandler(SessionManager sessionManager) {
+        super(sessionManager);
+    }
 
     public void handle(String s,
                        HttpServletRequest httpServletRequest,
                        HttpServletResponse httpServletResponse,
                        int i) throws IOException, ServletException {
+        final StringBuilder html = new StringBuilder();
         httpServletResponse.setContentType("application/json");
-        String pattern = httpServletRequest.getParameter("pattern");
-        String jsonCallbackParam = httpServletRequest.getParameter("jsoncallback");
 
-        int offset = 0;
-        String offsetParam = httpServletRequest.getParameter("offset");
-        if(offsetParam != null) {
-            offset = Integer.valueOf(offsetParam);
-        }
-        int limit = 10;
-        String limitParam = httpServletRequest.getParameter("limit");
-        if(offsetParam != null) {
-            limit = Integer.valueOf(limitParam);
-        }
-        int resultContent = 0;
-        String resTypeParam = httpServletRequest.getParameter("type");
-        if(resTypeParam != null) {
-            resultContent = Integer.valueOf(resTypeParam);
-        }
 
+        try {
+        String pattern = getParameter(httpServletRequest, "pattern"); 
+        String jsonCallbackParam = getParameter(httpServletRequest,"jsoncallback");
+        int limit = Integer.valueOf(getParameter(httpServletRequest, "limit"));
+        int offset = Integer.valueOf(getParameter(httpServletRequest, "offset"));
+        int resultContent = Integer.valueOf(getParameter(httpServletRequest, "type"));
+            
         Result result;
         switch (resultContent) {
-            case 3:
-                result = SimpleDBConnection.getInstance().searchTracks(pattern, offset, limit);
-                break;
-            case 2:
-                result = SimpleDBConnection.getInstance().searchAlbums(pattern, offset, limit);
-                break;
-            case 1:
-                result = SimpleDBConnection.getInstance().searchArtists(pattern, offset, limit);
-                break;
-            default:
-                //todo check everything (limit > 0 && limit is not very big and the same for offset)
-                result = SimpleDBConnection.getInstance().search(pattern, offset, limit);
+        case 3:
+            result = SimpleDBConnection.getInstance().searchTracks(pattern, offset, limit);
+            break;
+        case 2:
+            result = SimpleDBConnection.getInstance().searchAlbums(pattern, offset, limit);
+            break;
+        case 1:
+            result = SimpleDBConnection.getInstance().searchArtists(pattern, offset, limit);
+            break;
+        default:
+            result = SimpleDBConnection.getInstance().search(pattern, offset, limit);
         }
 
-        StringBuilder html = new StringBuilder();
-        System.out.println(pattern);
-        //html.append("<html> <head/> <body> ");
         if(result != null) {
             httpServletResponse.setStatus(HttpServletResponse.SC_OK);
             JsonElement jsonElement = new Gson().toJsonTree(result);
@@ -77,23 +68,87 @@ public class SearchHandler extends AbstractHandler
                 html.append(");");
             }
             else html.append(jsonElement);
-        } else {
-            httpServletResponse.setStatus(HttpServletResponse.SC_NO_CONTENT);
-            html.append("{ERROR}");
         }
-        //html.append(" </body> </html>");
-        //httpServletResponse.setContentLength(html.length());
-        //httpServletResponse.setContentEncoding("gzip");
+        else {
+            httpServletResponse.setStatus(HttpServletResponse.SC_NO_CONTENT);
+        }
+        } catch(MusicServerException e) {
+            httpServletResponse.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+            html.append("{" + e.getMessage() + "}");
+        }
+        System.out.println(html);
         httpServletResponse.getWriter().println(html.toString());
         Request baseRequest = (httpServletRequest instanceof Request) ? (Request)httpServletRequest: HttpConnection.getCurrentConnection().getRequest();
         baseRequest.setHandled(true);
     }
 
-    public static String sanitizeJsonpParam(String s) {
-        if ( s.isEmpty()) return null;
-        if ( !StringUtils.startsWithIgnoreCase(s,"jsonp")) return null;
-        if ( s.length() > 128 ) return null;
-        if ( !s.matches("^jsonp\\d+$")) return null;
-        return s;
+
+    private String getParameter (HttpServletRequest httpServletRequest, String name) throws MusicServerException {
+        String result = httpServletRequest.getParameter(name);
+        if("pattern".equals(name)) {
+            return validatePattern(result);
+        }
+        if("offset".equals(name)) {
+            if(result == null)
+                return "0";
+            return validateOffset(result);
+        }
+        if("jsoncallback".equals(name)) {
+            return validateCallback(result);
+        }
+        if("limit".equals(name)) {
+            if(result == null)
+                return "15";
+            return validateLimit(result);
+        }
+        if("type".equals(name)) {
+            if(result == null)
+                return "0";
+            return result;
+        }
+        return result;
     }
+
+    private String validateLimit(String result) throws MusicServerException {
+        if (result != null) {
+            Integer integer = Integer.valueOf(result);
+            if(!(integer > 0 && integer < Integer.MAX_VALUE))
+                throw new MusicServerException("Wrong limit values");
+            else 
+                return result;
+        }
+        return "0";
+    }
+
+
+    private String validateOffset(String result) throws MusicServerException {
+        if (result != null) {
+            Integer integer = Integer.valueOf(result);
+            if(!(integer > 0 && integer < Integer.MAX_VALUE))
+                throw new MusicServerException("Wrong offset values");
+            else
+                return result;
+        }
+        return "0";
+    }
+
+    private String validatePattern(String pattern) throws MusicServerException {
+        if("".equals(pattern.trim()))
+            throw new MusicServerException("Wrong pattern");
+        else
+            return pattern;
+    }
+
+    public String validateCallback(String s) throws MusicServerException {
+        boolean res = s.isEmpty() ||
+        ( !StringUtils.startsWithIgnoreCase(s,"jsonp")) ||
+        ( s.length() > 128 ) ||
+        ( !s.matches("^jsonp\\d+$"));
+        if(res)
+            throw new MusicServerException("Wrong callback");
+        else
+            return s;
+    }
+    
+
 }
