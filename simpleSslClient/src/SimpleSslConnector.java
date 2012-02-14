@@ -15,7 +15,7 @@ public class SimpleSslConnector {
     public static void main(String[] args) throws IOException, MalformedURLException {
 
         //URL url = new URL("https://localhost:8443/playlist/?action=save&name=myplaylist2&entries=[{'mbid':'b2d122f9-eadb-4930-a196-8f221eeb0c66','data':'track_title2','order':2},{'mbid':'b2d122f9-eadb-4930-a196-8f221eeb0c66','data':'track_title3','order':3}]");
-        URL url = new URL("https://localhost:8443/login");
+        URL url = new URL("https://localhost:8443/playlist/?action=getall");
         HttpsURLConnection connection = null;
         connection = (HttpsURLConnection) url.openConnection();
         connection.setRequestMethod("POST");

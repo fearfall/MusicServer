@@ -1,8 +1,12 @@
 package finder.model;
 
-import java.net.HttpURLConnection;
-import java.net.URL;
-import java.util.Scanner;
+import com.google.gson.*;
+import finder.handlers.SimpleDBConnection;
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.net.*;
 
 /**
  * User: Alice Afonina
@@ -21,7 +25,6 @@ public class Track {
         this.name = name;
         this.url = url;
         this.mbid = mbid;
-        //setUrl(url);
     }
 
     public String getName() {
@@ -37,11 +40,11 @@ public class Track {
     }
 
     public void setUrl(String url) {
-        this.url = getValid(url);
+        //this.url = getValid(url, aid);
     }
 
-    private String getValid(String url) {
-        return (exists(url)) ? url : getUrlFromSource();
+    private String getValid(String url, String aid, String uid, String accessToken) {
+        return (exists(url)) ? url : getUrlFromSource(aid, uid, accessToken);
     }
 
     public String getMbid() {
@@ -53,67 +56,62 @@ public class Track {
     }
 
     public static boolean exists(String url){
-    try {
-      HttpURLConnection.setFollowRedirects(false);
-      HttpURLConnection connection =
-         (HttpURLConnection) new URL(url).openConnection();
-      connection.setRequestMethod("HEAD");
-      return (connection.getResponseCode() == HttpURLConnection.HTTP_OK);
-    }
-    catch (Exception e) {
-       e.printStackTrace();
-       return false;
-    }
-  }
-
-    public String getUrlFromSource() {
-        /*ProcessBuilder processBuilder  = new ProcessBuilder("python url_update.py", url);
         try {
-            Process p = processBuilder.start();
-            Scanner s = new Scanner(p.getInputStream());
-            return s.nextLine();
+            HttpURLConnection.setFollowRedirects(false);
+            HttpURLConnection connection =
+                    (HttpURLConnection) new URL(url).openConnection();
+            connection.setRequestMethod("HEAD");
+            return (connection.getResponseCode() == HttpURLConnection.HTTP_OK);
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    public String getUrlFromSource(String aid, String uid, String accessToken) {
+        JsonParser parser = new JsonParser();
+        String url = "audios=" + aid
+                + "&uid=" + uid
+                + "&access_token=" + accessToken;
+        JsonElement retrieved;
+        try {
+            System.setProperty("https.proxyHost", "192.168.0.2");
+            System.setProperty("https.proxyPort", "3128");
+            String resUrl = new URI("https","api.vk.com", "/method/audio.getById", url, null).toASCIIString();
+            URL vkSearch = new URL(resUrl);
+            BufferedReader in = new BufferedReader(new InputStreamReader(vkSearch.openStream()));
+            retrieved = parser.parse(in);
+            if(retrieved.getAsJsonObject().has("response")) {
+                JsonArray songs = retrieved.getAsJsonObject().get("response").getAsJsonArray();
+                for(JsonElement element : songs) {
+                    if(!element.isJsonPrimitive()) {
+
+                        String newUrl = element.getAsJsonObject().get("url").getAsString();
+                        SimpleDBConnection.getInstance().saveUrl(mbid, newUrl);
+                        return newUrl;
+                    }
+                }
+            }
+        } catch (JsonSyntaxException e) {
+            e.printStackTrace();
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
-        }
-        return null;*/
-        try {
-            url = "http://localhost:6007/up/" + mbid;
-            HttpURLConnection.setFollowRedirects(false);
-            HttpURLConnection connection = (HttpURLConnection) new URL(url).openConnection();
-            connection.setRequestMethod("GET");
-            if(connection.getResponseCode() == HttpURLConnection.HTTP_OK)
-                return new Scanner(connection.getInputStream()).nextLine();
-        } catch (Exception e) {
-            return null;
+        } catch (URISyntaxException e) {
+            e.printStackTrace();
         }
         return null;
     }
 
     public boolean isValid() {
         return !(name == null || name.isEmpty()
-               || mbid.isEmpty() || mbid == null
+                || mbid.isEmpty() || mbid == null
                 || url == null || url.isEmpty());
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-
-        Track track = (Track) o;
-
-        if (mbid != null ? !mbid.equals(track.mbid) : track.mbid != null) return false;
-        if (name != null ? !name.equals(track.name) : track.name != null) return false;
-        if (url != null ? !url.equals(track.url) : track.url != null) return false;
-
-        return true;
-    }
-
-    @Override
-    public int hashCode() {
-        int result = name != null ? name.hashCode() : 0;
-        result = 31 * result + (url != null ? url.hashCode() : 0);
-        result = 31 * result + (mbid != null ? mbid.hashCode() : 0);
-        return result;
+    public void checkUrl(String url, String aid, String uid, String accessToken) {
+        this.url = getValid(url, aid, uid, accessToken);
     }
 }

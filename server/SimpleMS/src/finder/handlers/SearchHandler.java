@@ -21,10 +21,7 @@ import java.io.IOException;
  */
 public class SearchHandler extends AbstractHandler
 {
-    SimpleDBConnection connection;
-    public SearchHandler(SimpleDBConnection connection) {
-        this.connection = connection;
-    }
+    public SearchHandler() {}
 
     public void handle(String s,
                        HttpServletRequest httpServletRequest,
@@ -53,17 +50,17 @@ public class SearchHandler extends AbstractHandler
         Result result;
         switch (resultContent) {
             case 3:
-                result = connection.searchTracks(pattern, offset, limit);
+                result = SimpleDBConnection.getInstance().searchTracks(pattern, offset, limit);
                 break;
             case 2:
-                result = connection.searchAlbums(pattern, offset, limit);
+                result = SimpleDBConnection.getInstance().searchAlbums(pattern, offset, limit);
                 break;
             case 1:
-                result = connection.searchArtists(pattern, offset, limit);
+                result = SimpleDBConnection.getInstance().searchArtists(pattern, offset, limit);
                 break;
             default:
                 //todo check everything (limit > 0 && limit is not very big and the same for offset)
-                result = connection.search(pattern, offset, limit);
+                result = SimpleDBConnection.getInstance().search(pattern, offset, limit);
         }
 
         StringBuilder html = new StringBuilder();
@@ -72,6 +69,7 @@ public class SearchHandler extends AbstractHandler
         if(result != null) {
             httpServletResponse.setStatus(HttpServletResponse.SC_OK);
             JsonElement jsonElement = new Gson().toJsonTree(result);
+            System.out.println(jsonElement);
             if ( jsonCallbackParam != null ) {
                 html.append(jsonCallbackParam);
                 html.append("(");

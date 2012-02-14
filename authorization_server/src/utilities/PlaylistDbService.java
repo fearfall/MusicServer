@@ -1,6 +1,7 @@
 package utilities;
 
 import model.Playlist;
+import model.PlaylistList;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;

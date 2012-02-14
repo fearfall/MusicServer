@@ -50,4 +50,9 @@ public class Track extends Model {
     public int hashCode() {
         return url != null ? url.hashCode() : 0;
     }
+    
+    public Track (PlaylistResultEntry entry) {
+        mbid = entry.getMbid();
+        name = entry.getTitle();
+    }
 }

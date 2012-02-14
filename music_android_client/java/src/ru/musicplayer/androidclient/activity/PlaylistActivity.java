@@ -2,17 +2,12 @@ package ru.musicplayer.androidclient.activity;
 
 import android.app.Activity;
 import android.app.Dialog;
-import android.content.Context;
-import android.content.DialogInterface;
 import android.os.Bundle;
-import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.*;
-import ru.musicplayer.androidclient.model.Model;
+import android.widget.Button;
+import android.widget.ListView;
 import ru.musicplayer.androidclient.model.Playlist;
-
-import java.util.LinkedList;
 
 /**
  * Created by IntelliJ IDEA.
@@ -51,4 +46,8 @@ public class PlaylistActivity extends Activity {
         //todo: remember dialog state?
     }
 
+    public void newPlaylist(Playlist playlist) {
+        //todo: highlight ?
+        ((OpenableArrayAdapter) myListView.getAdapter()).append(playlist);
+    }
 }

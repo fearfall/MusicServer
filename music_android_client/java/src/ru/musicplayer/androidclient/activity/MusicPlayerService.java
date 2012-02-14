@@ -25,6 +25,7 @@ public class MusicPlayerService extends Service {
     private MediaPlayer mediaPlayer;
 
     private PlayerData myPlayerData;
+    MusicApplication myApplication;// = (MusicApplication) getApplication();
 
     /*private String myCurrentTrack = null;
     private String myCurrentTrackUrl = null;
@@ -40,6 +41,8 @@ public class MusicPlayerService extends Service {
 	@Override
     public void onCreate() {
 		super.onCreate();
+        myApplication = (MusicApplication) getApplication();
+        
         myPlayerData = new PlayerData();
 
         mediaPlayer = new MediaPlayer();
@@ -52,13 +55,14 @@ public class MusicPlayerService extends Service {
             public void onBufferingUpdate(MediaPlayer mp, int i) {
                 MainActivity.onBufferingUpdate(i);
             }
-        });
+        }); */
         mediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
             @Override
             public void onCompletion(MediaPlayer arg0) {
                 mediaPlayer.stop();
+                
             }
-        });   */
+        });
 	}
 
     private void initMediaPlayer (MediaPlayer player) {
@@ -66,13 +70,14 @@ public class MusicPlayerService extends Service {
         /*player.setOnBufferingUpdateListener(new MediaPlayer.OnBufferingUpdateListener() {
             @Override
             public void onBufferingUpdate(MediaPlayer mp, int i) {
-                ((MusicApplication)getApplication()).onBufferingUpdate(i);
+                myApplication.onBufferingUpdate(i);
             }
         }); */
         player.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
             @Override
             public void onCompletion(MediaPlayer arg0) {
                 arg0.stop();
+                myApplication.next();
             }
         });
     }
@@ -93,11 +98,12 @@ public class MusicPlayerService extends Service {
         int icon;
         String tickerText;
         myPlayerData.setMode(mode);
+        
         switch (mode) {
             case PLAY:
                 icon = R.drawable.button_pause;
                 tickerText = "Playing ";
-                ((MusicApplication)getApplication()).setPlayerStatus(message);
+                myApplication.setPlayerStatus(message);
                 break;
             case PAUSE:
                 icon = R.drawable.button_play;
@@ -106,14 +112,14 @@ public class MusicPlayerService extends Service {
             case STOP:
                 icon = R.drawable.button_play;
                 tickerText = "Stopped.";
-                ((MusicApplication)getApplication()).setPlayerStatus(tickerText);
+                myApplication.setPlayerStatus(tickerText);
                 break;
             default:
                 throw new RuntimeException("Wrong player mode!");
         }
 
         tickerText += message;
-        ((MusicApplication)getApplication()).setPlayImage(icon);
+        myApplication.setPlayImage(icon);
         //MainActivity.notifyUser(tickerText, getApplicationContext());
     }
 
@@ -121,11 +127,12 @@ public class MusicPlayerService extends Service {
         private final Handler handler = new Handler();
         /** Method which updates the SeekBar primary progress by current song playing position*/
         private void primarySeekBarProgressUpdater() {
-            ((MusicApplication)getApplication()).setProgress((float) mediaPlayer.getCurrentPosition(), myPlayerData.getMediaFileLengthInMilliseconds());
+            //myApplication.setProgress((float) mediaPlayer.getCurrentPosition(), myPlayerData.getMediaFileLengthInMilliseconds());
             if (mediaPlayer.isPlaying()) {
                 Runnable notification = new Runnable() {
                     public void run() {
-                        ((MusicApplication)getApplication()).setTiming(mediaPlayer.getCurrentPosition());
+                        myApplication.setTiming(mediaPlayer.getCurrentPosition());
+                        myApplication.setProgress((float) mediaPlayer.getCurrentPosition(), myPlayerData.getMediaFileLengthInMilliseconds());
                         primarySeekBarProgressUpdater();
                     }
                 };
@@ -154,7 +161,7 @@ public class MusicPlayerService extends Service {
                 notifyActivity(PlayerData.Mode.PLAY, trackName);
                 myPlayerData.setMediaFileLengthInMilliseconds(mediaPlayer.getDuration());
                 primarySeekBarProgressUpdater();
-                ((MusicApplication)getApplication()).setPlayButtonEnabled(true);
+                myApplication.setPlayButtonEnabled(true);
                 myPlayerData.setCurrentTrack(trackId);
                 myPlayerData.setCurrentTrackUrl(trackUrl);
             } catch (IOException e) {
@@ -168,12 +175,12 @@ public class MusicPlayerService extends Service {
                         mediaPlayer.start();
                         primarySeekBarProgressUpdater();
                     } catch (IOException e2) {
-                        ((MusicApplication)getApplication()).showErrorMessage("Play -> Back to played resource", "Play:\n" + e.getMessage()
+                        myApplication.showErrorMessage("Play -> Back to played resource", "Play:\n" + e.getMessage()
                                 + "\nBack to played resource: \n" + e2.getMessage());
                         return false;
                     }
                 }
-                ((MusicApplication)getApplication()).showErrorMessage("Play", e.getMessage());
+                myApplication.showErrorMessage("Play", e.getMessage());
                 return false;
             }
             return true;
@@ -189,7 +196,7 @@ public class MusicPlayerService extends Service {
 		public void stop() throws DeadObjectException {
 			//myNotificationManager.cancel(ourNotifyId);
             notifyActivity(PlayerData.Mode.STOP, "");
-            ((MusicApplication)getApplication()).setPlayButtonEnabled(false);
+            myApplication.setPlayButtonEnabled(false);
 			mediaPlayer.stop();
 		}
 

@@ -1,0 +1,100 @@
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">  
+	
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js"></script>
+<script src="http://static.flowplayer.org/js/flowplayer-3.2.6.min.js"></script>
+<script src="http://static.flowplayer.org/js/flowplayer.playlist-3.0.8.js"></script> 
+
+<link rel="stylesheet" type="text/css" href="http://static.flowplayer.org/css/playlist.css"/>
+<style>
+	/* container has a background image */
+
+a.player {	
+	display:block;
+	width:500px;
+	height:340px;
+	text-align:center;
+	color:#fff;
+	text-decoration:none;
+	cursor:pointer;
+	background:#000 url(/img/global/gradient/h500.png) repeat-x 0 0;
+	background:-moz-linear-gradient(top, rgba(55, 102, 152, 0.9), rgba(6, 6, 6, 0.9));
+	-moz-box-shadow:0 0 40px rgba(100, 118, 173, 0.5);
+}
+
+a.player:hover {
+	background:-moz-linear-gradient(center top, rgba(73, 122, 173, 0.898), rgba(6, 6, 6, 0.898));	
+}
+
+/* splash image */
+a.player img {
+	margin-top:125px;
+	border:0;	
+}
+
+	a.player {
+		margin-top:0px;		
+	}
+</style>
+ 
+
+
+<script>
+
+
+$(function() {
+	
+	// setup player without "internal" playlists
+	$f("player2", "http://releases.flowplayer.org/swf/flowplayer-3.2.7.swf", {
+		clip: {baseUrl: 'http://blip.tv/file/get'} 
+		
+		
+	// use playlist plugin. again loop is true
+	}).playlist("div.petrol", {loop:true});
+	
+});
+</script>
+
+
+
+
+<!-- configure entries inside playlist using standard HTML -->
+<div class="clips petrol" style="float:left">
+	
+	<!-- single playlist entry -->
+	<a href="KimAronson-TwentySeconds59483.flv" class="first">
+		Palm trees and the Sun
+		<span>HTTP streaming</span>
+		<em>0:20 min</em>
+
+	</a>
+	
+	<a href="KimAronson-TwentySeconds58192.flv">
+		Happy feet inside a car
+		<span>HTTP streaming</span>
+		<em>0:20 min</em>	
+	</a>
+	
+	<a href="KimAronson-TwentySeconds63617.flv">
+		Park side life
+		<span>HTTP streaming</span>
+
+		<em>0:20 min</em>	
+	</a>
+	
+</div>
+		
+<!-- player container and a splash image (play button) -->
+<a class="player plain" id="player2"  style="float:left">
+	<img src="http://static.flowplayer.org/img/player/btn/play_text_large.png" />
+</a>
+
+<!-- let rest of the page float normally -->
+<br clear="all"/>
+
+</body>
+
+</html>
