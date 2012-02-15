@@ -3,7 +3,10 @@ package ru.musicplayer.androidclient.activity;
 import android.app.Activity;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.view.KeyEvent;
 import android.view.View;
+import android.view.inputmethod.EditorInfo;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -24,7 +27,8 @@ public class AuthorizationActivity extends Activity {
     private TextView myStatus;
     private EditText myUsernameEdit;
     private EditText myPwdEdit;
-    private EditText myIpEdit;
+    private EditText myMusicIpEdit;
+    private EditText myAuthIpEdit;
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -34,33 +38,72 @@ public class AuthorizationActivity extends Activity {
 
         myUsernameEdit = (EditText) findViewById(R.id.usernameEditText);
         myPwdEdit = (EditText) findViewById(R.id.pwdEditText);
-        myIpEdit = (EditText) findViewById(R.id.ipEditText);
-        myIpEdit.setEnabled(true);
+        final Button myLoginButton = (Button) findViewById(R.id.loginButton);
+        
+        myUsernameEdit.setOnKeyListener(new View.OnKeyListener() {
+            @Override
+            public boolean onKey(View view, int keyCode, KeyEvent keyEvent) {
+                if (keyCode != 66) // = Enter
+                    return false;
+                if (keyEvent.getAction() != 0)
+                    return false;
+                myPwdEdit.requestFocus();
+                return true;
+            }
+        });
+
+       myPwdEdit.setOnKeyListener(new View.OnKeyListener() {
+            @Override
+            public boolean onKey(View view, int keyCode, KeyEvent keyEvent) {
+                if (keyCode != 66) // = Enter
+                    return false;
+                if (keyEvent.getAction() != 0)
+                    return false;
+                InputMethodManager imm = (InputMethodManager)getSystemService(SearchActivity.INPUT_METHOD_SERVICE);
+                imm.hideSoftInputFromWindow(view.getWindowToken(), 2);
+                myLoginButton.performClick();
+                return true;
+            }
+        });
+
+        myMusicIpEdit = (EditText) findViewById(R.id.musicIpEditText);
+        myMusicIpEdit.setEnabled(true);
+        myMusicIpEdit.setText(Request.getMusicServerIp());
+
+        myAuthIpEdit = (EditText) findViewById(R.id.authIpEditText);
+        myAuthIpEdit.setEnabled(true);
+        myAuthIpEdit.setText(Request.getAuthServerIp());
 
         myStatus = (TextView) findViewById(R.id.status);
-
-        Button myLoginButton = (Button) findViewById(R.id.loginButton);
+        
         myLoginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 String username = myUsernameEdit.getText().toString();
                 String pwd = myPwdEdit.getText().toString();
+                if (username.length() == 0) {
+                    myApplication.showToast("Empty user name!");
+                    myUsernameEdit.requestFocus();
+                    return;
+                }
                 //myApplication.setCredentials(username, pwd);
                 Request.init(username, pwd);
                 try {
-                    AllPlaylistsResult result = Request.getAllPlaylists();
-                    if (result.getMyStatus() != null) {
-                        myApplication.showToast(result.getMyStatus());
-                    } else {
-                        myApplication.setPlaylists(result);
+//                    String login = Request.login(username, pwd);
+//                    myApplication.showToast(login);
+//                    if (login.contains("success")) {
 
-                    }
+                        AllPlaylistsResult result = Request.getAllPlaylists();
+                        if (result.getMyStatus() != null) {
+                            myApplication.showToast(result.getMyStatus());
+                        } else {
+                            showLogin();
+                            myApplication.setPlaylists(result);
+                        }
+                    //}
                 } catch (IOException e) {
-                    myApplication.showErrorMessage("Get all playlists", e.getMessage());
+                    myApplication.showErrorMessage("Login & Get all playlists", e.getMessage());
                 }
-
-                showLogin();
-                //todo: validate
             }
         });
         Button myRegisterButton = (Button) findViewById(R.id.registerButton);
@@ -75,7 +118,6 @@ public class AuthorizationActivity extends Activity {
                     myApplication.showToast(register);
                     if (register.contains("success")) {
                         showLogin();
-                        //myApplication.setCredentials(username, pwd);
                     }
                 } catch (IOException e) {
                     myApplication.showErrorMessage("Register", e.getMessage());
@@ -87,7 +129,7 @@ public class AuthorizationActivity extends Activity {
         setIp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Request.setIp(myIpEdit.getText().toString());
+                Request.setIp(myMusicIpEdit.getText().toString(), myAuthIpEdit.getText().toString());
             }
         });
     }
@@ -112,5 +154,4 @@ public class AuthorizationActivity extends Activity {
         //myLoginButton.setText("Login");
         //todo: set login
     }
-
 }
