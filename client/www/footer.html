@@ -1,0 +1,19 @@
+<div id="player" class="footer">		
+	<p>
+			<a id="footer_player"/> 
+	</p>
+</div>
+
+<script>
+	flowplayer("footer_player", "flowplayer/flowplayer-3.2.7.swf", {
+		clip:  {
+			autoPlay: false,
+			autoBuffering: true
+		}, 
+		
+		plugins: {
+			controls: null
+		}
+		});
+		$f("footer_player").controls("bar").playlist("#clips", {loop:true});
+</script>

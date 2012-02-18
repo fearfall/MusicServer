@@ -1,0 +1,135 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <script type="text/javascript" src="http://code.jquery.com/jquery-latest.js"></script> 
+  <script type="text/javascript" src="http://code.jquery.com/ui/1.8.13/jquery-ui.min.js"></script>  
+  <script src="http://ajax.microsoft.com/ajax/jquery.templates/beta1/jquery.tmpl.min.js"></script>
+  
+  
+  <script type="text/javascript" src="js/templates.js"></script>
+  <script type="text/javascript" src="js/autorization.js"></script>
+  
+  <script type="text/javascript" src="flowplayer/flowplayer-3.2.6.min.js"></script>
+  <script type="text/javascript" src="flowplayer/flowplayer.playlist-3.0.8.min.js"></script>
+  
+  
+  <link rel="stylesheet" type="text/css" href="flowplayer/style.css">
+  <link rel="stylesheet" href="css/authorization.css" type="text/css" />
+  <link rel="stylesheet" href="css/header.css" type="text/css" />
+  <link rel="stylesheet" href="css/search_results.css" type="text/css" /> 
+  <link rel="stylesheet" href="css/player.css" type="text/css" /> 
+
+  <link media="all" type="text/css" href="css/jquery-ui.css" rel="stylesheet">
+  <!--<link media="all" type="text/css" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.17/themes/base/jquery-ui.css" rel="stylesheet"> -->
+</head>
+<body>
+
+<script id="playlist_item_template" type="text/x-jquery-tmpl">
+    <a href=${url}>
+        <span> ${name}</span>
+    </a>
+</script>
+
+ 
+ <script id="tracks_template" type="text/x-jquery-tmpl">
+	 <ul>
+	 {{each tracks.models}}
+		<li>
+		<div id=${mbid} class="bordered_item track">
+			<div class="track_text text">
+				<h3><a href='http://musicbrainz.org/recording/${mbid}'>${name}</a></a></h3>
+			</div>
+			<div class = "item_buttons">
+				<button class="add_button">add</button> 
+				<button class="play_button">play</button> 
+			<div>
+		  </div>
+		 </li>
+          <br clear="all"/>
+	{{/each}}
+	</ul>
+</script>		 
+ 
+ 
+ 
+<script id="artist_expanded_template" type="text/x-jquery-tmpl">
+    {{each models}}
+        <div class="artist">
+          <div class=" title">
+                <div class=" artist_text text">
+                    <button class="expand_button">expand</button> 
+                    <h3><a href='http://musicbrainz.org/artist/${mbid}'>${name}</a></h3>
+              </div>
+              <div class = "item_buttons">
+                <button class="add_button">add</button> 
+                <button class="play_button">play</button> 
+              </div>
+          </div>
+
+          <div class="bordered_item albums hidden_list">
+              <ul>
+              {{each albums}}
+                <div class="album"> 
+                    <li> <a href='http://example.com/${mbid}'>${name}</a> </li>
+                </div>
+              {{/each}}
+              </ul>
+          </div>
+        </div>
+        <br clear="all"/>
+    {{/each}}
+
+</script>	
+
+<script id="album_expanded_template" type="text/x-jquery-tmpl">
+{{each models}}
+	<div class="album">
+	  <div class="title">
+			<div class="album_text text">
+				<button class="expand_button">expand</button> 
+				<h3><a href='http://musicbrainz.org/release/${mbid}'>${name}</a></h3>
+		  </div>
+		  <div class = "item_buttons">
+			<button class="add_button">add</button> 
+			<button class="play_button">play</button> 
+		  </div>
+	  </div>
+
+	  <div class="bordered_item tracks hidden_list">
+		<ul>
+		  {{each tracks}}
+			<div class="track"> 
+				<li> <a href='http://musicbrainz.org/recording/${mbid}'>${name}</a> </li>
+			</div>
+		  {{/each}}
+		  </ul> 
+	  </div>
+	</div>
+    <br clear="all"/>
+ {{/each}}
+
+</script>		
+
+<script>
+    $(document).ready(function() {
+        //viewSearchResults(getUrlVars()['pattern']);
+        initPlayer();
+    });
+</script>
+
+<div class="wrap">
+<!--#include virtual="/header.html" -->
+
+<div class="results">
+</div>
+<!--#include virtual="/playlist.html" -->
+<div class="empty"><!-- --></div>
+</div>
+
+<!--#include virtual="/footer.html" -->
+
+
+</body>
+</html>
+

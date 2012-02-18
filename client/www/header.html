@@ -1,0 +1,72 @@
+<script>
+	$(document).ready(function(){
+		var search_field = $('#search_field');
+
+	    search_field.defaultText('Search...');
+	 
+	    search_field.autocomplete({
+	        source      : ["c++", "java", "php", "coldfusion", "javascript", "asp", "ruby"] 
+	    });
+		$( "#search_button, .button" ).button();
+		$('#search_button').click(function(){
+	        if(search_field.val().length && search_field.data('defaultText') != search_field.val()){
+	            $('.search_form').submit();
+	        }
+	    });
+    });
+	 
+	 
+	$.fn.defaultText = function(value){
+	 
+    var element = this.eq(0);
+	    element.data('defaultText',value);
+	 
+	    element.focus(function(){
+	        if(element.val() == value){
+	            element.val('').removeClass('defaultText');
+	        }
+	    }).blur(function(){
+	        if(element.val() == '' || element.val() == value){
+	            element.addClass('defaultText').val(value);
+	        }
+	    });
+	 
+	    return element.blur();
+	}
+	
+
+</script>
+
+
+
+<div class=header>
+	<div class=logo></div>
+	<div id="small_search">
+	        <form class="search_form" method="post" action="javascript:viewSearchResults();">
+	            <fieldset>
+					<input type="text" id="search_field" name="pattern" />
+				</fieldset>
+	        </form>
+	        <a href="#" id="search_button" class="button">Search</a>
+    </div>
+	<div id="container">
+	  <div id="topnav" class="topnav"> Already a user? <a href="#" class="signin"><span>Submit</span></a> </div>
+	  <fieldset id="signin_menu">
+		<form method="post" id="signin" action="#">
+		  <label for="username">Login or E-mail</label>
+		  <input class=header_field id="username" name="username" value="" title="username" tabindex="4" type="text">
+		  </p>
+		  <p>
+			<label for="password">Password</label>
+			<input class=header_field id="password" name="password" value="" title="password" tabindex="5" type="password">
+		  </p>
+		  <p class="remember">
+			<input id="signin_submit" value="Log in" tabindex="6" type="submit">
+			<input id="remember" name="remember_me" value="1" tabindex="7" type="checkbox">
+			<label for="remember">Remember me</label>
+		  </p>
+		  <p class="forgot"> <a href="#" id="resend_password_link" title="Resend password">Forgot your password?</a> </p>
+		</form>
+	  </fieldset>
+	</div>
+</div>	

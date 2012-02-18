@@ -1,0 +1,134 @@
+
+
+
+
+
+
+
+
+<!DOCTYPE html>
+<!-- 
+	This is Flowplayer standalone demo. The fastest way to get started. 
+	You can freely copy things on your site. All demos can be found from: 
+	
+	http://flowplayer.org/demos/
+	
+	Enjoy!
+-->
+
+<head>
+
+<!-- it's recommended to load jquery directly from googleapis. fast and gzipped --> 
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js"></script>
+
+
+
+
+
+<!-- flowplayer scripts should be loaded from your servers NOT from static.flowplayer.org  -->
+
+<script type="text/javascript" src="http://static.flowplayer.org/js/flowplayer-3.2.6.min.js"></script>
+
+
+
+
+
+
+
+<script src="http://static.flowplayer.org/js/flowplayer.playlist-3.0.8.min.js"></script>	
+
+
+
+<script src="http://static.flowplayer.org/js/flowplayer.controls-3.0.2.min.js"></script>	
+
+
+
+
+
+<!-- some styling for the standalone page. this line can (or must) be removed -->
+<link rel="stylesheet" type="text/css" href="/demos/standalone.css"/>
+
+
+</head>
+
+
+<body>
+<link rel="stylesheet" type="text/css" href="http://flowplayer.org/css/controls-hulu.css"/>
+<link rel="stylesheet" type="text/css" href="http://flowplayer.org/css/apple-playlist.css"/>
+
+
+<style>
+
+/* player styling */
+#player {
+	background-image:url(http://static.flowplayer.org/img/home/flow_eye.jpg);
+	width:400px;
+	height:300px;
+	display:block;
+	text-align:center;
+	margin:15px auto;
+}
+
+/* play button */
+#player img {
+	margin-top:110px;
+	border:0px;
+}
+
+/* style for the player's wrapper element */
+#player_wrap {
+	background:#ccc url(/img/global/gradient/h600.png) 0 0 repeat-x;
+	width:745px;
+	border:2px solid #fff;
+	outline:1px solid #789;
+	-moz-outline-radius:4px;
+	margin-bottom:15px;
+}
+
+/* override buffer color from controls-apple.css */
+div.controls div.buffer {
+	background-color:#789;
+}
+</style>
+
+
+<!-- a gray colored wrapper for the player -->
+<div id="player_wrap">
+
+	<!-- player container and a nested play button as PNG image -->
+	<a id="player" href="">
+		<img src="http://static.flowplayer.org/img/player/btn/play_text_large.png" alt="Show me" />
+	</a>
+
+</div>
+
+<!-- HTML-based controlbar is auto- generated inside this element -->
+<div id="hulu" class="hulu"></div>
+
+<!-- playlist. a simple list of links to videos -->
+<div id="clips">
+	<a href="/music/1.mp3">
+	<span>HTTP streaming</span></a>
+	<a href="/music/2.mp3">
+	<span>HTTP streaming</span></a>
+	<a href="/music/3.mp3">
+		<span>HTTP streaming</span>
+	</a>
+</div>
+
+
+<script>
+
+$(window).load(function() {
+
+	$f("player", "flowplayer/flowplayer-3.2.7.swf",  {
+		plugins: { controls: null}
+	}).controls("hulu", {duration: 250}).playlist("#clips");
+
+});
+</script>
+
+
+</body>
+
+</html>
