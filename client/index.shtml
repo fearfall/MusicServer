@@ -9,6 +9,7 @@
   
   <script type="text/javascript" src="js/templates.js"></script>
   <script type="text/javascript" src="js/autorization.js"></script>
+  <script type="text/javascript" src="js/cache.js"></script>
   
   <script type="text/javascript" src="flowplayer/flowplayer-3.2.6.min.js"></script>
   <script type="text/javascript" src="flowplayer/flowplayer.playlist-3.0.8.min.js"></script>
@@ -55,7 +56,7 @@
  
 <script id="artist_expanded_template" type="text/x-jquery-tmpl">
     {{each models}}
-        <div class="artist">
+        <div class="artist" id=${mbid}>
           <div class=" title">
                 <div class=" artist_text text">
                     <button class="expand_button">expand</button> 
@@ -82,12 +83,68 @@
 
 </script>	
 
+<script id="artist_template" type="text/x-jquery-tmpl">
+    {{each models}}
+        <div class="artist">
+          <div class=" title">
+                <div class=" artist_text text">
+                    <h3><a href='http://musicbrainz.org/artist/${mbid}'>${name}</a></h3>
+              </div>
+              <div class = "item_buttons">
+                <button class="add_button">add</button> 
+                <button class="play_button">play</button> 
+              </div>
+          </div>
+
+          <div class="bordered_item albums hidden_list">
+              <ul>
+              {{each albums}}
+                <div class="album"> 
+                    <li> <a href='http://example.com/${mbid}'>${name}</a> </li>
+                </div>
+              {{/each}}
+              </ul>
+          </div>
+        </div>
+        <br clear="all"/>
+    {{/each}}
+
+</script>
+
 <script id="album_expanded_template" type="text/x-jquery-tmpl">
+{{each models}}
+	<div class="album" id=${mbid}>
+	  <div class="title">
+			<div class="album_text text">
+				<button class="expand_button">expand</button> 
+				<h3><a href='http://musicbrainz.org/release/${mbid}'>${name}</a></h3>
+		  </div>
+		  <div class = "item_buttons">
+			<button class="add_button">add</button> 
+			<button class="play_button">play</button> 
+		  </div>
+	  </div>
+
+	  <div class="bordered_item tracks hidden_list">
+		<ul>
+		  {{each tracks}}
+			<div class="track"> 
+				<li> <a href='http://musicbrainz.org/recording/${mbid}'>${name}</a> </li>
+			</div>
+		  {{/each}}
+		  </ul> 
+	  </div>
+	</div>
+    <br clear="all"/>
+ {{/each}}
+
+</script>	
+
+<script id="album_template" type="text/x-jquery-tmpl">
 {{each models}}
 	<div class="album">
 	  <div class="title">
 			<div class="album_text text">
-				<button class="expand_button">expand</button> 
 				<h3><a href='http://musicbrainz.org/release/${mbid}'>${name}</a></h3>
 		  </div>
 		  <div class = "item_buttons">
@@ -114,20 +171,21 @@
 <script>
     $(document).ready(function() {
         //viewSearchResults(getUrlVars()['pattern']);
+        initTabs();
         initPlayer();
     });
 </script>
 
 <div class="wrap">
-<!--#include virtual="/header.html" -->
+<!--#include virtual="header.html" -->
 
 <div class="results">
 </div>
-<!--#include virtual="/playlist.html" -->
+<!--#include virtual="playlist.html" -->
 <div class="empty"><!-- --></div>
 </div>
 
-<!--#include virtual="/footer.html" -->
+<!--#include virtual="footer.html" -->
 
 
 </body>
