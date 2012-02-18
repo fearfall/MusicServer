@@ -29,7 +29,7 @@ public class SimpleDBConnection {
         dataSource.setUrl("jdbc:postgresql://localhost/musicbrainz_db");
         dataSource.setUsername("musicbrainz");
         dataSource.setPassword("");
-        this.jdbcTemplate = new JdbcTemplate(dataSource, false);
+        this.jdbcTemplate = new JdbcTemplate(dataSource);
         sqlProperties = new Properties();
         try {
             sqlProperties.load(SimpleDBConnection.class.getResourceAsStream("../sql.properties"));
@@ -39,11 +39,13 @@ public class SimpleDBConnection {
     }
 
     public Result search(String pattern, int offset, int limit) throws MusicServerException {
-        Result result = new Result(
-                findArtists(pattern, offset, limit),
-                findAlbums(pattern, offset, limit),
-                findTracks(pattern, offset, limit)
-        );
+        long start = System.currentTimeMillis();
+
+        SmallResult<Artist> artists = findArtists(pattern, offset, limit);
+        SmallResult<Album> albums = findAlbums(pattern, offset, limit);
+        SmallResult<Track> tracks = findTracks(pattern, offset, limit);
+        Result result = new Result(artists, albums, tracks);
+
         return result.isValid() ? result : null;
     }
 

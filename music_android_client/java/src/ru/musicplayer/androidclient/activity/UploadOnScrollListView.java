@@ -1,6 +1,5 @@
 package ru.musicplayer.androidclient.activity;
 
-import ru.musicplayer.androidclient.activity.R;
 import android.content.Context;
 import android.widget.AbsListView;
 import android.widget.ArrayAdapter;
@@ -28,6 +27,7 @@ public class UploadOnScrollListView {
     private String mySearchString = "";
     private boolean isAppendable = false;
     private int myOffset = 0;
+    private boolean running = false;
 
     public UploadOnScrollListView (int type, int downloadStep) {
         myListView = null;
@@ -48,25 +48,35 @@ public class UploadOnScrollListView {
             }
 
             @Override
-            public void onScroll(AbsListView absListView, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
-                if (isAppendable && (totalItemCount - 2*visibleItemCount <= firstVisibleItem)) {
-                    Result myResult;
-                    try {
-                        myResult = Request.search(mySearchString, myDownloadStep, myOffset, myModelType);
-                    } catch (IOException e) {
-                        isAppendable = false;
-                        myApplication.showErrorMessage("Search", e.getMessage());
-                        return;
-                    }
-                    if (myResult != null && !myResult.isEmpty()) {
-                        Model[] additional = myResult.getModelsOfType(myModelType);
-                        myOffset += additional.length;
-                        OpenableArrayAdapter adapter = (OpenableArrayAdapter) myListView.getAdapter();
-                        adapter.append(additional);
-                    } else {
-                        isAppendable = false;
+            public void onScroll(AbsListView absListView, final int firstVisibleItem, final int visibleItemCount, final int totalItemCount) {
+                class Task implements Runnable {
+                    @Override
+                    public void run() {
+                        if (isAppendable && (totalItemCount - 2*visibleItemCount <= firstVisibleItem)) {
+                            running = true;
+                            Result myResult;
+                            try {
+                                myResult = Request.search(mySearchString, myDownloadStep, myOffset, myModelType);
+                            } catch (IOException e) {
+                                isAppendable = false;
+                                myApplication.showErrorMessage("Search", e.getMessage());
+                                running = false;
+                                return;
+                            }
+                            if (myResult != null && !myResult.isEmpty()) {
+                                Model[] additional = myResult.getModelsOfType(myModelType);
+                                myOffset += additional.length;
+                                OpenableArrayAdapter adapter = (OpenableArrayAdapter) myListView.getAdapter();
+                                adapter.append(additional);
+                            } else {
+                                isAppendable = false;
+                            }
+                        }
+                        running = false;
                     }
                 }
+                if (!running)
+                    new Task().run();
             }
         });
     }

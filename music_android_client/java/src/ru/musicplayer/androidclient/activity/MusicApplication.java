@@ -72,7 +72,7 @@ public class MusicApplication extends Application {
         currentPlaylist = 0;
         bindService(new Intent(this, MusicPlayerService.class), myServiceConnection, BIND_AUTO_CREATE);
     }
-
+       
     public void initControls(Context c, View pt, View pb, View t, View b, View sbp,
                              View stopButton, View skipFwdButton, View skipBackButton) {
         myContext = c;
@@ -392,14 +392,17 @@ else  */
         myPlayLists.remove(index);
     }
     
-   /* public boolean isAuthorized() {
-        return isAuthorized;
+    public void saveAll() {
+        String errors = "";
+        for (Playlist playlist: myPlayLists) {
+            try {
+                Request.save(playlist);
+            } catch (IOException e) {
+                errors += playlist.getName() + ": " + e.getMessage() + "\n";
+            }
+        }
+        if (errors.length() != 0)
+            showErrorMessage("Save playlists", errors);
     }
-
-    public void setCredentials(String username, String password) {
-        myUsername = username;
-        myPassword = password;
-        //Request.init(myUsername, myPassword);
-    }  */
 
 }

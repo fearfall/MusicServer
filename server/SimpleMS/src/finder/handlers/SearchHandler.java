@@ -33,15 +33,12 @@ public class SearchHandler extends SessionHandler//AbstractHandler
                        int i) throws IOException, ServletException {
         final StringBuilder html = new StringBuilder();
         httpServletResponse.setContentType("application/json");
-
-
         try {
         String pattern = getParameter(httpServletRequest, "pattern"); 
         String jsonCallbackParam = getParameter(httpServletRequest,"jsoncallback");
         int limit = Integer.valueOf(getParameter(httpServletRequest, "limit"));
         int offset = Integer.valueOf(getParameter(httpServletRequest, "offset"));
         int resultContent = Integer.valueOf(getParameter(httpServletRequest, "type"));
-            
         Result result;
         switch (resultContent) {
         case 3:
@@ -56,7 +53,6 @@ public class SearchHandler extends SessionHandler//AbstractHandler
         default:
             result = SimpleDBConnection.getInstance().search(pattern, offset, limit);
         }
-
         if(result != null) {
             httpServletResponse.setStatus(HttpServletResponse.SC_OK);
             JsonElement jsonElement = new Gson().toJsonTree(result);
@@ -70,11 +66,12 @@ public class SearchHandler extends SessionHandler//AbstractHandler
             else html.append(jsonElement);
         }
         else {
-            httpServletResponse.setStatus(HttpServletResponse.SC_NO_CONTENT);
+            //httpServletResponse.setStatus(HttpServletResponse.SC_NO_CONTENT);
+            html.append("[]");
         }
         } catch(MusicServerException e) {
             httpServletResponse.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-            html.append("{" + e.getMessage() + "}");
+            html.append("{\"Error\": \"" + e.getMessage() + "\"}");
         }
         System.out.println(html);
         httpServletResponse.getWriter().println(html.toString());
@@ -86,6 +83,8 @@ public class SearchHandler extends SessionHandler//AbstractHandler
     private String getParameter (HttpServletRequest httpServletRequest, String name) throws MusicServerException {
         String result = httpServletRequest.getParameter(name);
         if("pattern".equals(name)) {
+            if(result == null)
+                throw new MusicServerException("No pattern speciefied");
             return validatePattern(result);
         }
         if("offset".equals(name)) {
@@ -94,7 +93,7 @@ public class SearchHandler extends SessionHandler//AbstractHandler
             return validateOffset(result);
         }
         if("jsoncallback".equals(name)) {
-            return validateCallback(result);
+            return result;//validateCallback(result);
         }
         if("limit".equals(name)) {
             if(result == null)
@@ -140,8 +139,7 @@ public class SearchHandler extends SessionHandler//AbstractHandler
     }
 
     public String validateCallback(String s) throws MusicServerException {
-        boolean res = s.isEmpty() ||
-        ( !StringUtils.startsWithIgnoreCase(s,"jsonp")) ||
+        boolean res = ( !StringUtils.startsWithIgnoreCase(s,"jsonp")) ||
         ( s.length() > 128 ) ||
         ( !s.matches("^jsonp\\d+$"));
         if(res)

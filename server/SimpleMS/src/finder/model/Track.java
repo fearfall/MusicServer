@@ -48,7 +48,7 @@ public class Track {
         this.mbid = mbid;
     }
 
-    public static boolean exists(String url){
+    public static boolean exists(String url) throws MusicServerException {
         try {
             HttpURLConnection.setFollowRedirects(false);
             HttpURLConnection connection =
@@ -57,8 +57,7 @@ public class Track {
             return (connection.getResponseCode() == HttpURLConnection.HTTP_OK);
         }
         catch (Exception e) {
-            e.printStackTrace();
-            return false;
+            throw new MusicServerException(e.getMessage());
         }
     }
 
@@ -69,8 +68,8 @@ public class Track {
                 + "&access_token=" + accessToken;
         JsonElement retrieved;
         try {
-            System.setProperty("https.proxyHost", "192.168.0.2");
-            System.setProperty("https.proxyPort", "3128");
+            //System.setProperty("https.proxyHost", "192.168.0.2");
+            //System.setProperty("https.proxyPort", "3128");
             String resUrl = new URI("https","api.vk.com", "/method/audio.getById", url, null).toASCIIString();
             URL vkSearch = new URL(resUrl);
             BufferedReader in = new BufferedReader(new InputStreamReader(vkSearch.openStream()));

@@ -1,11 +1,10 @@
 package ru.musicplayer.androidclient.activity;
 
-import ru.musicplayer.androidclient.activity.R;
-import android.app.*;
-import android.content.*;
+import android.app.TabActivity;
+import android.content.Intent;
 import android.content.res.Resources;
 import android.os.Bundle;
-import android.widget.*;
+import android.widget.TabHost;
 
 /**
  * Created by IntelliJ IDEA.
@@ -51,5 +50,10 @@ public class MainActivity extends TabActivity {
         tabHost.addTab(spec);
 
         tabHost.setCurrentTab(0);
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        ((MusicApplication)getApplication()).saveAll();
     }
 }
