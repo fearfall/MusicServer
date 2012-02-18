@@ -64,7 +64,8 @@ public class MyBasicAuthenticator implements Authenticator {
                     if (user==null)
                     {
                         Log.warn("AUTH FAILURE: user {}",StringUtil.printable(username));
-                        response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "AUTH FAILURE: user " + username);
+                        if (response != null)
+                            response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "AUTH FAILURE: user " + username);
                         return null;
                     }
                     else

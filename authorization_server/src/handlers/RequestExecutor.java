@@ -65,4 +65,11 @@ public abstract class RequestExecutor {
         setErrorResponse(response, errorMessage, responseStatus);
         return forReturn;
     }
+
+    public static void wrapMessageCallback(HttpServletResponse response, final String msg, final String callback) throws IOException {
+        StringBuilder sb = new StringBuilder();
+        sb.append(callback+"(\"");
+        sb.append(msg+"\");");
+        response.getWriter().println(sb.toString());
+    }
 }

@@ -32,6 +32,11 @@ public class CreatePlaylistExecutor extends RequestExecutor{
         boolean success = dbService.getPlaylistService().createPlaylist(userId, playlistTitle);
         if (success) {
             response.setStatus(HttpServletResponse.SC_OK);
+             String callback = parameters.get("callback");
+            if (callback != null)
+                wrapMessageCallback(response, "created", callback);
+            else
+                response.getWriter().println("created");
             return Status.SUCCESS;
         }
         msg.append("Error: cannot create playlist. Such playlist already exists\n");

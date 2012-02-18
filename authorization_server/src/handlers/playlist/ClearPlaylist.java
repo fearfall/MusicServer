@@ -32,6 +32,11 @@ public class ClearPlaylist extends RequestExecutor{
         boolean success = dbService.getPlaylistService().clearPlaylist(userId, playlistTitle);
         if (success) {
             response.setStatus(HttpServletResponse.SC_OK);
+             String callback = parameters.get("callback");
+            if (callback != null)
+                wrapMessageCallback(response, "cleared", callback);
+            else
+                response.getWriter().println("cleared");
             return Status.SUCCESS;
         }
         msg.append("Error: cannot clear playlist. Such playlist does not exist\n");

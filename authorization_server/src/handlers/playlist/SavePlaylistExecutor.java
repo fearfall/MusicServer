@@ -61,6 +61,11 @@ public class SavePlaylistExecutor extends RequestExecutor{
         success = (inserted == entries.size());
         if (success) {
             response.setStatus(HttpServletResponse.SC_OK);
+            String callback = parameters.get("callback");
+            if (callback != null)
+                wrapMessageCallback(response, "saved", callback);
+            else
+                response.getWriter().println("saved");
             return Status.SUCCESS;
         }
         msg.append("Error: Not all tracks were added: only "+inserted + " tracks were added\n");
