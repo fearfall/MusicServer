@@ -113,7 +113,7 @@
 
 <script>
     $(document).ready(function() {
-        viewSearchResults(getUrlVars()['pattern']);
+        //viewSearchResults(getUrlVars()['pattern']);
         initPlayer();
     });
 </script>

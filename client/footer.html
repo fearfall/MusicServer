@@ -12,12 +12,8 @@
 		}, 
 		
 		plugins: {
-			controls: {
-				playlist: true,
-				fullscreen: false, 
-				height: 30 
-			}
+			controls: null
 		}
 		});
-		$f("footer_player").playlist("#clips:first", {loop:true});
+		$f("footer_player").controls("bar").playlist("#clips", {loop:true});
 </script>

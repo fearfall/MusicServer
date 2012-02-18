@@ -10,10 +10,7 @@
 		$( "#search_button, .button" ).button();
 		$('#search_button').click(function(){
 	        if(search_field.val().length && search_field.data('defaultText') != search_field.val()){
-	            $('.search_form').submit(/*function() {
-                    //viewSearchResults($("#search_field"));
-                    $.get()
-                }*/);
+	            $('.search_form').submit();
 	        }
 	    });
     });
@@ -45,7 +42,7 @@
 <div class=header>
 	<div class=logo></div>
 	<div id="small_search">
-	        <form class="search_form" action="http://192.168.211.35/search_results" method="get">
+	        <form class="search_form" method="post" action="javascript:viewSearchResults();">
 	            <fieldset>
 					<input type="text" id="search_field" name="pattern" />
 				</fieldset>
