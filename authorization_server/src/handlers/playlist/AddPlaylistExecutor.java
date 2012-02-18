@@ -20,40 +20,34 @@ public class AddPlaylistExecutor extends RequestExecutor {
             HttpServletResponse response,
             final Map<String, String> parameters,
             CommonDbService dbService) throws IOException {
-        if ((parameters.containsKey("action")
-                && PlaylistHandler.ActionType.valueOf(parameters.get("action").toUpperCase()) == PlaylistHandler.ActionType.ADD))
-            {
-                StringBuilder msg = new StringBuilder();
-                boolean success = true;
+        StringBuilder msg = new StringBuilder();
+        String action = checkParameter("action", parameters, msg);
+        if ( action == null ||
+                (action != null && PlaylistHandler.ActionType.valueOf(action.toUpperCase())!= PlaylistHandler.ActionType.ADD))
+            return Status.NOT_ACCEPTED;
+        Integer playlistId = getPlaylistId(parameters, msg, dbService);
+        if (playlistId == null) {
+            return setErrorAndReturnStatus(response, msg.toString(), HttpServletResponse.SC_BAD_REQUEST, Status.FAIL);
+        }
+        String trackData = checkParameter("data",parameters, msg);
+        Integer orderNum = Integer.valueOf(checkParameter("order", parameters, msg));
+        String mbid = checkParameter("mbid", parameters, msg);
+        if (trackData==null || playlistId==null || orderNum==null || mbid==null)
+            return setErrorAndReturnStatus(response, msg.toString(), HttpServletResponse.SC_BAD_REQUEST, Status.FAIL);
+        boolean success = dbService.getPlaylistService().insertTrack(playlistId, orderNum, mbid, trackData);
+        if (success) {
+            response.setStatus(HttpServletResponse.SC_OK);
+            String callback = parameters.get("callback");
+            if (callback != null)
+                wrapMessageCallback(response, "added", callback);
+            else
+                response.getWriter().println("added");
+            return Status.SUCCESS;
+        } else {
+            response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+            response.getWriter().println(msg.toString());
+            return Status.FAIL;
+        }
 
-                String username = checkParameter("username", parameters, msg);
-                Integer userId = null;
-                if (username != null)
-                    userId = Integer.valueOf(dbService.getUserService().getUserIdByName(username));
-
-                Integer playlistId = null;
-                String playlistTitle = checkParameter("name", parameters, msg);
-                if (userId != null && playlistTitle != null)
-                    playlistId = dbService.getPlaylistService().getPlaylistId(userId, playlistTitle);
-
-                String trackData = checkParameter("data",parameters, msg);
-                Integer orderNum = Integer.valueOf(checkParameter("order", parameters, msg));
-                String mbid = checkParameter("mbid", parameters, msg);
-
-                if (trackData==null || playlistId==null || orderNum==null || mbid==null) {
-                    success = false;
-                } else {
-                    success = dbService.getPlaylistService().insertTrack(playlistId, orderNum, mbid, trackData);
-                }
-                if (success) {
-                    response.setStatus(HttpServletResponse.SC_OK);
-                    return Status.SUCCESS;
-                } else {
-                    response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-                    response.getWriter().println(msg.toString());
-                    return Status.FAIL;
-                }
-            } else
-                return Status.NOT_ACCEPTED;
     }
 }

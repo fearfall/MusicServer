@@ -40,6 +40,11 @@ public class DeleteTrackExecutor extends RequestExecutor{
         boolean success = dbService.getPlaylistService().deleteTrack(playlistId, orderNum, mbid);
         if (success) {
             response.setStatus(HttpServletResponse.SC_OK);
+             String callback = parameters.get("callback");
+            if (callback != null)
+                wrapMessageCallback(response, "deleted", callback);
+            else
+                response.getWriter().println("deleted");
             return Status.SUCCESS;
         }
         msg.append("Error: track "+mbid+" wasnot deleted\n");

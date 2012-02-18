@@ -31,6 +31,11 @@ public class RemovePlaylistExecutor extends RequestExecutor{
         boolean success = dbService.getPlaylistService().deletePlaylist(userId, playlistTitle);
         if (success) {
             response.setStatus(HttpServletResponse.SC_OK);
+             String callback = parameters.get("callback");
+            if (callback != null)
+                wrapMessageCallback(response, "removed", callback);
+            else
+                response.getWriter().println("removed");
             return Status.SUCCESS;
         }
         msg.append("Error: cannot delete playlist. Such playlist doesnot exist\n");

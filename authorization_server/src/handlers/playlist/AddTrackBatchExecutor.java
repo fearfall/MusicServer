@@ -59,6 +59,11 @@ public class AddTrackBatchExecutor extends RequestExecutor{
         success = (inserted == entries.size());
         if (success) {
             response.setStatus(HttpServletResponse.SC_OK);
+             String callback = parameters.get("callback");
+            if (callback != null)
+                wrapMessageCallback(response, "added", callback);
+            else
+                response.getWriter().println("added");
             return Status.SUCCESS;
         }
         msg.append("Error: Not all tracks were added: only "+inserted + " tracks were added\n");

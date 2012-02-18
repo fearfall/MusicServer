@@ -1,6 +1,7 @@
 package handlers.user;
 
 import handlers.RequestExecutor;
+import org.mortbay.jetty.Request;
 import utilities.CommonDbService;
 
 import javax.servlet.http.HttpServletResponse;
@@ -36,7 +37,11 @@ public class RegisterExecutor extends RequestExecutor {
         boolean success = dbService.getUserService().registerUser(username, pwd);
         if (success) {
             response.setStatus(HttpServletResponse.SC_OK);
-            response.getWriter().println("registered");
+            String callback = parameters.get("callback");
+            if (callback != null)
+                wrapMessageCallback(response, "registered", callback);
+            else
+                response.getWriter().println("registered");
             return Status.SUCCESS;
         }
         msg.append("Error: User with such name already exists\n");
