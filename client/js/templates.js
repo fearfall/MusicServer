@@ -35,7 +35,7 @@
 				selected = selected[0] + 1;
 				}
 			currentTab = selected;
-			if (!checkLoadedTabs(selected)) {
+			if (checkTabStatus(selected)=="empty") {
 				var pattern = $('#search_field').val();
 				makeTypifiedSearch(selected, pattern);
 			}
@@ -51,26 +51,28 @@
 	function makeTypifiedSearch(type, pattern) {
 		switch (type) {
 			case 1:
+				setLoadingTabs(1);
 				$.getJSON(searchUrl, {'type': 1, 'pattern' : pattern}, function(json) {
 					if(json[0] !== "Error") {
+						cacheArtists(json.artists.models);
 						applyTemplate("#artist_expanded_template", json.artists, "#artists");
 						addHiding(".artist .title .expand_button");
 						addButtons();
 						playButtons();
-						cacheArtists(json.artists.models);
 					} else {
 						$("#artists").append(json[0]);
 					}
 				});
 				break
 			case 2:
+				setLoadingTabs(2);
 				$.getJSON(searchUrl, {'type': 2, 'pattern' : pattern}, function(json) {
 					if(json[0] !== "Error") {
+						cacheAlbums(json.albums.models);
 						applyTemplate("#album_expanded_template", json.albums, "#albums");
 						addHiding(".album .title .expand_button");
 						addButtons();
 						playButtons();
-						cacheAlbums(json.albums.models);
 					}
 					else {
 						$("#albums").append(json[0]);
@@ -78,12 +80,13 @@
 				});
 				break
 			case 3:
+				setLoadingTabs(3);
 				$.getJSON(searchUrl, {'type': 3, 'pattern' : pattern}, function(json) {
 					if(json) {
+						cacheTracks(json.tracks.models);
 						applyTemplate("#tracks_template", json, "#tracks");
 						addButtons();
 						playButtons();
-						cacheTracks(json.tracks.models);
 					}
 				});
 				break
@@ -109,14 +112,14 @@
 	function addButtons(){
         $(".add_button").button();
         $(".add_button").click(function() {                           
-                            addToPlaylist("#clips", $(this));
+                            addToPlaylist("#clips", $(this), false);
                         });
     }  
     
     function playButtons(){
         $(".play_button").button();
         $(".play_button").click(function() {                           
-                            addToPlaylist("#clips", $(this));
+                            addToPlaylist("#clips", $(this), true);
                         });
     } 
     
@@ -124,12 +127,23 @@
 		$(element).click(function() {
 				$(this).parent().parent().next().toggle();
 				var mbid = $(this).parent().parent().parent().attr("id");
-				if (!checkLoadedObject(mbid)) {
+				if (checkObjectStatus(mbid) == "empty") {
+					setLoadingObject(mbid);
 					switch (getObject(mbid).type) {
 						case "artist": 
-							
+							var objectsList = $("#"+mbid+" .albums ul");
+							$.getJSON(getArtistUrl, {'id' : mbid}, function(json) {
+								$("#album_template").tmpl(json).appendTo(objectsList);
+								updateArtist(json);
+							});
 							break
-						case "album": break
+						case "album": 
+							var objectsList = $("#"+mbid+" .tracks ul"); //???
+							$.getJSON(getAlbumUrl, {'id' : mbid}, function(json) {
+								$("#album_tracks_template").tmpl(json).appendTo(objectsList);
+								updateAlbum(json);
+							});
+							break
 						default:
 					}
 				}
@@ -137,19 +151,45 @@
 			}).parent().parent().next().hide();
 	}
 	
-	function fillArtistAlbums(mbid) {
-		
+	function addTrackToPlaylist(mbid, playlist_element) {
+		if (checkObjectStatus(mbid) == "empty") {
+			
+		}
+		var getTrackUrl  = "http://"+ ip +":6006/get/track?format=json&jsoncallback=?";
+		$.getJSON(getTrackUrl, {'id' : id}, function(json) {
+								var player = $f("footer_player");
+								if(!player.isLoaded()) {
+									player.load(function() {
+										$("#clips").append("<a href=${url}> <span> ${name}</span> </a>");
+										player.setPlaylist([json,]);
+										player.playlist("#clips", {loop:true});
+									});
+								} else {				
+									var position =  player.getPlaylist().length; 	
+									player.addClip(json);	
+								}
+                    }); 
 	}
     
-    function addToPlaylist(playlist_element, button) {
-        var id = button.parent().parent().attr('id')
-        var getTrackUrl  = "http://"+ ip +":6006/get/track?format=json&jsoncallback=?";
-        playlist_element.append();
-		$.getJSON(getTrackUrl, {'id' : id}, function(json) {
-						        	
-                                $("#playlist_item_template").tmpl(json).appendTo(playlist_element);
-					});
+    function addToPlaylist(playlist_element, button, shouldPlay) {
+       var id = button.parent().parent().attr('id');
+       var player = $f("footer_player");
+       var getTrackUrl  = "http://"+ ip +":6006/get/track?format=json&jsoncallback=?";
+       $.getJSON(getTrackUrl, {'id' : id}, function(json) {
+								var player = $f("footer_player");
+								if(!player.isLoaded()) {
+									player.load(function() {
+										$("#clips").append("<a href=${url}> <span> ${name}</span> </a>");
+										player.setPlaylist([json,]);
+										player.playlist("#clips", {loop:true});
+									});
+								} else {				
+									var position =  player.getPlaylist().length; 	
+									player.addClip(json);	
+								}
+                    }); 
     }
+    
     function getUrlVars() {
         var vars = [], hash;
         var hashes = window.location.href.slice(window.location.href.indexOf('?') + 1).split('&');
@@ -162,5 +202,21 @@
         return vars;
     }
     function initPlayer() {
-		$f("footer_player").playlist("#clips:first", {loop:true});
+		$("#footer_player").flowplayer("flowplayer/flowplayer-3.2.7.swf", {
+			clip:  {
+				autoPlay: false,
+				autoBuffering: true
+			}, 
+			playlist: [
+			{
+				url: '/music/1.mp3',
+				name: 'Palm trees and the sun'
+			}],
+			plugins: {
+				controls: {
+					playlist: true
+				}
+			}
+		});
+	
     }

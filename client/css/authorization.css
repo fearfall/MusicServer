@@ -1,11 +1,9 @@
-
-
-
-
 #container {
-    width:780px;
+    width:20%;
     margin:0 auto;
+    margin-right: 0;
     position: relative;
+    float: right;
 }
  
 #content {

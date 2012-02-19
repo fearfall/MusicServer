@@ -40,16 +40,8 @@
 
 
 <div class=header>
-	<div class=logo></div>
-	<div id="small_search">
-	        <form class="search_form" method="post" action="javascript:viewSearchResults();">
-	            <fieldset>
-					<input type="text" id="search_field" name="pattern" />
-				</fieldset>
-	        </form>
-	        <a href="#" id="search_button" class="button">Search</a>
-    </div>
-	<div id="container">
+	<!--div class=logo></div-->
+	<div id="container" >
 	  <div id="topnav" class="topnav"> Already a user? <a href="#" class="signin"><span>Submit</span></a> </div>
 	  <fieldset id="signin_menu">
 		<form method="post" id="signin" action="#">
@@ -69,4 +61,15 @@
 		</form>
 	  </fieldset>
 	</div>
+	
+	<div id="small_search" >
+			<form class="search_form" method="post" action="javascript:viewSearchResults();">
+				<a href="#" id="search_button" class="button">Search</a>
+	            <fieldset>
+					<input type="text" id="search_field" name="pattern" />
+				</fieldset>
+	        </form>
+	        
+    </div>
+	
 </div>	
