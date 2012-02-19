@@ -12,7 +12,7 @@
 	background-color:#fff;
 	padding:12px 15px;
 	height:46px;
-	width:195px;
+	#width:20%;
 	font-size:12px;
 	border:1px outset #ccc;		
 	text-decoration:none;
@@ -27,7 +27,7 @@
 
 .playlist a.playing, .playlist a.paused, .playlist a.progress {
 	background: #888;
-	width:225px;
+	#width:80%;
 	border:1px solid #88f;
 }
 	

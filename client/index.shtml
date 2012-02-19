@@ -63,10 +63,10 @@
 			<div class="track_text text">
 				<h3><a href='http://musicbrainz.org/recording/${mbid}'>${name}</a></a></h3>
 			</div>
-			<div class = "item_buttons">
+			<!--div class = "item_buttons">
 				<button class="add_button">add</button> 
 				<button class="play_button">play</button> 
-			<div>
+			<div-->
 		  </div>
 		 </li>
           <br clear="all"/>
@@ -139,10 +139,10 @@
 			<div class="album_text text">
 				<h3><a href='http://musicbrainz.org/release/${mbid}'>${name}</a></h3>
 		  </div>
-		  <div class = "item_buttons">
+		  <!--div class = "item_buttons">
 			<button class="add_button">add</button> 
 			<button class="play_button">play</button> 
-		  </div>
+		  </div-->
 	  </div>
 
 	  <div class="bordered_item tracks hidden_list">

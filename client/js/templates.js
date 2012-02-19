@@ -123,71 +123,125 @@
                         });
     } 
     
+	function loadObject(mbid, recursive, needAppendToElement) {
+		if (checkObjectStatus(mbid) == "empty") {
+			setLoadingObject(mbid, recursive);
+			switch (getObject(mbid).type) {
+				case "artist": 
+					var objectsList = $("#"+mbid+" .albums ul");
+					$.getJSON(getArtistUrl, {'id' : mbid}, function(json) {
+						updateArtist(json);
+						if (needAppendToElement) {
+							$("#album_template").tmpl(json).appendTo(objectsList);
+						}
+						if (recursive) {
+							for (i = 0; i < json.albums.length; ++i) {
+								loadObject(json.albums[i].mbid, recursive, false);
+							}
+						}
+					});
+					break
+				case "album": 
+					var objectsList = $("#"+mbid+" .tracks ul"); 
+					$.getJSON(getAlbumUrl, {'id' : mbid}, function(json) {
+						updateAlbum(json);
+						if (needAppendToElement) {
+							$("#album_tracks_template").tmpl(json).appendTo(objectsList);
+						}
+						if (recursive) {
+							for (i = 0; i < json.tracks.length; ++i) {
+								addTrackToPlaylist(json.tracks[i].mbid);
+							}
+						}
+					});
+					break
+				default:
+			}
+		}
+	}
+	
 	function addHiding(element) {
 		$(element).click(function() {
 				$(this).parent().parent().next().toggle();
 				var mbid = $(this).parent().parent().parent().attr("id");
-				if (checkObjectStatus(mbid) == "empty") {
-					setLoadingObject(mbid);
-					switch (getObject(mbid).type) {
-						case "artist": 
-							var objectsList = $("#"+mbid+" .albums ul");
-							$.getJSON(getArtistUrl, {'id' : mbid}, function(json) {
-								$("#album_template").tmpl(json).appendTo(objectsList);
-								updateArtist(json);
-							});
-							break
-						case "album": 
-							var objectsList = $("#"+mbid+" .tracks ul"); //???
-							$.getJSON(getAlbumUrl, {'id' : mbid}, function(json) {
-								$("#album_tracks_template").tmpl(json).appendTo(objectsList);
-								updateAlbum(json);
-							});
-							break
-						default:
-					}
-				}
+				loadObject(mbid, false, true);
 				return false;
 			}).parent().parent().next().hide();
 	}
 	
-	function addTrackToPlaylist(mbid, playlist_element) {
-		if (checkObjectStatus(mbid) == "empty") {
+	function pushTrackToPlaylist(track) {
+		var player = $f("footer_player");
+		var template = "<a href=${url}> <span> ${name}</span> </a>";
+		if(!player.isLoaded()) {
+			player.load(function() {
+				$("#clips").append(template);
+				player.setPlaylist([track,]);
+				player.playlist("#clips", {loop:true});
+			});
+		} else {				
+			var position =  player.getPlaylist().length; 	
+			player.addClip(track);	
+		}
+	}
+	
+	function addTrackToPlaylist(mbid) {
+		var status = checkObjectStatus(mbid);
+		switch (status) {
+			case "empty": 
+				var getTrackUrl  = "http://"+ ip +":6006/get/track?format=json&jsoncallback=?";
+				$.getJSON(getTrackUrl, {'id' : mbid}, pushTrackToPlaylist);
+				break
+			case "loaded":
+				var track = getObject(mbid);
+				pushTrackToPlaylist(track);
+				break
+			default:
 			
 		}
-		var getTrackUrl  = "http://"+ ip +":6006/get/track?format=json&jsoncallback=?";
-		$.getJSON(getTrackUrl, {'id' : id}, function(json) {
-								var player = $f("footer_player");
-								if(!player.isLoaded()) {
-									player.load(function() {
-										$("#clips").append("<a href=${url}> <span> ${name}</span> </a>");
-										player.setPlaylist([json,]);
-										player.playlist("#clips", {loop:true});
-									});
-								} else {				
-									var position =  player.getPlaylist().length; 	
-									player.addClip(json);	
-								}
-                    }); 
 	}
-    
+	
+	function addComplexToPlaylist(mbid) {
+		var status = checkObjectStatus(mbid);
+		switch (status) {
+			case "empty": 
+				loadObject(mbid, true, true);
+				break
+			case "loading":
+				while (status != "loaded" && status != "error") {
+					status = checkObjectStatus(mbid);
+				}
+				addComplexToPlaylist(mbid);
+				break
+			case "loaded":
+				loadObject(mbid, true, false);
+				break
+			default:
+			
+		}
+	}
+	
+	function tryGetMbid(button) {
+		var id = undefined;
+		var attempt = 0;
+		var elem = button.parent();
+		while ( attempt <= 4 && id == undefined) {
+			id = elem.parent().attr('id');
+			++attempt;
+			elem = elem.parent();
+		} 
+		return id;
+	}
+	
     function addToPlaylist(playlist_element, button, shouldPlay) {
-       var id = button.parent().parent().attr('id');
-       var player = $f("footer_player");
-       var getTrackUrl  = "http://"+ ip +":6006/get/track?format=json&jsoncallback=?";
-       $.getJSON(getTrackUrl, {'id' : id}, function(json) {
-								var player = $f("footer_player");
-								if(!player.isLoaded()) {
-									player.load(function() {
-										$("#clips").append("<a href=${url}> <span> ${name}</span> </a>");
-										player.setPlaylist([json,]);
-										player.playlist("#clips", {loop:true});
-									});
-								} else {				
-									var position =  player.getPlaylist().length; 	
-									player.addClip(json);	
-								}
-                    }); 
+		var id = tryGetMbid(button);
+		var player = $f("footer_player");
+		var object = getObject(id);
+		switch (object.type) {
+			case "artist": 
+			case "album" : addComplexToPlaylist(id); break
+			case "track" : addTrackToPlaylist(id); break
+			default:
+		}
     }
     
     function getUrlVars() {
@@ -214,7 +268,20 @@
 			}],
 			plugins: {
 				controls: {
-					playlist: true
+					playlist: true,
+					backgroundColor: "transparent",
+				   backgroundGradient: "none",
+				   sliderColor: '#FFFFFF',
+				   sliderBorder: '1.5px solid rgba(160,160,160,0.7)',
+				   volumeSliderColor: '#FFFFFF',
+				   volumeBorder: '1.5px solid rgba(160,160,160,0.7)',
+
+				   timeColor: '#ffffff',
+				   durationColor: '#535353',
+
+				   tooltipColor: 'rgba(255, 255, 255, 0.7)',
+				   tooltipTextColor: '#000000'
+
 				}
 			}
 		});
