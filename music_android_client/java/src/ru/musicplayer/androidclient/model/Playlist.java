@@ -1,7 +1,6 @@
 package ru.musicplayer.androidclient.model;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -21,19 +20,31 @@ public class Playlist extends Model implements Comparable<Playlist> {
         this.name = name;
     }
     
-    public Playlist (List<PlaylistResultEntry> entries) {
-        wasFilled = false;
-        Collections.sort(entries);
-        for (PlaylistResultEntry entry: entries) {
-            myData.add(new Track(entry));
-        }
+//    public Playlist (List<PlaylistResultEntry> entries) {
+//        wasFilled = false;
+//    name!!!
+//        Collections.sort(entries);
+//        for (PlaylistResultEntry entry: entries) {
+//            myData.add(new Track(entry));
+//        }
+//    }
+    
+    public Playlist (String name, boolean filled) {
+        wasFilled = filled;
+        this.name = name;
     }
 
     @Override
     public void fillWith(Model playlist) {
         super.fillWith(playlist);
-        myData = ((Playlist)playlist).getMyData();
         nowPlaying = -1;
+        if (myData.isEmpty()) {
+            myData = ((Playlist) playlist).getMyData();
+            return;
+        }
+        LinkedList<Track> data = ((Playlist) playlist).getMyData();
+        data.addAll(myData);
+        myData = data;
     }
 
     public void addTracks (List<Track> tracks) {
@@ -119,6 +130,8 @@ public class Playlist extends Model implements Comparable<Playlist> {
     
     public Track start() {
         nowPlaying = 0;
+        if (myData.isEmpty())
+            return null;
         return myData.get(0);
     }
     

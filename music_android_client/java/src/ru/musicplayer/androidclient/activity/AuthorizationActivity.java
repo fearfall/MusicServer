@@ -5,7 +5,6 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.view.KeyEvent;
 import android.view.View;
-import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
@@ -35,6 +34,7 @@ public class AuthorizationActivity extends Activity {
         setContentView(R.layout.authorization);
 
         myApplication = (MusicApplication) getApplicationContext();
+        myApplication.register(this);
 
         myUsernameEdit = (EditText) findViewById(R.id.usernameEditText);
         myPwdEdit = (EditText) findViewById(R.id.pwdEditText);
@@ -153,5 +153,11 @@ public class AuthorizationActivity extends Activity {
 //        myPwdEdit.setEnabled(true);
         //myLoginButton.setText("Login");
         //todo: set login
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        myApplication.remove(this);
     }
 }

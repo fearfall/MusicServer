@@ -15,9 +15,7 @@ import ru.musicplayer.androidclient.model.*;
 import ru.musicplayer.androidclient.network.Request;
 
 import java.io.IOException;
-import java.util.Collections;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.*;
 
 /**
  * Created by IntelliJ IDEA.
@@ -49,9 +47,7 @@ public class MusicApplication extends Application {
     private int currentPlaylist = -1;
     private Context myContext;
 
-//    private String myUsername;
-//    private String myPassword;
-//    private boolean isAuthorized;
+    private HashMap<Class, Activity> myActivities = new HashMap<Class, Activity>();
 
     private ServiceConnection myServiceConnection = new ServiceConnection() {
         @Override
@@ -68,11 +64,19 @@ public class MusicApplication extends Application {
     public void onCreate() {
         super.onCreate();
         myNotificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
-        ourHistory = new Playlist("Search history");
+        ourHistory = new Playlist("Search history", true);
         currentPlaylist = 0;
         bindService(new Intent(this, MusicPlayerService.class), myServiceConnection, BIND_AUTO_CREATE);
     }
        
+    public void register (Activity activity) {
+        myActivities.put(activity.getClass(), activity);
+    }
+    
+    public void remove (Activity activity) {
+        myActivities.remove(activity);
+    }
+    
     public void initControls(Context c, View pt, View pb, View t, View b, View sbp,
                              View stopButton, View skipFwdButton, View skipBackButton) {
         myContext = c;
@@ -166,9 +170,6 @@ public class MusicApplication extends Application {
 
     public void next() {
         Track next;
-        /*if (currentPlaylist == -1)
-  next = ourHistory.back();
-else  */
         next = PlaylistIterator.next(getCurrentPlaylist());
         if (next == null) {
             showToast("Current playlist is empty or currently selected is the last track.");
@@ -189,7 +190,6 @@ else  */
 
     public LinkedList<Playlist> getAllPlayLists() {
         LinkedList<Playlist> all = new LinkedList<Playlist>();
-        //all.push(ourHistory);
         if (!myPlayLists.isEmpty()) {
             Collections.sort(myPlayLists);
             all.addAll(myPlayLists);
@@ -356,10 +356,12 @@ else  */
     }
     
     public void setCurrentPlaylist (int index) {
-        currentPlaylist = index;
-        //todo: inform PlayingActivity
-        Track first = myPlayLists.get(currentPlaylist).start();
-        trackClicked(first, false);
+        currentPlaylist = index - 1;
+        //todo: inform PlayingActivity somehow -- highlight current playlist
+        ((MainActivity)myActivities.get(MainActivity.class)).onChangeCurrentPlaylist(getCurrentPlaylist().getName());
+        Track first = getCurrentPlaylist().start();
+        if (first != null)
+            trackClicked(first, false);
     }
         
     public Playlist getHistory() {

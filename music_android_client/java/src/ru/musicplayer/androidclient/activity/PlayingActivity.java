@@ -11,11 +11,22 @@ import android.os.Bundle;
  * To change this template use File | Settings | File Templates.
  */
 public class PlayingActivity extends ListActivity {
+    private MusicApplication myApplication;
+
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.playing);
+        myApplication = (MusicApplication) getApplication();
+        myApplication.register(this);
+
         /*TextView textview = new TextView(this);
                 textview.setText("This is the Playing tab");
                 setContentView(textview); */
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        myApplication.remove(this);
     }
 }

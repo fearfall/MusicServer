@@ -30,6 +30,7 @@ public class SearchActivity extends Activity {
     private UploadOnScrollListView myTracks;
     private TabHost myTabHost;
     private EditText mySearchEdit;
+    private MusicApplication myApplication;
 
     private View createTabView(final Context context, final String text) {
         View view = LayoutInflater.from(context).inflate(R.layout.tabs_bg, null);
@@ -64,6 +65,9 @@ public class SearchActivity extends Activity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.search);
+
+        myApplication = ((MusicApplication)getApplication());
+        myApplication.register(this);
 
         myTabHost = (TabHost) findViewById(android.R.id.tabhost);
         myTabHost.setup();
@@ -112,7 +116,7 @@ public class SearchActivity extends Activity {
         try {
             result = Request.getCount(mySearchEdit.getText().toString());
         } catch (IOException e) {
-            ((MusicApplication)getApplication()).showErrorMessage("Get count", e.getMessage());
+            myApplication.showErrorMessage("Get count", e.getMessage());
             return;
         }
         setTabCaption(0, "Artists (" + result.getArtistsSize() + ')');
@@ -126,7 +130,7 @@ public class SearchActivity extends Activity {
         try {
             myResult = Request.search(searchString, 3*offsetStep, 0, MusicApplication.ALL);
         } catch (IOException e) {
-            ((MusicApplication)getApplication()).showErrorMessage("Search", e.getMessage());
+            myApplication.showErrorMessage("Search", e.getMessage());
             return;
         }
         if (myResult.isEmpty()) {
@@ -145,5 +149,11 @@ public class SearchActivity extends Activity {
     public void onConfigurationChanged(Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
         setContentView(R.layout.search);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        myApplication.remove(this);
     }
 }

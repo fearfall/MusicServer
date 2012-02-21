@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.content.res.Resources;
 import android.os.Bundle;
 import android.widget.TabHost;
+import android.widget.TextView;
 
 /**
  * Created by IntelliJ IDEA.
@@ -14,13 +15,16 @@ import android.widget.TabHost;
  * To change this template use File | Settings | File Templates.
  */
 public class MainActivity extends TabActivity {
+    private MusicApplication myApplication;
+    
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
-//        myNotificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-//        ourHistory = new Playlist("Search history", 5);
 
-        ((MusicApplication)getApplication()).initControls(this, findViewById(R.id.playing_track_name), findViewById(R.id.button_play),
+        myApplication = ((MusicApplication)getApplication());
+        myApplication.register(this);
+
+        myApplication.initControls(this, findViewById(R.id.playing_track_name), findViewById(R.id.button_play),
                 findViewById(R.id.timing), findViewById(R.id.buffering), findViewById(R.id.seekBarTestPlay),
                 findViewById(R.id.button_stop), findViewById(R.id.button_fwd), findViewById(R.id.button_back));
 
@@ -54,6 +58,17 @@ public class MainActivity extends TabActivity {
 
     @Override
     protected void onSaveInstanceState(Bundle outState) {
-        ((MusicApplication)getApplication()).saveAll();
+        myApplication.saveAll();
+    }
+    
+    public void onChangeCurrentPlaylist(String name) {
+        TextView currentPlaylist = (TextView) findViewById(R.id.currentPlaylist);
+        currentPlaylist.setText(name);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();    
+        myApplication.remove(this);
     }
 }

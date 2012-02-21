@@ -234,7 +234,8 @@ public class Request {
             StatusLine statusLine = response.getStatusLine();
             if (statusLine.getStatusCode() == HttpStatus.SC_OK) {
                 InputStreamReader r = new InputStreamReader(response.getEntity().getContent());
-                return new Gson().fromJson(r, (Type)PlaylistResult.class);
+                Type collectionType = new TypeToken<List<PlaylistResultEntry>>(){}.getType();
+                return new PlaylistResult((List<PlaylistResultEntry>) new Gson().fromJson(r, collectionType));
             } else {
                 //Closes the connection.
                 response.getEntity().getContent().close();
