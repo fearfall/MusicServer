@@ -17,10 +17,26 @@ import java.net.*;
  */
 public class Track {
     private String name = "";
+    private String artistName = "";
+    private String albumName = "";
     private String url = "";
     private String mbid = "";
+    private String artistMbid = "";
+    private String albumMbid = "";
 
     public Track() {}
+
+    public Track(String name, String url, String mbid,
+                        String artistName,String artistMbid,
+                            String albumName, String albumMbid) {
+        this.name = name;
+        this.url = url;
+        this.mbid = mbid;
+        this.artistName = artistName;
+        this.artistMbid = artistMbid;
+        this.albumName = albumName;
+        this.albumMbid = albumMbid;
+    }
 
     public Track(String name, String url, String mbid) {
         this.name = name;
@@ -60,6 +76,8 @@ public class Track {
             throw new MusicServerException(e.getMessage());
         }
     }
+
+
 
     public String getUrlFromSource(String aid, String uid, String accessToken) throws MusicServerException {
         JsonParser parser = new JsonParser();
@@ -110,5 +128,21 @@ public class Track {
 
     public void checkUrl(String url, String aid, String uid, String accessToken) throws MusicServerException {
         this.url = getValid(url, aid, uid, accessToken);
+    }
+
+    public void setArtistName(String artistName) {
+        this.artistName = artistName;
+    }
+
+    public void setAlbumName(String albumName) {
+        this.albumName = albumName;
+    }
+
+    public void setArtistMbid(String artistMbid) {
+        this.artistMbid = artistMbid;
+    }
+
+    public void setAlbumMbid(String albumMbid) {
+        this.albumMbid = albumMbid;
     }
 }

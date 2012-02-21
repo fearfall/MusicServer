@@ -10,6 +10,9 @@ import java.io.IOException;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.*;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
 
 /**
  * User: Alice Afonina
@@ -22,6 +25,8 @@ public class SimpleDBConnection {
     private static SimpleDBConnection simpleDBConnection;
     private Properties sqlProperties;
     private Map<Long, Result> searchCache = new HashMap<Long, Result>();
+    private int numberOfThreads = 10;
+    private ExecutorService pool;
 
     public SimpleDBConnection() throws MusicServerException {
         DriverManagerDataSource dataSource = new DriverManagerDataSource();
@@ -29,10 +34,11 @@ public class SimpleDBConnection {
         dataSource.setUrl("jdbc:postgresql://localhost/musicbrainz_db");
         dataSource.setUsername("musicbrainz");
         dataSource.setPassword("");
+        pool = Executors.newFixedThreadPool(numberOfThreads);
         this.jdbcTemplate = new JdbcTemplate(dataSource);
         sqlProperties = new Properties();
         try {
-            sqlProperties.load(SimpleDBConnection.class.getResourceAsStream("../sql.properties"));
+            sqlProperties.load(SimpleDBConnection.class.getResourceAsStream("/finder/sql.properties"));
         } catch (IOException e) {
             throw new MusicServerException(e.getMessage());
         }
@@ -142,7 +148,10 @@ public class SimpleDBConnection {
         try {
             jdbcTemplate.query(queryAlbum, new RowCallbackHandler() {
                 public void processRow(ResultSet resultSet) throws SQLException {
-                    Album album = new Album(resultSet.getString("album_name"),resultSet.getString("album_mbid"));
+                    Album album = new Album(resultSet.getString("album_name"),
+                                            resultSet.getString("album_mbid"),
+                                            resultSet.getString("artist_name"),
+                                            resultSet.getString("artist_mbid"));
                     realOffset.increase();
                     if(albums.indexOf(album) < 0 && album.isPartValid()) {
                         albums.add(album);
@@ -159,10 +168,23 @@ public class SimpleDBConnection {
         final List<Track> tracks = new ArrayList<Track>();
         final Counter realOffset = new Counter(offset);
         String queryTrack = sqlProperties.getProperty("select.tracks");
+
         try {
             jdbcTemplate.query(queryTrack, new RowCallbackHandler() {
-                public void processRow(ResultSet resultSet) throws SQLException {
-                    Track track = new Track(resultSet.getString("track_name"), resultSet.getString("url"), resultSet.getString("track_mbid"));
+                public void processRow(final ResultSet resultSet) throws SQLException {
+                    final Track track = new Track(resultSet.getString("track_name"),
+                                            resultSet.getString("url"),
+                                            resultSet.getString("track_mbid"),
+                                            resultSet.getString("artist_name"),
+                                            resultSet.getString("artist_mbid"),
+                                            resultSet.getString("album_name"),
+                                            resultSet.getString("album_mbid"));
+                    /*try {
+                        track.checkUrl(resultSet.getString("url"), resultSet.getString("aid"),
+                                "317437", "76b4cf3676fbe9e076fbe9e0f376da3d08f76fb76fae9e804bf890503cbd8ca");
+                    } catch (MusicServerException e) {
+                        System.out.println(e.getMessage());
+                    } */
                     realOffset.increase();
                     if (tracks.indexOf(track) < 0 && track.isValid()) {
                         tracks.add(track);
@@ -172,6 +194,7 @@ public class SimpleDBConnection {
         } catch (Exception e) {
             throw new MusicServerException(e.getMessage());
         }
+
         return new SmallResult<Track>(tracks, realOffset.getValue());
     }
 
@@ -204,13 +227,29 @@ public class SimpleDBConnection {
         final Album album = new Album();
         try {
             jdbcTemplate.query(queryAlbum, new RowCallbackHandler() {
-                public void processRow(ResultSet resultSet) throws SQLException {
+                public void processRow(final ResultSet resultSet) throws SQLException {
                     if(resultSet.wasNull()) return;
-                    album.setName(resultSet.getString("album_name"));
+                    String artistName = resultSet.getString("artist_name");
+                    album.setArtistName(artistName);
+                    String albumName = resultSet.getString("album_name");
+                    album.setName(albumName);
+                    album.setArtistMbid(resultSet.getString("artist_mbid"));
                     album.setMbid(resultSet.getString("album_mbid"));
-                    Track track = new Track(resultSet.getString("t_name"), resultSet.getString("t_url"), resultSet.getString("t_mbid"));
+                    final Track track = new Track(resultSet.getString("t_name"),
+                                            resultSet.getString("t_url"),
+                                            resultSet.getString("t_mbid"));
                     if (tracks.indexOf(track) < 0 && track.isValid()) {
                         tracks.add(track);
+                        /*pool.execute(new Runnable() {
+                            public void run() {
+                                try {
+                                    track.checkUrl(resultSet.getString("aid"),
+                                            "317437", "76b4cf3676fbe9e076fbe9e0f376da3d08f76fb76fae9e804bf890503cbd8ca");
+                                } catch (MusicServerException e) {
+                                } catch (SQLException e) {
+                                }
+                            }
+                        });*/
                     }
                 }
             }, UUID.fromString(id));
@@ -229,13 +268,15 @@ public class SimpleDBConnection {
                 public void processRow(ResultSet resultSet) throws SQLException {
                     track.setName(resultSet.getString("track_name"));
                     track.setMbid(resultSet.getString("track_mbid"));
+                    track.setArtistName(resultSet.getString("artist_name"));
+                    track.setAlbumName(resultSet.getString("album_name"));
+                    track.setArtistMbid(resultSet.getString("artist_mbid"));
+                    track.setAlbumMbid(resultSet.getString("album_mbid"));
                     try {
                         track.checkUrl(resultSet.getString("url"), resultSet.getString("aid"),
                                               "317437", "76b4cf3676fbe9e076fbe9e0f376da3d08f76fb76fae9e804bf890503cbd8ca");
                     } catch (MusicServerException e) {
-                        throw new SQLException(e.getMessage());
-                    }
-
+                        System.out.println("AAA" + e.getMessage()); }
                 }
             }, UUID.fromString(id));
         } catch (Exception e) {

@@ -1,9 +1,20 @@
+.scrollable {
+
+	/* required settings */
+	#position:relative;
+	#overflow:hidden;
+	float:right;
+	#height: 665px;
+	background-color:#888;
+	width: 100px;
+}
+
 .playlist {
 	#position:relative;
 	#overflow:hidden;	 	
     #width:260px;
-    float:right;	
-
+    position:absolute;
+	height:20000em;
 }
 
 .playlist a {
@@ -11,10 +22,9 @@
 	display:block;
 	background-color:#fff;
 	padding:12px 15px;
-	height:46px;
-	#width:20%;
+	height:70px;
+	#width:195px;
 	font-size:12px;
-	border:1px outset #ccc;		
 	text-decoration:none;
 	letter-spacing:-1px;
 	color:#000;
@@ -26,9 +36,9 @@
 }
 
 .playlist a.playing, .playlist a.paused, .playlist a.progress {
-	background: #888;
-	#width:80%;
-	border:1px solid #88f;
+	background: #bbb;
+	#width:225px;
+	border:1px solid #400;
 }
 	
 .playlist a.progress {
@@ -39,10 +49,20 @@
 	background-position:0 0;	
 }
 
-.playlist a span {
-	display:block;		
+.playlist .track_name {
+	font-weight:none;
+	font-size:14px;
+	color:#333;
+	text-decoration:none;
+	float:left;
+}
+.playlist a div {
+	#display:block;		
 	font-size:11px;
-	color:#666;
+	
+	#color:#666;
+	float:left;
+	background-color:transparent !important;	
 }
 
 .playlist a em {
@@ -71,9 +91,6 @@ a.go:hover, a.go.down:hover {
 	background-position:0px -18px;		
 }
 
-a.go.down {
-	background-image:url(/img/playlist/arrow/down.png);	
-}
 
 a.go.disabled {
 	visibility:hidden;		
