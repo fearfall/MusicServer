@@ -30,12 +30,14 @@ public class GetHandler extends AbstractHandler
 
         httpServletResponse.setContentType("application/json");
         StringBuilder html = new StringBuilder();
+        String htmlContent;
         String error = "";
+        String jsonCallbackParam = httpServletRequest.getParameter("jsoncallback");
         try {
             String id = httpServletRequest.getParameter("id");
             if(id == null)
                 throw new MusicServerException("No entity specified");
-            String jsonCallbackParam = httpServletRequest.getParameter("jsoncallback");
+
             Object result = null;
             if(s.equals("/artist")) {
                 result = SimpleDBConnection.getInstance().getArtist(id);
@@ -49,21 +51,20 @@ public class GetHandler extends AbstractHandler
 
             if(result != null) {
                 httpServletResponse.setStatus(HttpServletResponse.SC_OK);
-                String jsonElement = new Gson().toJson(result);
-                if (jsonCallbackParam != null) {
-                    html.append(jsonCallbackParam);
-                    html.append("(");
-                    html.append(jsonElement);
-                    html.append(");");
-                }
-                else html.append(jsonElement);
+                htmlContent = new Gson().toJson(result);
             } else {
-                httpServletResponse.setStatus(HttpServletResponse.SC_NO_CONTENT);  
+                htmlContent = "[]";  
             }
         } catch (MusicServerException e) {
-            html.append(e.getMessage());
-        }                             
-        
+            htmlContent = "{\"Error\": \"" + e.getMessage() + "\"}";
+        }
+        if (jsonCallbackParam != null) {
+            html.append(jsonCallbackParam);
+            html.append("(");
+            html.append(htmlContent);
+            html.append(");");
+        }
+        else html.append(htmlContent);
         System.out.println(html.toString());
         httpServletResponse.getWriter().println(html.toString());
         Request baseRequest = (httpServletRequest instanceof Request) ? (Request)httpServletRequest: HttpConnection.getCurrentConnection().getRequest();

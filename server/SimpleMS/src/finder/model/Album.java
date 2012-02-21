@@ -13,14 +13,23 @@ public class Album {
     private String name = "";
     private String mbid = "";
     private List<Track> tracks = new LinkedList<Track>();
+    private String artistName;
+    private String artistMbid;
+    
+
+    public Album(String name, String mbid, String artistName, String artistMbid) {
+        this.name = name;
+        this.mbid = mbid;
+        this.artistName = artistName;
+        this.artistMbid = artistMbid;
+    }
+
+    public Album() {}
 
     public Album(String name, String mbid) {
         this.name = name;
         this.mbid = mbid;
-
     }
-
-    public Album() {}
 
     public boolean addTrack(Track track) {
         if(tracks.indexOf(track) < 0) {
@@ -78,5 +87,13 @@ public class Album {
     
     public boolean isAllValid() {
         return (isPartValid() && tracks != null && !tracks.isEmpty());
+    }
+
+    public void setArtistName(String artistName) {
+        this.artistName = artistName;
+    }
+
+    public void setArtistMbid(String artistMbid) {
+        this.artistMbid = artistMbid;
     }
 }

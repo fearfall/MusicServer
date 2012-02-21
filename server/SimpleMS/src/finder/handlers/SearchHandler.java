@@ -6,6 +6,7 @@ import finder.model.Result;
 import org.mortbay.jetty.HttpConnection;
 import org.mortbay.jetty.Request;
 import org.mortbay.jetty.SessionManager;
+import org.mortbay.jetty.handler.AbstractHandler;
 import org.mortbay.jetty.servlet.SessionHandler;
 import org.springframework.util.StringUtils;
 
@@ -21,10 +22,13 @@ import java.io.IOException;
  * Time: 12:49 PM
  */
 
-public class SearchHandler extends SessionHandler//AbstractHandler
+public class SearchHandler extends /*SessionHandler//*/AbstractHandler
 {
-    public SearchHandler(SessionManager sessionManager) {
+    /*public SearchHandler(SessionManager sessionManager) {
         super(sessionManager);
+    }*/
+
+    public SearchHandler() {
     }
 
     public void handle(String s,
@@ -33,9 +37,14 @@ public class SearchHandler extends SessionHandler//AbstractHandler
                        int i) throws IOException, ServletException {
         final StringBuilder html = new StringBuilder();
         httpServletResponse.setContentType("application/json");
+        String jsonCallbackParam = null;
         try {
-        String pattern = getParameter(httpServletRequest, "pattern"); 
-        String jsonCallbackParam = getParameter(httpServletRequest,"jsoncallback");
+            jsonCallbackParam = getParameter(httpServletRequest,"jsoncallback");
+        } catch (MusicServerException e) { }
+        String htmlContent;
+        try {
+        String pattern = getParameter(httpServletRequest, "pattern");
+            System.out.println("PATTERN IS: " + pattern);
         int limit = Integer.valueOf(getParameter(httpServletRequest, "limit"));
         int offset = Integer.valueOf(getParameter(httpServletRequest, "offset"));
         int resultContent = Integer.valueOf(getParameter(httpServletRequest, "type"));
@@ -57,22 +66,24 @@ public class SearchHandler extends SessionHandler//AbstractHandler
             httpServletResponse.setStatus(HttpServletResponse.SC_OK);
             JsonElement jsonElement = new Gson().toJsonTree(result);
             System.out.println(jsonElement);
-            if ( jsonCallbackParam != null ) {
-                html.append(jsonCallbackParam);
-                html.append("(");
-                html.append(jsonElement);
-                html.append(");");
-            }
-            else html.append(jsonElement);
+            htmlContent = jsonElement.toString();
         }
         else {
             //httpServletResponse.setStatus(HttpServletResponse.SC_NO_CONTENT);
-            html.append("[]");
+            htmlContent = "[]";
         }
         } catch(MusicServerException e) {
-            httpServletResponse.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-            html.append("{\"Error\": \"" + e.getMessage() + "\"}");
+           // httpServletResponse.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+            htmlContent = "{\"Error\": \"" + e.getMessage() + "\"}";
         }
+
+        if ( jsonCallbackParam != null ) {
+            html.append(jsonCallbackParam);
+            html.append("(");
+            html.append(htmlContent);
+            html.append(");");
+        }
+        else html.append(htmlContent);
         System.out.println(html);
         httpServletResponse.getWriter().println(html.toString());
         Request baseRequest = (httpServletRequest instanceof Request) ? (Request)httpServletRequest: HttpConnection.getCurrentConnection().getRequest();
@@ -132,7 +143,7 @@ public class SearchHandler extends SessionHandler//AbstractHandler
     }
 
     private String validatePattern(String pattern) throws MusicServerException {
-        if("".equals(pattern.trim()))
+        if("".equals(pattern.trim()) || pattern.contains("%"))
             throw new MusicServerException("Wrong pattern");
         else
             return pattern;

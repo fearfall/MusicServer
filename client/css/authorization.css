@@ -27,7 +27,7 @@ a img {
     text-align:right;
 }
 #topnav a.signin {
-    background:#88bbd4;
+    background:#888;
     padding:4px 6px 6px;
     text-decoration:none;
     font-weight:bold;
@@ -35,13 +35,9 @@ a img {
     -webkit-border-radius:4px;
     -moz-border-radius:4px;
     border-radius:4px;
-    *background:transparent url("images/signin-nav-bg-ie.png") no-repeat 0 0;
-    *padding:4px 12px 6px;
 }
 #topnav a.signin:hover {
-    background:#59B;
-    *background:transparent url("images/signin-nav-bg-hover-ie.png") no-repeat 0 0;
-    *padding:4px 12px 6px;
+    background:#333;
 }
 #topnav a.signin, #topnav a.signin:hover {
     *background-position:0 3px!important;
@@ -52,13 +48,12 @@ a.signin {
     margin-left:3px;
 }
 a.signin span {
-    background-image:url("images/toggle_down_light.png");
     background-repeat:no-repeat;
     background-position:100% 50%;
     padding:4px 16px 6px 0;
 }
 #topnav a.menu-open {
-    background:#ddeef6!important;
+    background:#eee!important;
     color:#666!important;
     outline:none;
 }
@@ -71,7 +66,7 @@ a.signin span {
 }
 a.signin.menu-open span {
     background-image:url("images/toggle_up_dark.png");
-    color:#789;
+    color:#ddd;
 }
 
 
@@ -83,11 +78,11 @@ a.signin.menu-open span {
    -webkit-border-radius: 5px 0 5px 5px;
    -moz-border-radius: 5px 0 5px 5px;
     display:none;
-    background-color:#ddeef6;
+    background-color:#eee;
     position:absolute;
     width:210px;
     z-index:100;
-    border:1px transparent;
+    border:1px solid #aaa;
     text-align:left;
     padding:12px;
     top: 24.5px; 
@@ -95,7 +90,7 @@ a.signin.menu-open span {
     margin-top:5px;
     margin-right: 0px;
     *margin-right: -1px;
-    color:#789;
+    color:#333;
     font-size:11px;
 }
  
@@ -103,7 +98,7 @@ a.signin.menu-open span {
     display:block;
     -moz-border-radius:4px;
     -webkit-border-radius:4px;
-    border:1px solid #ACE;
+    border:1px solid #333;
     font-size:13px;
     margin:0 0 5px;
     padding:5px;
@@ -113,7 +108,7 @@ a.signin.menu-open span {
     margin:0;
 }
 #signin_menu a {
-    color:#6AC;
+    color:#111;
 }
 #signin_menu label {
     font-weight:normal;
@@ -126,15 +121,15 @@ a.signin.menu-open span {
     margin:5px 0;
 }
 #signin_menu p a {
-    color:#27B!important;
+    color:#555!important;
 }
 #signin_submit {
     -moz-border-radius:4px;
     -webkit-border-radius:4px;
-    background:#39d url('images/bg-btn-blue.png') repeat-x scroll 0 0;
-    border:1px solid #39D;
+    background:#111 repeat-x scroll 0 0;
+    border:1px solid #555;
     color:#fff;
-    text-shadow:0 -1px 0 #39d;
+    text-shadow:0 -1px 0 #eee;
     padding:4px 10px 5px;
     font-size:11px;
     margin:0 5px 0 0;
