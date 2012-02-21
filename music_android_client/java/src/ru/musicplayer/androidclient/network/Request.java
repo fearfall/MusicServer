@@ -28,15 +28,17 @@ import java.util.List;
 public class Request {
     private static SecureHttpClient mySecureHttpClient = null;
     private static String myIp = "192.168.1.3";
-    private static String musicServerIp = myIp;
+    private static String musicServerIp = "asande.no-ip.org";
     private static String authServerIp = myIp;
     private static String myServerAddress = "http://" + musicServerIp + ":6006";
     private static String myAuthorizationServerAddress = "https://" + authServerIp + ":8443";
 
     public static void setIp(String musicIp, String authIp) {
-        //todo: validate
+        //todo: validate ip
         musicServerIp = musicIp;
         authServerIp = authIp;
+        myServerAddress = "http://" + musicServerIp + ":6006";
+        myAuthorizationServerAddress = "https://" + authServerIp + ":8443";
     }
 
     public static String getMusicServerIp() {
@@ -88,7 +90,8 @@ public class Request {
 
     public static Result search (String pattern, int limit, int offset, int contentType) throws IOException {
         try {
-            HttpResponse response = execute(myServerAddress + "/search/?pattern=" + pattern + "&limit=" + limit + "&offset=" + offset + "&type=" + contentType);
+            String offsetString = offset == 0 ? "" : "&offset=" + offset;
+            HttpResponse response = execute(myServerAddress + "/search/?pattern=" + pattern + "&limit=" + limit + offsetString + "&type=" + contentType);
             StatusLine statusLine = response.getStatusLine();
             if (statusLine.getStatusCode() == HttpStatus.SC_OK){
                 InputStreamReader r = new InputStreamReader(response.getEntity().getContent());
