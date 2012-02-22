@@ -17,7 +17,7 @@ import handlers.playlist.PlaylistHandler.ActionType;
  */
 public class ClearPlaylist extends RequestExecutor{
     @Override
-    public Status execute(HttpServletResponse response, Map<String, String> parameters, CommonDbService dbService) throws IOException {
+    public Status execute(HttpServletResponse response, Map<String, String> parameters, CommonDbService dbService) {
         StringBuilder msg = new StringBuilder();
         String action = checkParameter("action", parameters, msg);
         if (action == null ||
@@ -34,13 +34,17 @@ public class ClearPlaylist extends RequestExecutor{
             response.setStatus(HttpServletResponse.SC_OK);
              String callback = parameters.get("callback");
             if (callback != null)
-                wrapMessageCallback(response, "cleared", callback);
+                tryWrapMessageCallback(response, "cleared", callback);
             else
-                response.getWriter().println("cleared");
+                try {
+                    response.getWriter().println("cleared");
+                } catch (IOException e) {
+                    // nothing just return success status: this call does not require wrapper
+                }
             return Status.SUCCESS;
         }
         msg.append("Error: cannot clear playlist. Such playlist does not exist\n");
-        setErrorResponse(response, msg.toString(), HttpServletResponse.SC_BAD_REQUEST);
+        trySetErrorResponse(response, msg.toString(), HttpServletResponse.SC_BAD_REQUEST);
         return Status.FAIL;
     }
 }

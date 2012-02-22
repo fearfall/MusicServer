@@ -2,12 +2,10 @@ package handlers.playlist;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
-import com.google.gson.stream.MalformedJsonException;
 import handlers.RequestExecutor;
 import model.Playlist;
 import utilities.CommonDbService;
 
-import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.lang.reflect.Type;
@@ -27,7 +25,7 @@ public class AddTrackBatchExecutor extends RequestExecutor{
     public Status execute(
             HttpServletResponse response,
             final Map<String, String> parameters,
-            CommonDbService dbService) throws IOException {
+            CommonDbService dbService) {
 
         StringBuilder msg = new StringBuilder();
         String action = checkParameter("action", parameters, msg);
@@ -61,13 +59,17 @@ public class AddTrackBatchExecutor extends RequestExecutor{
             response.setStatus(HttpServletResponse.SC_OK);
              String callback = parameters.get("callback");
             if (callback != null)
-                wrapMessageCallback(response, "added", callback);
+                tryWrapMessageCallback(response, "added", callback);
             else
-                response.getWriter().println("added");
+                try {
+                    response.getWriter().println("added");
+                } catch (IOException e) {
+                    // nothing just return success status: this call does not require wrapper
+                }
             return Status.SUCCESS;
         }
         msg.append("Error: Not all tracks were added: only "+inserted + " tracks were added\n");
-        setErrorResponse(response, msg.toString(), HttpServletResponse.SC_BAD_REQUEST);
+        trySetErrorResponse(response, msg.toString(), HttpServletResponse.SC_BAD_REQUEST);
         return Status.FAIL;
     }
 }
