@@ -13,7 +13,9 @@
   
   <script type="text/javascript" src="flowplayer/flowplayer-3.2.6.min.js"></script>
   <script type="text/javascript" src="flowplayer/flowplayer.playlist-hacked.js"></script>
-  
+   <!-- jquery plugins-->
+  <script type='text/javascript' src="js/jquery_plugins/jquery.base64.js"></script>
+  <script type='text/javascript' src="js/jquery_plugins/jquery-jsonp-2.2.1.min.js"></script>
   
   <link rel="stylesheet" type="text/css" href="flowplayer/style.css"/>
   <link rel="stylesheet" type="text/css" href="css/authorization.css"/>
