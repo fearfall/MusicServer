@@ -55,13 +55,13 @@ public class Playlist extends Model implements Comparable<Playlist> {
 
     //this method is only for loading from authorization server to avoid millions of checks
     public void loadTrack (Track track) {
-        myData.push(track);
+        myData.add(track);
     }
     
     public boolean add (Track track) {
         if (myData.contains(track))
             return false;
-        myData.push(track);
+        myData.add(track);
         return true;
     }
 

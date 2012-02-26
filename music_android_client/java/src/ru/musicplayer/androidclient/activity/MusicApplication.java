@@ -347,7 +347,7 @@ public class MusicApplication extends Application {
         try {
             showToast(Request.playlistAction("create", name));
             Playlist playlist = new Playlist(name);
-            myPlayLists.push(playlist);
+            myPlayLists.add(playlist);
             return playlist;
         } catch (IOException e) {
             showErrorMessage("Add playlist", e.getMessage());

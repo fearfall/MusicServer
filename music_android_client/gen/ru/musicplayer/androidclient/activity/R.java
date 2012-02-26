@@ -33,12 +33,13 @@ public final class R {
         public static final int ic_tab_playlists=0x7f020010;
         public static final int ic_tab_search=0x7f020011;
         public static final int icon=0x7f020012;
-        public static final int tab_bg_selected=0x7f020013;
-        public static final int tab_bg_selector=0x7f020014;
-        public static final int tab_bg_unselected=0x7f020015;
-        public static final int tab_divider=0x7f020016;
-        public static final int tab_text_selector=0x7f020017;
-        public static final int thumb_transparent=0x7f020018;
+        public static final int play=0x7f020013;
+        public static final int tab_bg_selected=0x7f020014;
+        public static final int tab_bg_selector=0x7f020015;
+        public static final int tab_bg_unselected=0x7f020016;
+        public static final int tab_divider=0x7f020017;
+        public static final int tab_text_selector=0x7f020018;
+        public static final int thumb_transparent=0x7f020019;
     }
     public static final class id {
         public static final int add_to_playlist=0x7f060027;

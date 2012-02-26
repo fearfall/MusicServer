@@ -4,7 +4,6 @@ import android.app.NotificationManager;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
-import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.os.DeadObjectException;
 import android.os.Handler;
@@ -21,32 +20,16 @@ import java.io.IOException;
  * To change this template use File | Settings | File Templates.
  */
 public class MusicPlayerService extends Service {
-
     private MediaPlayer mediaPlayer;
-
     private PlayerData myPlayerData;
-    MusicApplication myApplication;// = (MusicApplication) getApplication();
-
-    /*private String myCurrentTrack = null;
-    private String myCurrentTrackUrl = null;
-    private int myCurrentPosition = 0;
-    private int mediaFileLengthInMilliseconds;
-    private Mode myMode;*/
-
-    //private TextView myInfo;
-
-  //  private enum Mode {PLAY, PAUSE, STOP}
-
+    MusicApplication myApplication;
 
 	@Override
     public void onCreate() {
 		super.onCreate();
         myApplication = (MusicApplication) getApplication();
-        
         myPlayerData = new PlayerData();
-
         mediaPlayer = new MediaPlayer();
-        initMediaPlayer(mediaPlayer);
 
         /*mediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
 
@@ -65,23 +48,6 @@ public class MusicPlayerService extends Service {
         });
 	}
 
-    private void initMediaPlayer (MediaPlayer player) {
-        player.setAudioStreamType(AudioManager.STREAM_MUSIC);
-        /*player.setOnBufferingUpdateListener(new MediaPlayer.OnBufferingUpdateListener() {
-            @Override
-            public void onBufferingUpdate(MediaPlayer mp, int i) {
-                myApplication.onBufferingUpdate(i);
-            }
-        }); */
-        player.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
-            @Override
-            public void onCompletion(MediaPlayer arg0) {
-                arg0.stop();
-                myApplication.next();
-            }
-        });
-    }
-
     @Override
     public void onDestroy() {
 		mediaPlayer.stop();
@@ -98,7 +64,6 @@ public class MusicPlayerService extends Service {
         int icon;
         String tickerText;
         myPlayerData.setMode(mode);
-        
         switch (mode) {
             case PLAY:
                 icon = R.drawable.button_pause;
@@ -117,10 +82,8 @@ public class MusicPlayerService extends Service {
             default:
                 throw new RuntimeException("Wrong player mode!");
         }
-
         tickerText += message;
         myApplication.setPlayImage(icon);
-        //MainActivity.notifyUser(tickerText, getApplicationContext());
     }
 
     private final MusicPlayerServiceInterface.Stub mBinder = new MusicPlayerServiceInterface.Stub() {
@@ -147,8 +110,6 @@ public class MusicPlayerService extends Service {
 			try {
                 if (trackUrl == null)
                     throw new IOException("Null track(" + trackName + ") Url.");
-
-
                 if (mediaPlayer.isPlaying())
                     oldPosition = mediaPlayer.getCurrentPosition();
 
@@ -194,7 +155,6 @@ public class MusicPlayerService extends Service {
 
         @Override
 		public void stop() throws DeadObjectException {
-			//myNotificationManager.cancel(ourNotifyId);
             notifyActivity(PlayerData.Mode.STOP, "");
             myApplication.setPlayButtonEnabled(false);
 			mediaPlayer.stop();
