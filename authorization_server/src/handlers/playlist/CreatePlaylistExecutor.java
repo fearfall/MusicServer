@@ -1,6 +1,5 @@
 package handlers.playlist;
 
-import com.google.gson.Gson;
 import handlers.RequestExecutor;
 import utilities.CommonDbService;
 
@@ -17,7 +16,7 @@ import java.util.Map;
  */
 public class CreatePlaylistExecutor extends RequestExecutor{
     @Override
-    public Status execute(HttpServletResponse response, Map<String, String> parameters, CommonDbService dbService) throws IOException {
+    public Status execute(HttpServletResponse response, Map<String, String> parameters, CommonDbService dbService) {
         StringBuilder msg = new StringBuilder();
         String action = checkParameter("action", parameters, msg);
         if (action == null ||
@@ -34,13 +33,17 @@ public class CreatePlaylistExecutor extends RequestExecutor{
             response.setStatus(HttpServletResponse.SC_OK);
              String callback = parameters.get("callback");
             if (callback != null)
-                wrapMessageCallback(response, "created", callback);
+                tryWrapMessageCallback(response, "created", callback);
             else
-                response.getWriter().println("created");
+                try {
+                    response.getWriter().println("created");
+                } catch (IOException e) {
+                    // nothing just return success status: this call does not require wrapper
+                }
             return Status.SUCCESS;
         }
         msg.append("Error: cannot create playlist. Such playlist already exists\n");
-        setErrorResponse(response, msg.toString(), HttpServletResponse.SC_BAD_REQUEST);
+        trySetErrorResponse(response, msg.toString(), HttpServletResponse.SC_BAD_REQUEST);
         return Status.FAIL;
     }
 }

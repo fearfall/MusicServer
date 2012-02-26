@@ -1,14 +1,11 @@
 package handlers.user;
 
 import handlers.RequestExecutor;
-import org.mortbay.jetty.Request;
 import utilities.CommonDbService;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.Map;
-
-import handlers.user.RegisterHandler.ActionType;
 
 /**
  * Created by IntelliJ IDEA.
@@ -22,7 +19,7 @@ public class RegisterExecutor extends RequestExecutor {
     public Status execute(
             HttpServletResponse response,
             Map<String, String> parameters,
-            CommonDbService dbService) throws IOException {
+            CommonDbService dbService) {
         StringBuilder msg = new StringBuilder();
         String username = checkParameter("username", parameters, msg);
         if (username == null)
@@ -39,13 +36,17 @@ public class RegisterExecutor extends RequestExecutor {
             response.setStatus(HttpServletResponse.SC_OK);
             String callback = parameters.get("callback");
             if (callback != null)
-                wrapMessageCallback(response, "registered", callback);
+                tryWrapMessageCallback(response, "registered", callback);
             else
-                response.getWriter().println("registered");
+                try {
+                    response.getWriter().println("registered");
+                } catch (IOException e) {
+                    // nothing just return success status: this call does not require wrapper
+                }
             return Status.SUCCESS;
         }
         msg.append("Error: User with such name already exists\n");
-        setErrorResponse(response, msg.toString(), HttpServletResponse.SC_BAD_REQUEST);
+        trySetErrorResponse(response, msg.toString(), HttpServletResponse.SC_BAD_REQUEST);
         return Status.FAIL;
     }
 }

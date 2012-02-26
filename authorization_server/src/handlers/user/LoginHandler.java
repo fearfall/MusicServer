@@ -17,15 +17,19 @@ import java.io.IOException;
  * To change this template use File | Settings | File Templates.
  */
 public class LoginHandler extends AbstractHandler {
-    public void handle(String s, HttpServletRequest request, HttpServletResponse response, int i) throws IOException, ServletException {
+    public void handle(String s, HttpServletRequest request, HttpServletResponse response, int i) {
         response.setStatus(HttpServletResponse.SC_OK);
         String callback = request.getParameter("callback");
         StringBuilder msg = new StringBuilder();
         String message = "You are logged-in";
         if (callback != null) {
-            RequestExecutor.wrapMessageCallback(response, message, callback);
+            RequestExecutor.tryWrapMessageCallback(response, message, callback);
         } else {
-            response.getWriter().println(message);
+            try {
+                response.getWriter().println(message);
+            } catch (IOException e) {
+                //nothing: just set status
+            }
         }
         HttpConnection.getCurrentConnection().getRequest().setHandled(true);
     }

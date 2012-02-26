@@ -21,7 +21,7 @@ import java.util.Map;
  */
 public class SavePlaylistExecutor extends RequestExecutor{
     @Override
-    public Status execute(HttpServletResponse response, Map<String, String> parameters, CommonDbService dbService) throws IOException {
+    public Status execute(HttpServletResponse response, Map<String, String> parameters, CommonDbService dbService) {
         StringBuilder msg = new StringBuilder();
         String action = checkParameter("action", parameters, msg);
         if (action == null ||
@@ -63,13 +63,17 @@ public class SavePlaylistExecutor extends RequestExecutor{
             response.setStatus(HttpServletResponse.SC_OK);
             String callback = parameters.get("callback");
             if (callback != null)
-                wrapMessageCallback(response, "saved", callback);
+                tryWrapMessageCallback(response, "saved", callback);
             else
-                response.getWriter().println("saved");
+                try {
+                    response.getWriter().println("saved");
+                } catch (IOException e) {
+                    // nothing just return success status: this call does not require wrapper
+                }
             return Status.SUCCESS;
         }
         msg.append("Error: Not all tracks were added: only "+inserted + " tracks were added\n");
-        setErrorResponse(response, msg.toString(), HttpServletResponse.SC_BAD_REQUEST);
+        trySetErrorResponse(response, msg.toString(), HttpServletResponse.SC_BAD_REQUEST);
         return Status.FAIL;
     }
 }

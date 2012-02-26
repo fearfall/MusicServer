@@ -45,7 +45,7 @@ public class RegisterHandler extends AbstractHandler {
     public enum ActionType { REGISTER, LOGIN, LOGOUT }
 
     public void handle(String s, HttpServletRequest httpServletRequest,
-                       HttpServletResponse httpServletResponse, int i) throws IOException, ServletException {
+                       HttpServletResponse httpServletResponse, int i) {
 
 
         new RegisterExecutor().execute(

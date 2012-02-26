@@ -1,6 +1,5 @@
 package handlers;
 
-import sun.rmi.runtime.Log;
 import utilities.CommonDbService;
 
 import javax.servlet.http.HttpServletResponse;
@@ -20,7 +19,7 @@ public abstract class RequestExecutor {
     public abstract Status execute(
             HttpServletResponse response,
             final Map<String, String> parameters,
-            CommonDbService dbService) throws IOException;
+            CommonDbService dbService);
 
     public String checkParameter(
             final String parameterName,
@@ -51,7 +50,7 @@ public abstract class RequestExecutor {
         return playlistId;
     }
 
-    public void setErrorResponse(HttpServletResponse response, final String errorMessage, int status) {
+    public void trySetErrorResponse(HttpServletResponse response, final String errorMessage, int status) {
         try {
             response.sendError(status, errorMessage);
         } catch (IOException e) {
@@ -62,14 +61,19 @@ public abstract class RequestExecutor {
 
     public Status setErrorAndReturnStatus(HttpServletResponse response, final String errorMessage,
                                           int responseStatus, Status forReturn) {
-        setErrorResponse(response, errorMessage, responseStatus);
+        trySetErrorResponse(response, errorMessage, responseStatus);
         return forReturn;
     }
 
-    public static void wrapMessageCallback(HttpServletResponse response, final String msg, final String callback) throws IOException {
+    public static boolean tryWrapMessageCallback(HttpServletResponse response, final String msg, final String callback) {
         StringBuilder sb = new StringBuilder();
         sb.append(callback+"(\"");
         sb.append(msg+"\");");
-        response.getWriter().println(sb.toString());
+        try {
+            response.getWriter().println(sb.toString());
+        } catch (IOException e) {
+            return false;
+        }
+        return true;
     }
 }

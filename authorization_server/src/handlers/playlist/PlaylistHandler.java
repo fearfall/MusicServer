@@ -51,7 +51,7 @@ public class PlaylistHandler extends AbstractHandler{
     }
 
     public void handle(String s, HttpServletRequest httpServletRequest,
-                       HttpServletResponse httpServletResponse, int i) throws IOException, ServletException {
+                       HttpServletResponse httpServletResponse, int i) {
         String query = httpServletRequest.getQueryString();
         Map<String, String> parameters = getRequestParameters(query);
         String username = httpServletRequest.getUserPrincipal().getName();
@@ -59,7 +59,11 @@ public class PlaylistHandler extends AbstractHandler{
         Status resultStatus = PlaylistExecutors.tryProcessRequest(parameters, httpServletResponse, dbService);
         if (resultStatus == Status.NOT_ACCEPTED) {
             httpServletResponse.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-            httpServletResponse.getWriter().println("Error: nothing was done. Server cannot process this request");
+            try {
+                httpServletResponse.getWriter().println("Error: nothing was done. Server cannot process this request");
+            } catch (IOException e) {
+                //nothing: just set status bad request
+            }
         }
         HttpConnection.getCurrentConnection().getRequest().setHandled(true);
 

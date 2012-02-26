@@ -19,7 +19,7 @@ public class AddPlaylistExecutor extends RequestExecutor {
     public Status execute(
             HttpServletResponse response,
             final Map<String, String> parameters,
-            CommonDbService dbService) throws IOException {
+            CommonDbService dbService) {
         StringBuilder msg = new StringBuilder();
         String action = checkParameter("action", parameters, msg);
         if ( action == null ||
@@ -39,13 +39,16 @@ public class AddPlaylistExecutor extends RequestExecutor {
             response.setStatus(HttpServletResponse.SC_OK);
             String callback = parameters.get("callback");
             if (callback != null)
-                wrapMessageCallback(response, "added", callback);
+                tryWrapMessageCallback(response, "added", callback);
             else
-                response.getWriter().println("added");
+                try {
+                    response.getWriter().println("added");
+                } catch (IOException e) {
+                    // nothing just return success status: this call does not require wrapper
+                }
             return Status.SUCCESS;
         } else {
-            response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-            response.getWriter().println(msg.toString());
+            trySetErrorResponse(response, msg.toString(), HttpServletResponse.SC_BAD_REQUEST);
             return Status.FAIL;
         }
 

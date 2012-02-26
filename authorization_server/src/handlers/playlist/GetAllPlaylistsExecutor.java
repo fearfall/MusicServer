@@ -18,7 +18,7 @@ import java.util.Map;
  */
 public class GetAllPlaylistsExecutor extends RequestExecutor{
     @Override
-    public Status execute(HttpServletResponse response, Map<String, String> parameters, CommonDbService dbService) throws IOException {
+    public Status execute(HttpServletResponse response, Map<String, String> parameters, CommonDbService dbService) {
         StringBuilder msg = new StringBuilder();
         String action = checkParameter("action", parameters, msg);
         if (action == null ||
@@ -36,7 +36,12 @@ public class GetAllPlaylistsExecutor extends RequestExecutor{
             msg.append(");");
         } else
             msg.append(queryResult);
-        response.getWriter().print(msg.toString());
+        try {
+            response.getWriter().print(msg.toString());
+        } catch (IOException e) {
+            response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+            return Status.FAIL;
+        }
         response.setStatus(HttpServletResponse.SC_OK);
         return Status.SUCCESS;
     }

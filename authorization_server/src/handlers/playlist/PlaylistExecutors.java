@@ -36,7 +36,7 @@ public class PlaylistExecutors {
     public static Status tryProcessRequest(
             final Map<String, String> parameters,
             HttpServletResponse response,
-            CommonDbService dbService) throws IOException {
+            CommonDbService dbService) {
         Status resultStatus = Status.NOT_ACCEPTED;
         int i = 0;
         while (i < executors.size() && resultStatus == Status.NOT_ACCEPTED) {
