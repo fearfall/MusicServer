@@ -28,8 +28,6 @@ public class MainActivity extends TabActivity {
                 findViewById(R.id.timing), findViewById(R.id.buffering), findViewById(R.id.seekBarTestPlay),
                 findViewById(R.id.button_stop), findViewById(R.id.button_fwd), findViewById(R.id.button_back));
 
-       // this.bindService(new Intent(MainActivity.this, MusicPlayerService.class), myServiceConnection, Context.BIND_AUTO_CREATE);
-
         Resources res = getResources(); // Resource object to get Drawables
         TabHost tabHost = getTabHost();  // The activity TabHost
         TabHost.TabSpec spec;  // Resusable TabSpec for each tab

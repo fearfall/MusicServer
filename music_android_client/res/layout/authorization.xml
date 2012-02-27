@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:orientation="vertical"
+              android:layout_width="fill_parent"
+              android:layout_height="wrap_content">
+
+    <TextView android:id="@+id/status"
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:text=""
+              android:textStyle="bold"
+              android:paddingBottom="5px"
+              android:paddingRight="10px"
+              android:paddingTop="5px"/>
+
+    <TextView android:id="@+id/label1"
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:text="Login:"
+              android:textStyle="bold"
+              android:paddingBottom="5px"
+              android:paddingRight="10px"
+              android:paddingTop="5px"/>
+
+    <EditText android:id="@+id/usernameEditText"
+              android:text=""
+              android:layout_height="wrap_content"
+              android:layout_width="match_parent"
+              android:gravity="center_vertical"
+              android:lines="1"
+              android:layout_weight="1"/>
+
+    <TextView android:id="@+id/label2"
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:text="Password:"
+              android:textStyle="bold"
+              android:paddingBottom="5px"
+              android:paddingRight="10px"
+              android:paddingTop="5px"/>
+
+    <EditText android:id="@+id/pwdEditText"
+              android:text=""
+              android:layout_height="wrap_content"
+              android:layout_width="match_parent"
+              android:gravity="center_vertical"
+              android:password="true"
+              android:lines="1"
+              android:layout_weight="1"/>
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                  android:orientation="horizontal"
+                  android:layout_width="fill_parent"
+                  android:layout_height="wrap_content">
+
+    <Button   android:id="@+id/registerButton"
+              android:text="Register"
+              android:layout_height="wrap_content"
+              android:layout_width="match_parent"
+              android:gravity="center_vertical"
+              android:paddingTop="5px"
+              android:layout_weight="1"/>
+
+    <Button   android:id="@+id/loginButton"
+              android:text="Login"
+              android:layout_height="wrap_content"
+              android:layout_width="match_parent"
+              android:gravity="center_vertical"
+              android:paddingTop="5px"
+              android:layout_weight="1"/>
+    </LinearLayout>
+
+    <ImageView
+            xmlns:android="http://schemas.android.com/apk/res/android"
+            android:src="@android:drawable/divider_horizontal_dark"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:scaleType="fitXY"
+            android:paddingLeft="5dp"
+            android:paddingRight="5dp"
+            android:paddingBottom="2dp"
+            android:paddingTop="2dp" />
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                  android:orientation="horizontal"
+                  android:layout_width="fill_parent"
+                  android:layout_height="wrap_content">
+
+        <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                      android:orientation="vertical"
+                      android:layout_width="fill_parent"
+                      android:layout_weight="1"
+                      android:layout_height="wrap_content">
+
+        <TextView android:id="@+id/label0"
+                  android:layout_width="wrap_content"
+                  android:layout_height="wrap_content"
+                  android:text="Music server IP:"
+                  android:textStyle="bold"
+                  android:paddingBottom="5px"
+                  android:paddingRight="10px"
+                  android:layout_weight="1"
+                  android:paddingTop="5px"/>
+
+        <EditText android:id="@+id/musicIpEditText"
+                  android:layout_height="wrap_content"
+                  android:layout_width="match_parent"
+                  android:gravity="center_vertical"
+                  android:layout_weight="1"
+                  android:lines="1"/>
+            </LinearLayout>
+
+        <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                      android:orientation="vertical"
+                      android:layout_width="fill_parent"
+                      android:layout_weight="1"
+                      android:layout_height="wrap_content">
+
+        <TextView android:id="@+id/label00"
+                  android:layout_width="wrap_content"
+                  android:layout_height="wrap_content"
+                  android:text="Authorization server IP:"
+                  android:textStyle="bold"
+                  android:paddingBottom="5px"
+                  android:paddingRight="10px"
+                  android:layout_weight="1"
+                  android:paddingTop="5px"/>
+
+            <EditText android:id="@+id/authIpEditText"
+                      android:layout_height="wrap_content"
+                      android:layout_width="match_parent"
+                      android:gravity="center_vertical"
+                      android:layout_weight="1"
+                      android:lines="1"/>
+
+
+                  </LinearLayout>
+        </LinearLayout>
+
+    <Button   android:id="@+id/ipButton"
+              android:text="Set IPs"
+              android:layout_height="wrap_content"
+              android:layout_width="match_parent"
+              android:gravity="center_vertical"
+              android:paddingTop="5px"
+              android:layout_weight="1"/>
+
+</LinearLayout>
