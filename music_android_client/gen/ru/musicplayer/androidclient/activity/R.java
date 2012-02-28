@@ -45,12 +45,12 @@ public final class R {
         public static final int add_to_playlist=0x7f060027;
         public static final int authIpEditText=0x7f06000a;
         public static final int buffering=0x7f060012;
-        public static final int button_back=0x7f06000d;
-        public static final int button_fwd=0x7f06000f;
-        public static final int button_play=0x7f06000e;
-        public static final int button_stop=0x7f06000c;
+        public static final int button_back=0x7f06000e;
+        public static final int button_fwd=0x7f060010;
+        public static final int button_play=0x7f06000f;
+        public static final int button_stop=0x7f06000d;
         public static final int cancel=0x7f060017;
-        public static final int currentPlaylist=0x7f060011;
+        public static final int currentPlaylist=0x7f06000c;
         public static final int delete=0x7f060021;
         public static final int edit=0x7f060020;
         public static final int editText=0x7f060016;
@@ -69,7 +69,7 @@ public final class R {
         public static final int ok=0x7f060018;
         public static final int play=0x7f06001f;
         public static final int playing_layout=0x7f060019;
-        public static final int playing_track_name=0x7f060010;
+        public static final int playing_track_name=0x7f060011;
         public static final int playlist_layout=0x7f06001b;
         public static final int playlist_list=0x7f06001d;
         public static final int pwdEditText=0x7f060004;

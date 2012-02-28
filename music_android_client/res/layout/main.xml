@@ -9,14 +9,20 @@
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
                   android:orientation="vertical"
                   android:layout_width="match_parent"
-                  android:layout_height="match_parent"
-                  android:padding="5px">
+                  android:layout_height="match_parent">
+
+        <TextView android:id="@+id/currentPlaylist"
+                  android:layout_width="wrap_content"
+                  android:layout_height="wrap_content"
+                  android:textStyle="bold"
+                  android:layout_gravity="left"
+                  android:paddingLeft="10px"
+                  android:text="@string/defaultPlaylist"/>
 
         <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
                       android:orientation="horizontal"
                       android:layout_width="match_parent"
-                      android:layout_height="wrap_content"
-                      android:padding="5px">
+                      android:layout_height="wrap_content">
 
             <ImageButton android:id="@+id/button_stop"
                          android:layout_width="wrap_content"
@@ -52,15 +58,6 @@
                       android:paddingTop="5px"
                       android:text="@string/noTrackName"/>
 
-            <TextView android:id="@+id/currentPlaylist"
-                      android:layout_width="wrap_content"
-                      android:layout_height="wrap_content"
-                      android:textStyle="bold"
-                      android:gravity="right"
-                      android:layout_gravity="right"
-                      android:paddingTop="5px"
-                      android:text="@string/defaultPlaylist"/>
-
         </LinearLayout>
 
         <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
@@ -74,18 +71,15 @@
                       android:layout_height="wrap_content"
                       android:text="0"
                       android:textStyle="bold"
-                      android:paddingBottom="5px"
-                      android:paddingRight="10px"
-                      android:paddingTop="5px"/>
+                      android:paddingRight="10px"/>
 
             <TextView android:id="@+id/timing"
                       android:layout_width="wrap_content"
                       android:layout_height="wrap_content"
                       android:text="@string/nullTiming"
                       android:textStyle="bold"
-                      android:paddingBottom="5px"
                       android:paddingRight="10px"
-                      android:paddingTop="5px"/>
+                      android:paddingTop="10px"/>
 
             <SeekBar android:id="@+id/seekBarTestPlay"
                      android:layout_height="wrap_content"
@@ -105,14 +99,3 @@
 
     </LinearLayout>
 </TabHost>
-
-
-        <!--LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                      android:orientation="vertical"
-                      android:layout_width="match_parent"
-                      android:layout_height="match_parent"
-                      android:padding="5px">
-
-
-
-        </LinearLayout-->
