@@ -20,10 +20,12 @@ $(document).ready(function(){
 			data: credentials,
 			success: function (data) {
 				buffer = data;
+				setLoggedIn();
 				alert(buffer);
 			},
 			error: function() { 
 				alert(errorMsg); 
+				setLoggedOut();
 			}
 		});
 		
@@ -76,7 +78,6 @@ $(document).ready(function(){
 		e.preventDefault();
 		if (getCredentials()) {
 			authServer_makeAjaxRequest("https://localhost:8443/playlist/?action=getall", userPlaylists, "Login Error!");
-			setLoggedIn();
 		} else {
 			alert("Please enter your login and password");
 			return false;
